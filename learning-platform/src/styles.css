@@ -1,0 +1,9 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
+.root{
+    --blue-color:#2D9CDB;
+    --white-color:#fff;
+    --logo-bg-color:#001c27;
+    --drawer-bg-color:#141A2F;
+}
