@@ -1,36 +1,64 @@
-<section class="app">
-    <aside class="sidebar">
-        <div class="logo">
-            <i class="bi bi-book"></i> Skill Wave 
-        </div>
-        <header>
-          Menu
-        </header>
-      <nav class="sidebar-nav">   
-        <ul>
-          <li>
-            <a href="#"><i class="ion-bag"></i> <span>Shop</span></a>
-          </li>
-          <li>
-            <a href="#"><i class="ion-ios-settings"></i> <span class="">Controls</span></a>
-          </li>
-          <li>
-            <a href="#"><i class="ion-ios-briefcase-outline"></i> <span class="">Folio</span></a>
-          </li>
-          <li>
-            <a href="#"><i class="ion-ios-analytics-outline"></i> <span class="">Graphicals</span></a>
-          </li>
-          <li>
-            <a href="#"><i class="ion-ios-paper-outline"></i> <span class="">Papers</span></a>
-          
-          </li>
-          <li>
-            <a href="#"><i class="ion-ios-navigate-outline"></i> <span class="">Ass Finder</span></a>
-          </li>
-          <li>
-            <a href="#"><i class="ion-ios-medical-outline"></i>Cocaine</a>
-          </li>
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <i class="bi bi-book me-2 logo "> Skill Wave</i>
+    <!-- <a class="navbar-brand" href="#"> </a> -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mb-2 me-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Courses</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">FAQ</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact</a>
+        </li>
+      </ul>
+      <form class="d-flex me-2" role="search">
+        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+        <i class="bi bi-search"></i>
+        <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
+      </form>
+      <!-- <ul class="navbar-nav mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <button class="nav-link dropdown-toggle" href="#" role="button" (click)="toggel()" data-bs-toggle="dropdown">
+            User
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Dashboard</a></li>
+            <li><a class="dropdown-item" href="#">Notifications</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#">Logout</a></li>
+          </ul>
+        </li>
+      </ul> -->
+      <div class="btn-group dropstart">
+        <button  class="nav-link  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          User
+        </button>
+        <ul class="dropdown-menu mt-4">
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Dashboard</a></li>
+            <li><a class="dropdown-item" href="#">Notifications</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#">Logout</a></li>
         </ul>
-      </nav>
-    </aside>
-  </section>
+      </div>
+    </div>
+  </div>
+</nav>

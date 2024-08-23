@@ -1,7 +1,7 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
-.root{
+:root{
     --blue-color:#2D9CDB;
     --white-color:#fff;
     --logo-bg-color:#001c27;

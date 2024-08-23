@@ -1,125 +1,57 @@
+.navbar {
+  background-color: var(--logo-bg-color);
+  color: #fff;
+  justify-content: space-between;
+}
+
 .logo {
-    color: var(--white-color);
-    color: #fff;
-    font-size: 2rem;
-    text-align: center;    
-}
-a{
-  text-decoration: none;
-  @include transition(all 0.6s ease);
-  
-  &:hover{
-     @include transition(all 0.6s ease);
-  }
+  font-weight: 500;
+  font-size: larger;
+  cursor: pointer;
 }
 
-/* -------------
-Sidebar
-----------------*/
-.sidebar {
+.logo:hover {
+  color: var(--blue-color)
+}
+
+form {
+  justify-self: center;
+  width: 90%;
+  justify-content: end;
+  position: relative;
+}
+
+form input {
+  border-radius: 0;
+}
+
+form i {
+  cursor: pointer;
+  color: var(--blue-color);
   position: absolute;
-  /* //width: 33.3333%; */
-  width: 14em;
-  height: 100%;
-  top: 0;
-  overflow:hidden;
-  background-color: #001C27;
-  -webkit-transform: translateZ(0);
-  visibility: visible;
-  -webkit-backface-visibility: hidden;
-  
-  header{
-    background-color: #09f;
-    width: 100%;
-    display:block;
-    padding: 0.75em	1em;
-  }
+  padding: 7px;
 }
 
-/* -------------
-Sidebar Nav
-----------------*/
-.sidebar-nav {
-  position: fixed;
-  /* //width: 13em; */
-  background-color: #001C27;
-  height: 100%;
-  font-weight: 400; 
-  font-size: 1.2em;
-  overflow: auto;
-  padding-bottom: 6em;
-  z-index: 9;
-  overflow: hidden;
-  -webkit-overflow-scrolling: touch;
- 
-  
-  ul{
-    list-style:none;
-    display: block;
-    padding: 0;
-    margin: 0;
-    
-    li{
-      margin-left: 0;
-      padding-left: 0;
-      //min-width: 13em;
-      display:inline-block;
-      width: 100%;
-      
-      a{
-        color: rgba(255,255,255,0.9);
-        font-size: 0.75em;
-        padding: 1.05em	1em;
-        position: relative;
-        display:block;
-        
-        &:hover{
-          background-color: rgba(0,0,0,0.9);
-          @include transition(all 0.6s ease);
-        }
-      }
-/* -------------
-Sidebar: icons
-----------------*/
-      i{
-        font-size: 1.8em;
-        padding-right: 0.5em;
-        width: 9em;
-        display: inline;
-        vertical-align:middle;
-      }  
-    }
-  }
+form i:hover {
+  background-color: var(--blue-color);
+  color: var(--white-color);
+}
 
-/* -------------
-Chev elements
-----------------*/ 
+.navbar-nav .nav-link,
+.nav-link.active,
+.navbar-nav .nav-link.show {
+  color: #fff;
+}
 
-/* -------------
-Nav-Flyout
-----------------*/
-  & .nav-flyout {
-    position: absolute;
-    background-color: #080D11;
-    z-index: 9;
-    left: 2.5em;
-    top: 0;
-    height: 100vh;
-    @include transform(translateX(100%));
-    @include transition(all 0.5s ease);
-    
-    a:hover{
-      background-color: rgba(255,255,255, 0.05)
-    }
-  }
-
-/* -------------
-Hover
-----------------*/
-  & ul > li:hover{
-      .nav-flyout{
-      @include transform(translateX(0));
-        @include transition(all 0.5s ease);
-    }
-  }
+.navbar-toggler {
+  background-color: #fff;
+}
+.open{
+  display: block;
+}
+.dropdown-menu{
+  /* background-color: red; */
+  /* justify-content: start; */
+  width: fit-content;
+  /* margin-right: 300px; */
 }
