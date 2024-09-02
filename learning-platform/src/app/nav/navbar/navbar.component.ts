@@ -1,5 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { Dropdown } from 'bootstrap';
+// import { Dropdown } from 'bootstrap';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
