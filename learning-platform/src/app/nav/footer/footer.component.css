@@ -1,0 +1,18 @@
+.logo {
+    font-weight: 500;
+    font-size: larger;
+    cursor: pointer;
+  }
+  
+  .logo:hover {
+    color: var(--blue-color)
+  }
+  a{
+    text-decoration: none;
+  }
+  .darkModeBtn{
+    background: none;
+    background-color: transparent;
+    border-color: red;
+    
+  }
