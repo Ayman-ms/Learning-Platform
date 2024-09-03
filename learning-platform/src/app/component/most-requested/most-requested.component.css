@@ -1,0 +1,130 @@
+.contentContainer {
+    max-width: 100%;
+}
+
+.sectionText {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 29px;
+}
+
+.courses {
+    display: flex;
+    padding: 35px 0;
+    justify-content: center;
+}
+
+@media (max-width: 480px) {
+    .contentContainer {}
+
+    .courses {
+        display: grid;
+
+    }
+
+    .courses .courseCard {
+        margin-bottom: 20px;
+    }
+}
+
+.sectionPaddingY {
+    padding: 70px 0;
+}
+
+.courses a {
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.coursesCategories {
+    padding: 20px 0;
+}
+
+.coursesCategories span {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-color: var(--blue-color);
+    color: var(--blue-color);
+}
+
+.coursesCategories span:hover {
+    background-color: var(--blue-color);
+    color: var(--white-color);
+}
+
+.courseCard {
+    display: inline-flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    background-color: #FFF;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 267px;
+    min-width: 211px;
+    height: 290px;
+    margin: 0 15px;
+    box-shadow: 0 10px 30px 0 rgba(164, 192, 210, .22);
+    cursor: pointer;
+}
+
+h4,
+.textLabel {
+    text-decoration: none;
+}
+
+.courseImg {
+    width: 100%;
+    height: 115px;
+    object-fit: cover;
+}
+
+.linkComponent {
+    display: contents;
+    text-decoration: none !important;
+}
+
+.courseCard .courseContent {
+    padding: 20px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+.textCard {
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: var(--blue-color);
+    border-radius: 12px;
+    width: 267px;
+    min-width: 211px;
+    height: 290px;
+    margin: 0 15px;
+    padding: 40px;
+    box-shadow: 0 10px 30px 0 rgba(164, 192, 210, .22);
+    cursor: pointer;
+}
+
+.textCard .icon {
+    width: 70px;
+    height: 70px;
+}
+
+.textCard .text {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 21px;
+    color: var(--white-color);
+}

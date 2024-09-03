@@ -3,7 +3,11 @@
   color: #fff;
   justify-content: space-between;
 }
-
+@media (max-width: 480px) {
+  .navbar{
+      width: 100%;
+  }
+}
 .logo {
   font-weight: 500;
   font-size: larger;
@@ -50,8 +54,5 @@ form i:hover {
   display: block;
 }
 .dropdown-menu{
-  /* background-color: red; */
-  /* justify-content: start; */
   width: fit-content;
-  /* margin-right: 300px; */
 }

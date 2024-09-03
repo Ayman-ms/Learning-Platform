@@ -8,6 +8,9 @@ import { FooterComponent } from './nav/footer/footer.component';
 import { LoginComponent } from './component/login/login.component';
 import { HomeComponent } from './component/home/home.component';
 import { HeroComponent } from './component/hero/hero.component';
+import { CompaniesComponent } from './component/companies/companies.component';
+import { MostRequestedComponent } from './component/most-requested/most-requested.component';
+import { FeaturesComponent } from './component/features/features.component';
 // import {SingupComp}
 
 @NgModule({
@@ -17,7 +20,10 @@ import { HeroComponent } from './component/hero/hero.component';
     FooterComponent,
     LoginComponent,
     HomeComponent,
-    HeroComponent
+    HeroComponent,
+    CompaniesComponent,
+    MostRequestedComponent,
+    FeaturesComponent
   ],
   imports: [
     BrowserModule,

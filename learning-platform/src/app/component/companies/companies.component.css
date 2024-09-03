@@ -1,0 +1,38 @@
+.font-medium {
+    font-weight: 500;
+    margin: 20px;
+}
+
+@media (min-width: 80em) {
+    .xl\:pl-16 {
+        padding-left: 4rem;
+    }
+}
+@media (max-width: 480px) {
+    .hero {
+        display: none;
+    }
+}
+.photos {
+    display: grid;
+    grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));
+    grid-template-rows: repeat(1, 50px);
+    align-items: center;
+  }
+  .photos :first-of-type{
+    padding-left: 20px;
+  }
+  @media (max-width: 480px) {
+    .photos {
+        grid-template-columns:repeat(auto-fit, minmax(130px, 2fr));
+        grid-template-rows: repeat(1, 50px);
+        padding-left:20px;
+      }
+      .photos :first-of-type{
+        padding-left: 0;
+      }
+}
+img{
+    width: 100px;
+    height: auto;
+}
