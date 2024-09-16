@@ -1,0 +1,62 @@
+.featuresSection {
+    display: -ms-flexbox;
+    display: flex;
+    background: #FFF;
+    padding-left: 100px;
+}
+
+.featuresSection .featureImgContainer {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex: 1;
+    flex: 1;
+}
+.featuresSection .featureImg {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    object-fit: cover;
+}
+img {
+    border: 0;
+    vertical-align: middle;
+}
+.featuresSection .featuresContent {
+    padding: 110px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+.featuredCard .contentTitle, .headingLarge, .sectionTitle {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 43px;
+}
+.sectionText {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 29px;
+}
+.featuresSection .features {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -ms-flex-align: start;
+    align-items: flex-start;
+}
+.featuresSection .features .featureItem:first-of-type {
+    margin-right: 0;
+}
+.featuresSection .features .featureItem {
+    -ms-flex: 1;
+    flex: 1;
+    margin: 10px;
+}
+.featuresSection .features .featureItem:last-of-type {
+    margin-left: 0;
+}

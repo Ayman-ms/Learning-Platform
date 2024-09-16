@@ -7,7 +7,6 @@
     --logo-bg-color:#001c27;
     --drawer-bg-color:#141A2F;
 }
-<<<<<<< HEAD
 .sectionTitle{
     color: var(--blue-color);
 }
@@ -21,7 +20,7 @@
     font-weight: 400;
     line-height: 29px;
 }
-=======
+
 body {
     background-color: white;
     color: black;
@@ -32,4 +31,3 @@ body {
     background-color: black;
     color: white;
   }
->>>>>>> 7bdfd329cdeab81cd1b8dbf07ca0931657b0726b

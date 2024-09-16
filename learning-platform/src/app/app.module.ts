@@ -11,6 +11,7 @@ import { HeroComponent } from './component/hero/hero.component';
 import { CompaniesComponent } from './component/companies/companies.component';
 import { MostRequestedComponent } from './component/most-requested/most-requested.component';
 import { FeaturesComponent } from './component/features/features.component';
+import { LastSectionComponent } from './component/last-section/last-section.component';
 // import {SingupComp}
 
 @NgModule({
@@ -23,7 +24,8 @@ import { FeaturesComponent } from './component/features/features.component';
     HeroComponent,
     CompaniesComponent,
     MostRequestedComponent,
-    FeaturesComponent
+    FeaturesComponent,
+    LastSectionComponent
   ],
   imports: [
     BrowserModule,
