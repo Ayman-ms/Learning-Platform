@@ -1,1 +1,61 @@
-<p>signup works!</p>
+<!-- <div class="container">
+    <div class="header">
+        <i class="bi bi-book me-2 logo "> Skill Wave</i>
+
+    </div>
+    <form>
+        <div class="mb-3">
+            <div class="pl_input">
+                <input class="pl_input__field" placeholder="Vorname" type="text" value="" data-qa="fti-registration-firstName-input" id="firstName" name="firstName">
+                <label for="firstName" class="pl_label">Vorname</label>
+                <small class="pl_input__note" style="display:none" data-qa="fti-registration-firstName-error-empty">Bitte trage deinen Vornamen ein.</small>
+                <small class="pl_input__note" style="display:none" data-qa="fti-registration-firstName-error-invalid">Bitte überprüfe, ob dein eingegebener Vorname min. 2 und max. 30 Zeichen enthält sowie keine untypischen Symbole (%&amp;$...) beinhaltet.</small>
+                <small class="pl_input__note" style="display:none" data-qa="fti-registration-firstName-error-company">Die Registrierung eines Firmenkontos ist nicht möglich. Bitte passe deine Eingabe an.</small>
+            </div>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3">
+          <input type="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+          <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+</div> -->
+<div class="pl_focussed-dialog__container">
+    <i class="bi bi-book me-2 logo "> Skill Wave</i>
+    <section class="pl_focussed-dialog__content">
+        <div class="pl_focussed-dialog__body">
+            <div class="pl_grid-content registration_content">
+                <div class="pl_grid-container">
+                    <div class="pl_grid-col-lg-12">
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <div class="pl_grid-col-lg-8 pl_grid-offset-lg-2">
+                        <form action="/customer-registration/customerAccount" class="nonvalidate" autocomplete="off" data-validateimmediately="false" data-hassalutation="false" data-qa="fti-registration-create-account-form" novalidate>
+                            <input type="hidden" name="_csrf" value="tTNCfBrhc1Cj_asJPGApRVzWnht-yt8TCPNf1x8OLQfUnmMLjAQnSyjYQDOOn5o8XU0dJGzgsyJM8ro-aZZt5yo4GWaxrFRt">
+                            <div class="pl_input pl_input--invalid">
+                                <input class="pl_input__field" placeholder="E-Mail-Adresse" type="email" value="" data-qa="fti-registration-email-input" id="email" name="email">
+                                <label for="email" class="pl_label">E-Mail-Adresse</label>
+                                <small class="pl_input__note" style="display: unset;" data-qa="fti-registration-email-error-empty">Bitte trage eine gültige E-Mail-Adresse ein.</small>
+                                <small class="pl_input__note" style="display:none" data-qa="fti-registration-email-error-invalid">Bitte überprüfe, ob deine eingegebene E-Mail-Adresse ein Zeichen und einen Punkt enthält.</small>
+                                <small class="pl_input__note" style="display:none" data-qa="fti-registration-email-error-company">registration.create.customer.account.email.error.company</small>
+                            </div>
+
+
+
+
+                            <div class="pl_input pl_input--invalid"></div>
+                            <div class="pl_input pl_input--invalid"></div>
+                            <div class="pl_input pl_input--invalid"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>   
+        </div>
+    </section>
+</div>
