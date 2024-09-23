@@ -1,6 +1,7 @@
 .formContainer{
     margin-top: 40px;
     margin-bottom: 40px;
+    min-height: 40vh;
   }
   form {
     text-align:center ;
@@ -47,7 +48,8 @@
     color: var(--blue-color);
     height: 20px;
   }
-  input[type="submit"] {
+ 
+  button[type="submit"] {
     background-color: var(--blue-color);
     color: var(--white-color);
     padding: 10px 20px;
@@ -55,8 +57,21 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    width: 75%;
   }
-  input[type="submit"]:hover {
+  button {
+    margin-top: 20px;
+    background-color: #ccc;
+    text-decoration: none;
+    color: var(--white-color);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 75%;
+  }
+  button[type="submit"]:hover {
     background-color: var(--blue-color);
   }
   .input-container input:focus {

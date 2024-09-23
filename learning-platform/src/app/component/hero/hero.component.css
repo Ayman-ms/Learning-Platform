@@ -3,7 +3,7 @@
     background-color: rgb(245 248 250 / var(--tw-bg-opacity));
     width: 100%;
     height: auto;
-    color: var(--blau-color);
+    /* color: var(--blau-color); */
 }
 .container{
     display: grid;
@@ -16,7 +16,7 @@
     .heroSection{
         width: 100%;
     }
-    .hero {
+    .heroImg {
         display: none;
     }
 }
@@ -26,34 +26,21 @@
     padding-left: 70px;
 }
 
-.logo h1 {
+.hero h1 {
     padding-bottom: 10px;
 }
-
-.logo button {
+.hero h1:hover{
+color: var(--blue-color);
+}
+.hero button {
     background-color: rgb(255, 136, 0);
     color: #fff;
     padding: 10px 30px;
     border-radius: 30px;
 }
 
-.hero img {
+.heroImg img {
     width: 100%;
     height: 600px;
     object-fit: cover;
-}
-
-img::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    width: 100%;
-    height: 100%;
-    background: #000000;
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-    z-index: -1;
 }

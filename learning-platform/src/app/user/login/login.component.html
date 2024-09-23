@@ -1,19 +1,8 @@
 <p>login works!</p>
-dfsfsdf
 <div class="formContainer">
-    <form action="/submit-registration" method="post">
+    <form action="/submit-login" method="post">
         <i class="bi bi-book me-2 logo "> Skill Wave</i>
-            <div class="input-container">
-                <input type="text" id="firstName" name="firstName" placeholder=" " required>
-                <label for="firstName">First Name</label>
-            </div>
-    
-            <div class="input-container">
-                <input type="text" id="lastName" name="lastName" placeholder=" " required>
-                <label for="lastName">Last Name</label>
-            </div>
-    
-            <div class="input-container">
+                        <div class="input-container">
                 <input type="email" id="email" name="email" placeholder=" " required>
                 <label for="email">E-Mail</label>
             </div>
@@ -22,17 +11,8 @@ dfsfsdf
                 <input type="password" id="password" name="password" placeholder=" " required>
                 <label for="password">Password</label>
             </div>
-    
-            <div class="input-container">
-                <input type="tel" id="phone" name="phone" placeholder=" ">
-                <label for="phone">Phone</label>
-            </div>
-    
-            <label for="terms">
-                <input type="checkbox" id="terms" name="terms" required>
-                Agree to the terms and conditions
-            </label><br><br>
-    
-            <input type="submit" value="Create Account">
+            <button type="submit">Create Account</button>
+            <!-- <input type="submit" value="Create Account"> -->
+            <button type="button" routerLink="/register">New With US</button>
         </form>
 </div>

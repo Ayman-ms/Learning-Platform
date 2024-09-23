@@ -1,0 +1,9 @@
+[
+  {
+    "Id": 2,
+    "UserName": "ayman",
+    "Password": "AymanQ1",
+    "Email": "ayma513@gmail.com",
+    "Roll": "admin"
+  },
+  {"Id":3,"UserName":"s","Password":"AymanQ1!","Email":"a@a","Roll":"user"},{"Id":4,"UserName":"ahmad","Password":"AhmadA1!","Email":"a@a","Roll":"user"}]

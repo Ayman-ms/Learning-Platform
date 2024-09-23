@@ -1,19 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DarkModeService } from 'src/app/services/darkMode/dark-mode.service';
+
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css']
 })
-export class FooterComponent {
+export class FooterComponent implements OnInit {
   constructor(private darkModeService: DarkModeService) {}
+
+  ngOnInit(): void {
+    this.updateIcon();
+  }
 
   toggleDarkMode(): void {
     this.darkModeService.toggleDarkMode();
+    this.updateIcon();
   }
 
   isDarkMode(): boolean {
-    document.getElementById('dark')
     return this.darkModeService.isDarkMode();
+  }
+
+  updateIcon(): void {
+    const iconElement = document.getElementById('modeIcon');
+    if (iconElement) {
+      if (this.isDarkMode()) {
+        iconElement.classList.add('bi-moon');
+        iconElement.classList.remove('bi-brightness-high');
+      } else {
+        iconElement.classList.add('bi-brightness-high');
+        iconElement.classList.remove('bi-moon');
+      }
+    }
   }
 }

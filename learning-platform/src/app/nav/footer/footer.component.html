@@ -6,9 +6,7 @@
     <div class="me-5 d-none d-lg-block">
       <span>Get connected with us on social networks:</span>
     </div>
-    <i class="darkModeBtn" id="dark" (click)="toggleDarkMode()">
-      {{ isDarkMode() ? <i class="bi bi-brightness-high"></i> :<i class="bi bi-brightness-high"></i>}}
-    </i>
+    
     <!-- Icons -->
     <div>
       <a href="" class="me-4 text-reset">
@@ -103,7 +101,7 @@
           <p><i class="fas fa-home me-3"></i> New York, NY 10012, US</p>
           <p>
             <i class="fas fa-envelope me-3"></i>
-            info@example.com
+            info@hml.com
           </p>
           <p><i class="fas fa-phone me-3"></i> + 01 234 567 88</p>
           <p><i class="fas fa-print me-3"></i> + 01 234 567 89</p>
@@ -116,9 +114,17 @@
   <!-- Section: Links  -->
 
   <!-- Copyright -->
-  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-    © 2024 Copyright
+  <div class=" p-4 d-flex justify-content-between" style="background-color: rgba(0, 0, 0, 0.05);">
+   
+    <div class="form-check form-switch col">
+      <i id="modeIcon" class="bi bi-brightness-high"></i>
+      <input class="form-check-input" type="checkbox" (click)="toggleDarkMode()" role="switch" id="flexSwitchCheckDefault">
+    </div>
+    <div class="col">
+      © 2024 Copyright
+      </div>
   </div>
+  
   <!-- Copyright -->
 
 </footer>

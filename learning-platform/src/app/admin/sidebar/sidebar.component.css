@@ -1,0 +1,25 @@
+ul {
+    background-color: var(--logo-bg-color);
+    ;
+    text-align: center;
+}
+
+li {
+    margin: 10px;
+}
+
+li:active,
+li:hover {
+    background-color: var(--blue-color);
+}
+
+li a {
+    align-items: center;
+    color: var(--white-color);
+}
+
+.mangePart {
+    background-color: red;
+    width: 100%;
+    height: 100%;
+}

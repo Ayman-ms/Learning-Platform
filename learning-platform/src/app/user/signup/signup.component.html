@@ -1,36 +1,44 @@
 <div class="formContainer">
-    <form action="/submit-registration" method="post">
-        <i class="bi bi-book me-2 logo "> Skill Wave</i>
-            <div class="input-container">
-                <input type="text" id="firstName" name="firstName" placeholder=" " required>
-                <label for="firstName">First Name</label>
+    <form [formGroup]="newUserForm">
+        <i class="bi bi-book me-2 logo"> Skill Wave</i>
+        <div class="input-container">
+            <input type="text" id="firstName" name="firstName" placeholder=" " required
+                [(ngModel)]="userToAdd.firstName" formControlName="firstNameControl">
+            <label for="firstName">First Name</label>
+        </div>
+        <div class="input-container">
+            <input type="text" id="lastName" name="lastName" placeholder=" " [(ngModel)]="userToAdd.lastName"
+                formControlName="lastNameControl" required>
+            <label for="lastName">Last Name</label>
+        </div>
+        <div class="input-container">
+            <input type="email" id="email" name="email" placeholder=" " [(ngModel)]="userToAdd.email"
+                formControlName="emailControl" required>
+            <label for="email">E-Mail</label>
+        </div>
+        <div class="input-container">
+            <input type="password" id="password" name="password" placeholder=" " [(ngModel)]="userToAdd.password"
+                formControlName="passwordControl" required>
+            <label for="password">Password</label>
+        </div>
+        <div class="input-container">
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder=" "
+               formControlName="confirmPasswordControl" required>
+            <label for="confirmPassword">Confirm Password</label>
+            <div *ngIf="newUserForm.get('confirmPasswordControl')?.errors?.['passwordMismatch']">
+                <small class="error">Passwords do not match</small>
             </div>
-    
-            <div class="input-container">
-                <input type="text" id="lastName" name="lastName" placeholder=" " required>
-                <label for="lastName">Last Name</label>
-            </div>
-    
-            <div class="input-container">
-                <input type="email" id="email" name="email" placeholder=" " required>
-                <label for="email">E-Mail</label>
-            </div>
-    
-            <div class="input-container">
-                <input type="password" id="password" name="password" placeholder=" " required>
-                <label for="password">Password</label>
-            </div>
-    
-            <div class="input-container">
-                <input type="tel" id="phone" name="phone" placeholder=" ">
-                <label for="phone">Phone</label>
-            </div>
-    
-            <label for="terms">
-                <input type="checkbox" id="terms" name="terms" required>
-                Agree to the terms and conditions
-            </label><br><br>
-    
-            <input type="submit" value="Create Account">
-        </form>
+        </div>
+        <div class="input-container">
+            <input type="tel" id="phone" name="phone" [(ngModel)]="userToAdd.phone" formControlName="phoneControl"
+                placeholder=" ">
+            <label for="phone">Phone</label>
+        </div>
+        <label for="terms">
+            <input type="checkbox" id="terms" name="terms" required>
+            Agree to the terms and conditions
+        </label><br><br>
+        <input type="submit" value="Create Account"[disabled]="!newUserForm.valid" (click)="newUser()">
+        <button type="button" routerLink="login">I Have Account</button>
+    </form>
 </div>
