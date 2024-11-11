@@ -4,6 +4,7 @@ export interface User{
     lastName:string;
     email:string;
     password:string;
-    // confirmPassword:string;
     phone:number;
+    level:string;
+    avatar:string;
 }

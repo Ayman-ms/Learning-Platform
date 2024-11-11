@@ -1,6 +1,6 @@
 ﻿namespace web_api.Models
 {
-    public class BlogPost
+    public class Courses
     {
         public int Id { get; set; }
         public string Title { get; set; }

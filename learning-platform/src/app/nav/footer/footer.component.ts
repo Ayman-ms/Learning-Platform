@@ -1,13 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { DarkModeService } from 'src/app/services/darkMode/dark-mode.service';
-
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent implements OnInit {
-  constructor(private darkModeService: DarkModeService) {}
+  constructor(private darkModeService: DarkModeService,
+              private translate: TranslateService) 
+  {
+    translate.setDefaultLang('en');
+  }
+  
 
   ngOnInit(): void {
     this.updateIcon();
@@ -34,4 +39,14 @@ export class FooterComponent implements OnInit {
       }
     }
   }
+  switchLanguage(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    const language = target?.value;
+  
+    if (language) {
+      this.translate.use(language);
+    }
+  }
+  
+
 }

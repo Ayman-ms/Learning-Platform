@@ -22,7 +22,7 @@ namespace web_api.Controllers
                 User? user = null;
                 if (File.Exists("Users.json"))
                 {
-                    userslist = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(@"E:\Angular\blogsystem\backend\web api\Users.json"));
+                    userslist = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(@"C:\Users\amslmani\OneDrive - Meta-Level Software AG\Desktop\Angular\Learning-Platform GUI\backend\json\Users.json"));
                 }
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
                 if (userslist.Count > 0)
@@ -41,7 +41,7 @@ namespace web_api.Controllers
                 MailMessage message = new MailMessage(from, to);
                 message.IsBodyHtml = true;
                 message.Subject = "Password forgot";
-                message.Body = File.ReadAllText(@"E:\Angular\blogsystem\backend\web api\email.html").Replace("{{userID}}", user.Id.ToString());
+                message.Body = File.ReadAllText(@"C:\Users\amslmani\OneDrive - Meta-Level Software AG\Desktop\Angular\Learning-Platform GUI\backend\web api\email.html").Replace("{{userID}}", user.Id.ToString());
               
 
                 SmtpClient client = new SmtpClient("smtp.strato.de", 25);
@@ -74,7 +74,7 @@ namespace web_api.Controllers
             User? user = null;
             if (File.Exists("Users.json"))
             {
-                userslist = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(@"E:\Angular\blogsystem\backend\web api\Users.json"));
+                userslist = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(@"C:\Users\amslmani\OneDrive - Meta-Level Software AG\Desktop\Angular\Learning-Platform GUI\backend\json\Users.json"));
             }
             if (userslist.Count > 0)
             {
@@ -90,7 +90,7 @@ namespace web_api.Controllers
             user.Password=Utils.sha256_hash(password);
 
 
-            File.WriteAllText(@"E:\Angular\blogsystem\backend\web api\Users.json", JsonSerializer.Serialize(userslist));
+            File.WriteAllText(@"C:\Users\amslmani\OneDrive - Meta-Level Software AG\Desktop\Angular\Learning-Platform GUI\backend\json\Users.json", JsonSerializer.Serialize(userslist));
 
 
 

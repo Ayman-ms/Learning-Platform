@@ -1,18 +1,28 @@
-<p>login works!</p>
 <div class="formContainer">
     <form action="/submit-login" method="post">
         <i class="bi bi-book me-2 logo "> Skill Wave</i>
-                        <div class="input-container">
-                <input type="email" id="email" name="email" placeholder=" " required>
-                <label for="email">E-Mail</label>
-            </div>
-    
-            <div class="input-container">
-                <input type="password" id="password" name="password" placeholder=" " required>
-                <label for="password">Password</label>
-            </div>
-            <button type="submit">Create Account</button>
+        <div class="input-container">
+            <input type="email" id="email" name="email" placeholder=" " required>
+            <label for="email">E-Mail</label>
+        </div>
+
+        <div class="input-container">
+            <input type="password" id="password" name="password" placeholder=" " required>
+            <label for="password">Password</label>
+        </div>
+        <div class="btn-submit">
+            <button type="submit" (click)="loginClick()">Login</button>
             <!-- <input type="submit" value="Create Account"> -->
             <button type="button" routerLink="/register">New With US</button>
-        </form>
+        </div>
+        <div class="text-center p-t-12">
+            <span class="txt">
+                Forgot
+            </span>
+            <a class="txt" routerLink="/forgot-password" data-bs-target="#reg-modal">
+                Username / Password?
+            </a>
+        </div>
+    </form>
 </div>
+

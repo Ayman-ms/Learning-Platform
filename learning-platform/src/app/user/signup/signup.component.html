@@ -1,6 +1,20 @@
-<div class="formContainer">
-    <form [formGroup]="newUserForm">
+<!-- <div class="formContainer">
+    <form [formGroup]="newUserForm" (ngSubmit)="onSubmit()"> 
         <i class="bi bi-book me-2 logo"> Skill Wave</i>
+        <div class="avatar-selection">
+            <label for="avatar">Select Avatar:</label>
+            <div class="avatars">
+                <div class="upload-avatar">
+                    <label for="fileInput">
+                        <i class="bi bi-person"></i>
+                    </label>
+                    <input type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;">
+                </div>
+            </div>
+            <div *ngIf="uploadedImage">***
+                <img [src]="uploadedImage" class="avatar-preview">
+            </div>***
+        </div>
         <div class="input-container">
             <input type="text" id="firstName" name="firstName" placeholder=" " required
                 [(ngModel)]="userToAdd.firstName" formControlName="firstNameControl">
@@ -38,7 +52,77 @@
             <input type="checkbox" id="terms" name="terms" required>
             Agree to the terms and conditions
         </label><br><br>
-        <input type="submit" value="Create Account"[disabled]="!newUserForm.valid" (click)="newUser()">
-        <button type="button" routerLink="login">I Have Account</button>
+        <button type="submit" [disabled]="!newUserForm.valid">Create Account</button> <!-- تعديل هنا -->
+        <!-- <button type="button" routerLink="/login">I Have Account</button>
     </form>
-</div>
+</div>  --> 
+
+<div class="formContainer">
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+        <i class="bi bi-book me-2 logo"> Skill Wave</i>
+  
+      <div class="input-container">
+        <input type="text" id="firstName" name="firstName" placeholder=" "  required formControlName="firstNameControl">
+        <label for="firstName">First Name</label>
+      </div>
+    
+      <div class="input-container">
+        <input type="text" id="lastName" name="lastName" placeholder=" " 
+            formControlName="lastNameControl" required>
+        <label for="lastName">Last Name</label>
+    </div>
+    <div class="input-container">
+        <input type="email" id="email" name="email" placeholder=" "
+            formControlName="emailControl" required>
+        <label for="email">E-Mail</label>
+    </div>
+    <div class="input-container">
+        <input type="password" id="password" name="password" placeholder=" "
+            formControlName="passwordControl" required>
+        <label for="password">Password</label>
+    </div>
+    <div class="input-container">
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder=" "
+           formControlName="confirmPasswordControl" required>
+        <label for="confirmPassword">Confirm Password</label>
+        <div *ngIf="registrationForm.get('confirmPasswordControl')?.errors?.['passwordMismatch']">
+            <small class="error">Passwords do not match</small>
+        </div>
+    </div>
+    <div class="input-container">
+        <input type="tel" id="phone" name="phone" formControlName="phoneControl"
+            placeholder=" ">
+        <label for="phone">Phone</label>
+    </div>
+    <!--  -->
+      <!-- رقم الهاتف -->
+      <!-- <div class="input-container">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" formControlName="phone"
+         placeholder="Enter your phone number" required>
+        <div *ngIf="registrationForm.get('phone')?.invalid && registrationForm.get('phone')?.touched">
+          <small class="error">Valid phone number is required.</small>
+        </div>
+      </div>
+   -->
+      <!-- كلمة المرور -->
+      <!-- <div class="input-container">
+        <label for="password">Password</label>
+        <input type="password" id="password" formControlName="password" placeholder="Enter your password" required>
+        <div *ngIf="registrationForm.get('password')?.invalid && registrationForm.get('password')?.touched">
+          <small class="error">Password must be at least 6 characters long and contain letters and numbers.</small>
+        </div>
+      </div> -->
+  
+      <!-- الصورة الشخصية -->
+      <div class="input-container">
+        <label for="avatar">Profile Picture</label>
+        <input type="file" id="avatar" (change)="onFileSelected($event)">
+      </div>
+  
+  
+      <!-- زر الإرسال -->
+      <button type="submit" [disabled]="registrationForm.invalid">Register</button>
+    </form>
+  </div>
+  

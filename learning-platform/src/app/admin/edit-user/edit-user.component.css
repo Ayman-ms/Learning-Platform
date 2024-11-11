@@ -1,0 +1,84 @@
+.infoContainer {
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+
+}
+
+.itemLine {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+}
+
+.itemLine input,
+select {
+    height: 3rem;
+    border: none;
+    flex: 1;
+    margin-bottom: 20px;
+}
+
+.itemLine button {
+    margin-top: 20px;
+    background-color: var(--blue-color);
+    color: var(--white-color);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+span{
+    color: var(--blue-color);
+    cursor: pointer;
+}
+
+
+
+
+
+
+/* ///////////// */
+.avatar-selection {
+    margin-top: 20px;
+}
+
+.avatars {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 50%;
+}
+
+.avatar.selected {
+    border-color: blue;
+}
+
+.upload-avatar {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.upload-avatar label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.avatar-preview {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-top: 10px;
+}

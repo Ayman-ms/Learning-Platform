@@ -1,0 +1,23 @@
+.infoContainer{
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    /* background-color: navajowhite; */
+    justify-content: center;
+
+}
+.row input, select{
+    height: 3rem;
+    border: none;
+    margin-bottom: 20px;
+}
+.row  button{
+    margin-top: 20px;
+    background-color: var(--blue-color);
+    color: var(--white-color);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
