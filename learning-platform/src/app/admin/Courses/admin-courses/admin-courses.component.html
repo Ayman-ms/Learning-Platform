@@ -1,0 +1,36 @@
+<div class="input-group mb-3">
+    <input type="text" class="form-control" [(ngModel)]="searchText" (input)="updateSearch()" placeholder="Search by First Name, Last Name, or Email">
+  </div>
+  <div class="cardContainer">
+    <div class="cards" *ngFor="let course of paginatedCourses">
+      <p-card class="card" header={{course.id}}>
+        <ng-template pTemplate="header">
+          <p><span>Course Name:</span> {{course.name}}</p>
+          <p><span>Category:</span> {{course.category}}</p>
+        </ng-template>
+        <ng-template pTemplate="body">
+          <p><span>Description:</span> {{course.description}}</p>
+          <button class="editBtn" [routerLink]="'/admin/edituser'" [queryParams]="{id: course.id}">
+            <i class="bi bi-pencil-square"></i> Edit
+          </button>
+        </ng-template>
+        <ng-template>
+          <p><span>Status:</span> {{course.status}}</p>
+        </ng-template>
+        <ng-template>
+          <p><span>Teacher</span> {{course.teacherID}}</p>
+        </ng-template>
+      </p-card>
+    </div>
+  </div> 
+  
+  <!-- Pagination Controls -->
+  <div class="pagination-controls">
+    <button (click)="previousPage()" [disabled]="currentPage === 1"> <i class="bi bi-arrow-left"></i>
+    </button>
+    <span>Page {{currentPage}}</span>
+    <button (click)="nextPage()" [disabled]="currentPage * itemsPerPage >= filteredCourses.length"> <i
+        class="bi bi-arrow-right"></i>
+    </button>
+  </div>
+  

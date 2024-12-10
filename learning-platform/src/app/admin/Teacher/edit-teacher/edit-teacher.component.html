@@ -1,0 +1,48 @@
+<p>edit-teacher works!</p>
+<div class="infoContainer">
+    <div [formGroup]="teacherForm" ngForm="userForm">
+        <div class="">
+            <div class="itemLine">
+                <label>First Name:</label>
+                <input [(ngModel)]="teacherToEdit.firstName" [disabled]="isFirstNameDisabled" [ngModelOptions]="{standalone: true}" placeholder="First Name"
+                    class="inputTool" required>
+                <span (click)="toggleFirstNameEdit()">Edit</span>
+            </div>
+            <div class="itemLine">
+                <label>Last Name: </label>
+                <input [(ngModel)]="teacherToEdit.lastName" [disabled]="isLastNameDisabled" [ngModelOptions]="{standalone: true}" placeholder="Last Name"
+                    class="inputTool" required>
+                <span (click)="toggleLastNameEdit()">Edit</span>
+            </div>
+            <div class="itemLine">
+                <label>Password: </label>
+                <input [disabled]="isPasswordDisabled" [(ngModel)]="teacherToEdit.password" [ngModelOptions]="{standalone: true}" type="password"
+                    placeholder="Password" class="inputTool" required>
+                <span (click)="togglePasswordEdit()">Edit</span>
+            </div>
+            <div class="itemLine">
+                <label>Email: </label>
+                <input [(ngModel)]="teacherToEdit.email" [disabled]="isEmailDisabled" [ngModelOptions]="{standalone: true}" placeholder="E-Mail"
+                    class="inputTool" required type="text">
+                <span (click)="toggleEmailEdit()">Edit</span>
+            </div>
+            <div class="itemLine">
+                <label>Phone: </label>
+                <input [(ngModel)]="teacherToEdit.phone" [disabled]="isPhoneDisabled" [ngModelOptions]="{standalone: true}" placeholder="phone"
+                    class="inputTool" required type="text">
+                <span (click)="togglePhoneEdit()">Edit</span>
+            </div>
+            <!-- <div class="itemLine">
+                <label>Level: </label>
+                <select [(ngModel)]="teacherToEdit.level" [ngModelOptions]="{standalone: true}" class="form-select"
+                    *ngIf="userIsAdmin" required>
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                </select>
+            </div> -->
+            <div class="itemLine">
+                <button class="saveButton" type="submit" (click)="updateClick()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,7 @@
-export interface Course{
+export interface Courses{
     id:number;
     name:string;
+    category:string;
     status:boolean;
     description:string;
     teacherID:number;

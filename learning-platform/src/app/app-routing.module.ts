@@ -11,6 +11,7 @@ import { UserMangerComponent } from './admin/user-manger/user-manger.component';
 import { EditUserComponent } from './admin/edit-user/edit-user.component';
 import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
 import { SetPasswordComponent } from './user/set-password/set-password.component';
+import { AdminCoursesComponent } from './admin/Courses/admin-courses/admin-courses.component';
 
 
 const routes: Routes = [
@@ -51,6 +52,10 @@ const routes: Routes = [
         {
           path:'edituser',
           component:EditUserComponent
+        },
+        {
+          path:'courses',
+          component: AdminCoursesComponent
         }
       ]
     },

@@ -1,0 +1,11 @@
+[
+  {
+    "Id": 1,
+    "FirstName": "firstname",
+    "LastName": "LastName",
+    "Password": "Password",
+    "Email": "email@emai.com",
+    "Phone": "01234567890",
+    "Avatar": "C:/Users/amslmani/OneDrive-Meta-Level-Software-AG/Desktop/Angular/Learning-Platform/GUI/learning-platform/src/assets/photo/Avatars/avatar4.png",
+  }
+]

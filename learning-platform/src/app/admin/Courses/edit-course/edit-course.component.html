@@ -1,0 +1,53 @@
+<div class="infoContainer">
+    <div [formGroup]="courseForm" ngForm="userForm">
+        <div class="">
+            <div class="itemLine">
+                <label>Name:</label>
+                <input [(ngModel)]="coursesToEdit.name" [disabled]="isNameDisabled" [ngModelOptions]="{standalone: true}" placeholder="Name"
+                    class="inputTool" required>
+                <span (click)="toggleNameEdit()">Edit</span>
+            </div>
+            <div class="itemLine">
+                <label>Category:</label>
+                <input [(ngModel)]="coursesToEdit.category" [disabled]="isCategoryDisabled" [ngModelOptions]="{standalone: true}" placeholder="Category"
+                    class="inputTool" required>
+                <span (click)="toggleCategoryEdit()">Edit</span>
+            </div>
+            <div class="itemLine">
+                <label>Description: </label>
+                <input [(ngModel)]="coursesToEdit.description" [disabled]="isDescriptionDisabled" [ngModelOptions]="{standalone: true}" placeholder="Description"
+                    class="inputTool" required>
+                <span (click)="toggleDescription()">Edit</span>
+            </div>
+            <div class="itemLine">
+                <label>Teacher ID: </label>
+                <input [disabled]="isTeacherIDDisabled" [(ngModel)]="coursesToEdit.teacherID" [ngModelOptions]="{standalone: true}" placeholder="Teacher ID"
+                class="inputTool" required>
+                <span (click)="toggleTeacherIDEdit()">Edit</span>
+            </div>
+            <div class="itemLine">
+                <label>Status: </label>
+                <input [(ngModel)]="coursesToEdit.status" [disabled]="isStatusDisabled" [ngModelOptions]="{standalone: true}" placeholder="Status"
+                    class="inputTool" required type="text">
+                <span (click)="toggleStatusEdit()">Edit</span>
+            </div>
+            <div class="itemLine">
+                <label>Time: </label>
+                <input [(ngModel)]="coursesToEdit.time" [disabled]="isTimeDisabled" [ngModelOptions]="{standalone: true}" placeholder="Time"
+                    class="inputTool" required type="text">
+                <span (click)="toggleTimeEdit()">Edit</span>
+            </div>
+            <!-- <div class="itemLine">
+                <label>Level: </label>
+                <select [(ngModel)]="coursesToEdit.level" [ngModelOptions]="{standalone: true}" class="form-select"
+                    *ngIf="userIsAdmin" required>
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                </select>
+            </div> -->
+            <div class="itemLine">
+                <button class="saveButton" type="submit" (click)="updateClick()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
