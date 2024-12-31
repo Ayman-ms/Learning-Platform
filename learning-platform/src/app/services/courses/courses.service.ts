@@ -1,31 +1,38 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Courses } from 'src/app/models/courses';
+import { Course } from 'src/app/models/courses'; 
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CoursesService {
+  private apiUrl = 'https://api.skillwave.com/courses'; // رابط الـ API الخاص بالكورسات
 
-  api = "https://localhost:44355/api/courses"
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
+  // جلب جميع الكورسات
+  getCourses(): Observable<Course[]> {
+    return this.http.get<Course[]>(this.apiUrl);
+  }
 
-  public createCourses(course: FormData): Observable<any> {
-    return this.http.post(this.api, course);
+  // إضافة كورس جديد
+  addCourse(course: Course): Observable<Course> {
+    return this.http.post<Course>(this.apiUrl, course);
   }
-  public updateCourses(course: Courses) {
-    return this.http.put<Courses>(this.api, course).toPromise();
+
+  // تحديث بيانات كورس
+  updateCourse(id: number, course: Course): Observable<Course> {
+    return this.http.put<Course>(`${this.apiUrl}/${id}`, course);
   }
-  public deleteCourses(id: number) {
-    return this.http.delete<number>(this.api, { params: { id: id } }).toPromise();
+
+  // حذف كورس
+  deleteCourse(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
-  public getCourse(course: Courses) {
-    return this.http.get<Array<Courses>>(this.api).toPromise();
-  }
-  // all Courses
-  public getCourses() {
-    return this.http.get<Courses[]>(this.api).toPromise();
+
+  // الحصول على كورس واحد
+  getCourseById(id: number): Observable<Course> {
+    return this.http.get<Course>(`${this.apiUrl}/${id}`);
   }
 }

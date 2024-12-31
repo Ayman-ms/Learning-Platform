@@ -1,0 +1,20 @@
+[
+  {
+    "Id": 1,
+    "Name": "Front End",
+    "Category": "Web Programming",
+    "Status": "true",
+    "Description": "HTNL & CSS3 & JS & Angular",
+    "TeacherID": "1",
+    "Time": 24
+  },
+  {
+    "Id": 2,
+    "Name": "Back End",
+    "Category": "Web Programming",
+    "Status": "true",
+    "Description": "HTNL & CSS3 & JS & Angular",
+    "TeacherID": "1",
+    "Time": 24
+  }
+]

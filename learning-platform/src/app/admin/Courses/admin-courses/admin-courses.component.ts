@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { Courses } from 'src/app/models/courses';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CoursesService } from 'src/app/services/courses/courses.service';
-import { SessionService } from 'src/app/services/session/session.service';
 
 @Component({
   selector: 'app-admin-courses',
@@ -9,54 +8,55 @@ import { SessionService } from 'src/app/services/session/session.service';
   styleUrls: ['./admin-courses.component.css']
 })
 export class AdminCoursesComponent {
-  
-  constructor(private coursesService: CoursesService, public accountService: SessionService) { }
-  CoursesList: Array<Courses> = [];
-  filteredCourses: Array<Courses> = [];
-  currentPage: number = 1;
-  itemsPerPage: number = 6;
-  paginatedCourses: Array<Courses> = [];
-  searchText: string = '';
+  courseForm: FormGroup;
+  selectedImage: File | null = null;
+  previewImage: string | null = null;
 
-  async ngOnInit() {
-    this.CoursesList = await this.coursesService.getCourses() || [];
-    this.filteredCourses = this.CoursesList;
-    this.updatePagination();
+  constructor(private fb: FormBuilder, private coursesService: CoursesService) {
+    this.courseForm = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      description: ['', Validators.required],
+      teacherID: ['', Validators.required],
+      image: [null]
+    });
   }
 
-  // تحديث النتائج بناءً على البحث
-  updateSearch() {
-    if (this.searchText) {
-      this.filteredCourses = this.CoursesList.filter(course =>
-        course.id ||
-        course.name.toLowerCase().includes(this.searchText.toLowerCase())
-      );
-    } else {
-      this.filteredCourses = this.CoursesList;
-    }
-    this.currentPage = 1; // إعادة تعيين الصفحة إلى الأولى عند البحث
-    this.updatePagination();
-  }
+  // معالجة اختيار الصورة
+  onImageSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedImage = file;
 
-  //start pagination
-  updatePagination(): void {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedCourses = this.filteredCourses.slice(startIndex, endIndex);
-  }
-
-  nextPage(): void {
-    if ((this.currentPage * this.itemsPerPage) < this.filteredCourses.length) {
-      this.currentPage++;
-      this.updatePagination();
+      // عرض الصورة في واجهة المستخدم قبل الرفع
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.previewImage = e.target.result;
+      };
+      reader.readAsDataURL(file);
     }
   }
 
-  previousPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updatePagination();
+  // رفع النموذج إلى الخادم
+  async onSubmit() {
+    if (this.courseForm.invalid || !this.selectedImage) {
+      alert('Please fill all fields and select an image.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('name', this.courseForm.value.name);
+    formData.append('description', this.courseForm.value.description);
+    formData.append('teacherID', this.courseForm.value.teacherID);
+    formData.append('image', this.selectedImage);
+
+    try {
+      await this.coursesService.addCourse(formData);
+      alert('Course added successfully!');
+      this.courseForm.reset();
+      this.previewImage = null;
+    } catch (error) {
+      console.error(error);
+      alert('Error while adding the course.');
     }
   }
-  //end pagination
 }

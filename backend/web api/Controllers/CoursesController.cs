@@ -1,84 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using web_api.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using SkillWaveAPI.Models;
 
-namespace web_api.Controllers
+public class CoursesController : DbContext
 {
-    [ApiController]
-    [Route("[controller]")]
+    public DbSet<Admin> Admins { get; set; }
+    public DbSet<MainCategory> MainCategories { get; set; }
+    public DbSet<SubCategory> SubCategories { get; set; }
+    public DbSet<Course> Courses { get; set; }
+    public DbSet<CourseCategory> CourseCategories { get; set; }
+    public DbSet<Student> Students { get; set; }
+    public DbSet<StudentCourse> StudentCourses { get; set; }
+    public DbSet<Teacher> Teachers { get; set; }
 
-    public class CoursesController
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        private readonly string _coursesFile = @"C:\Users\amslmani\OneDrive - Meta-Level Software AG\Desktop\Angular\Learning-Platform GUI\backend\json\Courses.json";
+        modelBuilder.Entity<CourseCategory>()
+            .HasKey(cc => new { cc.CourseID, cc.MainCategoryID, cc.SubCategoryID });
 
-
-        [HttpGet(Name = "GetAllCourses")]
-        public List<Courses> GetAllCourses()
-        {
-            List<Courses> courses = new List<Courses>();
-            if (File.Exists("Courses.json"))
-            {
-                courses = JsonSerializer.Deserialize<List<Courses>>(File.ReadAllText(_coursesFile));
-            }
-#pragma warning disable CS8603 // Possible null reference return.
-            return courses;
-        }
-
-        [HttpPost(Name = "CreateCourse")]
-        public int CreateBlogPost(Courses blogPost)
-        {
-            List<Courses> courses = new List<Courses>();
-            if (File.Exists("Courses.json"))
-            {
-                courses = JsonSerializer.Deserialize<List<Courses>>(File.ReadAllText(_coursesFile));
-            }
-            int id=1;
-#pragma warning disable CS8604 // Possible null reference argument.
-            if (courses.Count() > 0)
-            {
-                id= courses.Max((x)=>x.Id)+1;
-            }
-#pragma warning restore CS8604 // Possible null reference argument.
-            courses.Add(new Courses { Id=id,Title=blogPost.Title,Body=blogPost.Body});
-            File.WriteAllText(_coursesFile, JsonSerializer.Serialize(courses));
-            return id;
-        }
-        [HttpDelete(Name = "DeleteCourse")]
-        public bool DeleteCourse(int id, List<Courses>? courses)
-        {
-            List<Courses> course = new List<Courses>();
-            if (File.Exists("Courses.json"))
-            {
-                courses = JsonSerializer.Deserialize<List<Courses>>(File.ReadAllText(_coursesFile));
-            }
-
-            course.Remove(courses.Where((x) => x.Id == id).FirstOrDefault());
-            File.WriteAllText(_coursesFile, JsonSerializer.Serialize(courses));
-            return true;
-        }
-
-        
-
-        [HttpPut(Name = "UpdateCourses")]
-        public bool UpdateBlogPost(Courses course)
-        {
-            List<Courses> courses = new List<Courses>();
-            if (File.Exists("Courses.json"))
-            {
-                courses = JsonSerializer.Deserialize<List<Courses>>(File.ReadAllText(_coursesFile));
-            }
-#pragma warning disable CS8604 // Possible null reference argument.
-            if (courses.Count() > 0)
-            {
-                var blogPostToEdit = courses.Where((x) => x.Id == course.Id).First();
-                blogPostToEdit.Title = course.Title;
-                blogPostToEdit.Body = course.Body;
-                blogPostToEdit.Like = course.Like;
-                File.WriteAllText(_coursesFile, JsonSerializer.Serialize(courses));
-                return true;
-            }
-#pragma warning restore CS8604 // Possible null reference argument.
-            return false;
-        }
+        modelBuilder.Entity<StudentCourse>()
+            .HasKey(sc => new { sc.StudentID, sc.CourseID });
     }
 }

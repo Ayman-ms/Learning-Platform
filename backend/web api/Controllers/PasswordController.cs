@@ -1,100 +1,90 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Net.Mail;
-using System.Text.Json;
+﻿using Microsoft.AspNetCore.Mvc;
+//using web_api.Data;
 using web_api.Models;
+using System;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace web_api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class PasswordController
+    [Route("api/[controller]")]
+    public class PasswordController : ControllerBase
     {
-        [HttpGet(Name = "SendPasswordForget")]
-        public bool SendPasswordForget(string email)
+        private readonly SkillWaveDbContext _context;
+
+        public PasswordController(SkillWaveDbContext context)
         {
-
-            try
-            {
-                MailAddress from = new MailAddress("Ayman@thomaskaemmerling.de", "Blogpost Admin");
-                List<User> userslist = new List<User>();
-                User? user = null;
-                if (File.Exists("Users.json"))
-                {
-                    userslist = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(@"C:\Users\amslmani\OneDrive - Meta-Level Software AG\Desktop\Angular\Learning-Platform GUI\backend\json\Users.json"));
-                }
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-                if (userslist.Count > 0)
-                {
-                    user = userslist.FirstOrDefault((x) => x.Email == email);
-
-                }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
-
-                if (user == null)
-                {
-                    return false;
-                }
-
-                MailAddress to = new MailAddress(user.Email, user.FirstName);
-                MailMessage message = new MailMessage(from, to);
-                message.IsBodyHtml = true;
-                message.Subject = "Password forgot";
-                message.Body = File.ReadAllText(@"C:\Users\amslmani\OneDrive - Meta-Level Software AG\Desktop\Angular\Learning-Platform GUI\backend\web api\email.html").Replace("{{userID}}", user.Id.ToString());
-              
-
-                SmtpClient client = new SmtpClient("smtp.strato.de", 25);
-                client.UseDefaultCredentials = false;
-                client.Credentials = new NetworkCredential("Ayman@thomaskaemmerling.de", "Metalevel@Ayman");
-                client.EnableSsl = true;
-
-
-                client.Send(message);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-                return false;
-            }
-
+            _context = context;
         }
-        [HttpPost(Name = "ResetPassword")]
 
-        public bool ResetPassword(string email, string password, string passwordConf)
+        [HttpPost("ForgotPassword")]
+        public IActionResult ForgotPassword([FromBody] string email)
         {
-            if (password!=passwordConf)
+            var student = _context.Students.FirstOrDefault(s => s.Email == email);
+            if (student == null)
             {
-                return false;
-            }
-                        
-            List<User> userslist = new List<User>();
-            User? user = null;
-            if (File.Exists("Users.json"))
-            {
-                userslist = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(@"C:\Users\amslmani\OneDrive - Meta-Level Software AG\Desktop\Angular\Learning-Platform GUI\backend\json\Users.json"));
-            }
-            if (userslist.Count > 0)
-            {
-                user = userslist.FirstOrDefault((x) => x.Email == email);
-
+                return NotFound("Student not found.");
             }
 
-            if (user == null)
+            // Generate Reset Token
+            student.ResetToken = GenerateResetToken();
+            student.ResetTokenExpires = DateTime.UtcNow.AddHours(1); // Token valid for 1 hour
+
+            // Save changes
+            _context.SaveChanges();
+
+            // Normally, you would send the token via email to the user
+            // Example: EmailService.SendPasswordResetEmail(student.Email, student.ResetToken);
+
+            return Ok("Password reset token generated and sent.");
+        }
+
+        [HttpPost("ResetPassword")]
+        public IActionResult ResetPassword(string token, string newPassword)
+        {
+            var student = _context.Students.FirstOrDefault(s => s.ResetToken == token && s.ResetTokenExpires > DateTime.UtcNow);
+            if (student == null)
             {
-                return false;
+                return BadRequest("Invalid or expired token.");
             }
 
-            user.Password=Utils.sha256_hash(password);
+            // Reset the password
+            student.Password = HashPassword(newPassword); // Assuming you hash the password
+            student.ResetToken = null; // Clear the token
+            student.ResetTokenExpires = null; // Clear the token expiry
 
+            // Save changes
+            _context.SaveChanges();
 
-            File.WriteAllText(@"C:\Users\amslmani\OneDrive - Meta-Level Software AG\Desktop\Angular\Learning-Platform GUI\backend\json\Users.json", JsonSerializer.Serialize(userslist));
+            return Ok("Password has been reset successfully.");
+        }
 
+        // Helper method to generate a secure reset token
+        private string GenerateResetToken()
+        {
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                byte[] tokenData = new byte[32];
+                rng.GetBytes(tokenData);
+                return Convert.ToBase64String(tokenData);
+            }
+        }
 
-
-            return true;
+        // Helper method to hash passwords
+        private string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                foreach (var b in bytes)
+                {
+                    builder.Append(b.ToString("x2"));
+                }
+                return builder.ToString();
+            }
         }
     }
 }
