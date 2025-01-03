@@ -10,7 +10,7 @@ public class Course
     public Teacher Teacher { get; set; }
     public TimeSpan Time { get; set; }
     public DateTime CreatedAt { get; set; }
-    public string ImageBase64 { get; set; }
+    public string Avatar { get; set; }
     public ICollection<CourseCategory> CourseCategories { get; set; }
-    public ICollection<StudentCourse> StudentCourses { get; set; }
+    public ICollection<StudentCourses> StudentCourses { get; set; }
 }

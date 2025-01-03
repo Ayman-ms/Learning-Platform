@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 //using web_api.Data;
 using web_api.Models;
 
-namespace SkillWaveAPI.Controllers
+namespace web_api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

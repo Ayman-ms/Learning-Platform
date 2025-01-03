@@ -14,9 +14,8 @@ public class SkillWaveDbContext : DbContext
     public DbSet<Course> Courses { get; set; }
     public DbSet<CourseCategory> CourseCategories { get; set; }
     public DbSet<Student> Students { get; set; }
-    public DbSet<StudentCourse> StudentCourses { get; set; }
+    public DbSet<StudentCourses> StudentCourses { get; set; }
     public DbSet<Teacher> Teachers { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // تعريف العلاقة بين Course و CourseCategory
@@ -43,6 +42,16 @@ public class SkillWaveDbContext : DbContext
             .HasOne(sc => sc.MainCategory)
             .WithMany(mc => mc.SubCategories)
             .HasForeignKey(sc => sc.MainCategoryID);
+
+        modelBuilder.Entity<StudentCourses>()
+           .HasKey(sc => new { sc.StudentID, sc.CourseID });
+
+        // تكوين العلاقة واحد لواحد بين Course و Teacher
+        modelBuilder.Entity<Course>()
+            .HasOne(c => c.Teacher)
+            .WithOne(t => t.Course)
+            .HasForeignKey<Teacher>(t => t.CourseID)
+            .OnDelete(DeleteBehavior.SetNull);
 
         base.OnModelCreating(modelBuilder);
     }

@@ -1,23 +1,89 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SkillWaveAPI.Models;
+using System.IO;
 
-public class CoursesController : DbContext
+namespace SkillWaveAPI.Controllers
 {
-    public DbSet<Admin> Admins { get; set; }
-    public DbSet<MainCategory> MainCategories { get; set; }
-    public DbSet<SubCategory> SubCategories { get; set; }
-    public DbSet<Course> Courses { get; set; }
-    public DbSet<CourseCategory> CourseCategories { get; set; }
-    public DbSet<Student> Students { get; set; }
-    public DbSet<StudentCourse> StudentCourses { get; set; }
-    public DbSet<Teacher> Teachers { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class CoursesController : ControllerBase
     {
-        modelBuilder.Entity<CourseCategory>()
-            .HasKey(cc => new { cc.CourseID, cc.MainCategoryID, cc.SubCategoryID });
+        private readonly SkillWaveDbContext _context;
 
-        modelBuilder.Entity<StudentCourse>()
-            .HasKey(sc => new { sc.StudentID, sc.CourseID });
+        public CoursesController(SkillWaveDbContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet]
+        public IActionResult GetAllCourses()
+        {
+            var courses = _context.Courses
+                                  .Include(c => c.Teacher)
+                                  .ToList();
+            return Ok(courses);
+        }
+
+        [HttpPost]
+        public IActionResult CreateCourse([FromForm] Course course, IFormFile avatar)
+        {
+            if (avatar != null)
+            {
+                course.Avatar = ConvertImageToBase64(avatar);
+            }
+            if (course.TeacherID.HasValue)
+            {
+                course.Teacher = _context.Teachers.Find(course.TeacherID.Value);
+            }
+            _context.Courses.Add(course);
+            _context.SaveChanges();
+            return Ok(course);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateCourse(int id, [FromForm] Course updatedCourse, IFormFile avatar)
+        {
+            var course = _context.Courses.Include(c => c.Teacher).FirstOrDefault(c => c.CourseID == id);
+            if (course == null)
+                return NotFound();
+
+            course.Name = updatedCourse.Name;
+            course.Description = updatedCourse.Description;
+            course.TeacherID = updatedCourse.TeacherID;
+            if (updatedCourse.TeacherID.HasValue)
+            {
+                course.Teacher = _context.Teachers.Find(updatedCourse.TeacherID.Value);
+            }
+            if (avatar != null)
+            {
+                course.Avatar = ConvertImageToBase64(avatar);
+            }
+
+            _context.SaveChanges();
+            return Ok(course);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCourse(int id)
+        {
+            var course = _context.Courses.FirstOrDefault(c => c.CourseID == id);
+            if (course == null)
+                return NotFound();
+
+            _context.Courses.Remove(course);
+            _context.SaveChanges();
+            return Ok();
+        }
+
+        private string ConvertImageToBase64(IFormFile image)
+        {
+            using (var ms = new MemoryStream())
+            {
+                image.CopyTo(ms);
+                var fileBytes = ms.ToArray();
+                return Convert.ToBase64String(fileBytes);
+            }
+        }
     }
 }
