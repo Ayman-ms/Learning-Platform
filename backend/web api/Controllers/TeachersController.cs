@@ -22,6 +22,17 @@ namespace web_api.Controllers
             return Ok(teachers);
         }
 
+        // GET: api/Teacher/{id}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetTeacherById(int id)
+        {
+            var teacher = await _context.Teachers.FindAsync(id);
+            if (teacher == null)
+                return NotFound($"Admin with ID {id} not found.");
+
+            return Ok(teacher);
+        }
+
         [HttpPost]
         public IActionResult CreateTeacher([FromBody] Teacher teacher)
         {

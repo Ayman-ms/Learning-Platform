@@ -25,6 +25,17 @@ namespace SkillWaveAPI.Controllers
             return Ok(courses);
         }
 
+        // GET: api/Teacher/{id}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetTeacherById(int id)
+        {
+            var course = await _context.Courses.FindAsync(id);
+            if (course == null)
+                return NotFound($"Admin with ID {id} not found.");
+
+            return Ok(course);
+        }
+
         [HttpPost]
         public IActionResult CreateCourse([FromForm] Course course, IFormFile avatar)
         {
