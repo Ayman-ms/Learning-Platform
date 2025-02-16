@@ -16,7 +16,6 @@ export class UserInfoComponent implements OnInit {
   userToEdit: Student = {
     id: '', firstName: '', password: '', email: '', phone: '',
     lastName: '',
-    level: '',
     PhotoBase64: ''
   };
   userIsAdmin = false;
@@ -30,7 +29,7 @@ export class UserInfoComponent implements OnInit {
       Validators.required
     ]),
     email: new FormControl(this.userToEdit.email, [Validators.required, Validators.email]),
-    level: new FormControl(this.userToEdit.level)
+    // level: new FormControl(this.userToEdit.level)
   });
 
   constructor(
@@ -43,7 +42,7 @@ export class UserInfoComponent implements OnInit {
   ) {
     accountService.user.subscribe((u) => {
       this.userToEdit = u;
-      this.userIsAdmin = u && u.level !== 'user';
+      // this.userIsAdmin = u && u.level !== 'user';
       this.userLoggedIn = u && u.firstName !== 'anonymos';
     });
   }

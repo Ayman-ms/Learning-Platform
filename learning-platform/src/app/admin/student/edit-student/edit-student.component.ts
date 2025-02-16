@@ -16,7 +16,6 @@ export class EditStudentComponent implements OnInit {
   studentToEdit: Student = {
     id: '', firstName: '', password: '', email: '', phone: '',
     lastName: '',
-    level: '',
     PhotoBase64: ''
   };
   // input status
@@ -37,7 +36,7 @@ export class EditStudentComponent implements OnInit {
       Validators.required
     ]),
     email: new FormControl(this.studentToEdit.email, [Validators.required, Validators.email]),
-    level: new FormControl(this.studentToEdit.level)
+    // level: new FormControl(this.studentToEdit.level)
   });
 
   constructor(

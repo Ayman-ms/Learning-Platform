@@ -14,7 +14,7 @@ import { UserService } from 'src/app/services/users/user.service';
 })
 export class UpdateUserComponent {
   userToEdit: Student = {
-    id: '', firstName: '', lastName: '', password: '', email: '', phone:'', level: '',
+    id: '', firstName: '', lastName: '', password: '', email: '', phone:'',
     PhotoBase64: ''
   };
   userIsAdmin = false;
@@ -33,12 +33,12 @@ export class UpdateUserComponent {
     private userServic: UserService, public accountService: SessionService) {
     accountService.user.subscribe((u) => {
       this.userToEdit = u;
-      if (u && u.level != 'user') {
-        this.userIsAdmin = true;
-      }
-      else {
-        this.userIsAdmin = false;
-      }
+      // if (u && u.level != 'user') {
+      //   this.userIsAdmin = true;
+      // }
+      // else {
+      //   this.userIsAdmin = false;
+      // }
 
       if (u && u.firstName != 'anonymos') {
         this.userLoggedIn = true;

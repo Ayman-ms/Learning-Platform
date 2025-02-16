@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Student } from 'src/app/models/student';
@@ -11,19 +11,24 @@ export class StudentsService {
 
   constructor(private http: HttpClient) { }
 
-  public createStudent(student: FormData): Observable<any> {
-    return this.http.post(this.api, student);
+  registerStudent(formData: FormData) {
+    const headers = new HttpHeaders({
+      'enctype': 'multipart/form-data'
+    });
+
+    return this.http.post(`${this.api}register`, formData, { headers: headers });
   }
-  
+
+
   public async updateStudent(student: Student): Promise<boolean> {
     try {
-        const response = await this.http.put<Student>(`${this.api}${student.id}`, student).toPromise();
-        return response ? true : false;  
+      const response = await this.http.put<Student>(`${this.api}${student.id}`, student).toPromise();
+      return response ? true : false;
     } catch (error) {
-        console.error("Error updating student:", error);
-        return false;
+      console.error("Error updating student:", error);
+      return false;
     }
-}
+  }
 
   public deleteStudent(id: string): Promise<boolean> {
     return this.http.delete(`${this.api}${id}`)

@@ -78,6 +78,8 @@ li a {
 @media (min-width: 769px) and (max-width: 1024px) {
 
     .sidebar {
+        height: 100%;
+
         width: 0;
         position: fixed;
         z-index: 1;

@@ -13,7 +13,14 @@
         <div class="card student-card">
           <div class="card-body">
             <!-- عرض الصورة -->
-            <img [src]="getImageSource(student.PhotoBase64)" alt="Profile Picture" class="student-img" />
+            <img [src]="'data:image/png;base64,' + student.PhotoBase64" alt="Student Image">
+            <img
+            [src]="'data:image/jpeg;base64,' + student.PhotoBase64"
+            alt="Profile Picture"
+            class="student-img"
+            *ngIf="student.PhotoBase64"
+          />
+          
             <p><strong>First Name:</strong> {{ student.firstName }}</p>
             <p><strong>Last Name:</strong> {{ student.lastName }}</p>
             <p class="email">{{ student.email }}</p>

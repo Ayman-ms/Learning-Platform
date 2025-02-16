@@ -4,8 +4,7 @@ export interface Student {
   lastName: string;     // الاسم الأخير
   email: string;        // البريد الإلكتروني
   password: string;     // كلمة المرور
-  phone?: string;       // رقم الهاتف (اختياري)
-  level?: string;       // مستوى الطالب (اختياري)
+  phone?: string;       // رقم الهاتف (اختياري
   PhotoBase64?: string;
   createdAt?: Date;     // تاريخ الإنشاء
 }

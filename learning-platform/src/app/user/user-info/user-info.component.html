@@ -7,10 +7,6 @@
                 <input [(ngModel)]="userToEdit.password" [ngModelOptions]="{standalone: true}" type="password" placeholder="Password" class="inputTool" required>
                 <input [(ngModel)]="userToEdit.email" [ngModelOptions]="{standalone: true}" placeholder="E-Mail" class="inputTool" required type="text">
                 <input [(ngModel)]="userToEdit.phone" [ngModelOptions]="{standalone: true}" placeholder="phone" class="inputTool" required type="text">
-                <select [(ngModel)]="userToEdit.level" [ngModelOptions]="{standalone: true}" class="form-select" *ngIf="userIsAdmin" required>
-                    <option value="admin">Admin</option>
-                    <option value="user">User</option>
-                </select>
                 <button class="saveButton" type="submit" (click)="updateClick()">Save</button>
             </div>
         </div>

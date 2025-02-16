@@ -75,3 +75,27 @@ button{
 border-color:var(--blue-color); 
 outline: none;
 }
+img{
+  width: 50px;
+  margin-bottom: 10px;
+}
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  /* border: 2px solid #007bff; */
+  transition: transform 0.2s ease-in-out;
+}
+
+.profile-img:hover {
+  transform: scale(1.1);
+}

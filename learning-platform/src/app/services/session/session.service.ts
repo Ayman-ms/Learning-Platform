@@ -41,7 +41,6 @@ export class SessionService {
       password: '',
       email: '',
       phone: '',
-      level: '',
       PhotoBase64: ''
     };
     this.userSubject.next(u);
