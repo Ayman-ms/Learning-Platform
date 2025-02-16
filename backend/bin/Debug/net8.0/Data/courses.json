@@ -1,0 +1,21 @@
+[
+    {
+      "Id": "1",
+      "Name": "Introduction to Programming",
+      "Description": "Learn the basics of programming.",
+      "Status": "Active",
+      "Teacher": "John Doe",
+      "Time": "10:00 AM - 12:00 PM",
+      "Photo": "course1.jpg"
+    },
+    {
+      "Id": "2",
+      "Name": "Advanced Mathematics",
+      "Description": "Explore advanced mathematical concepts.",
+      "Status": "Active",
+      "Teacher": "Jane Smith",
+      "Time": "2:00 PM - 4:00 PM",
+      "Photo": "course2.jpg"
+    }
+  ]
+  

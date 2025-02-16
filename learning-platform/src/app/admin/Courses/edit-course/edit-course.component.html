@@ -8,12 +8,6 @@
                 <span (click)="toggleNameEdit()">Edit</span>
             </div>
             <div class="itemLine">
-                <label>Category:</label>
-                <input [(ngModel)]="coursesToEdit.category" [disabled]="isCategoryDisabled" [ngModelOptions]="{standalone: true}" placeholder="Category"
-                    class="inputTool" required>
-                <span (click)="toggleCategoryEdit()">Edit</span>
-            </div>
-            <div class="itemLine">
                 <label>Description: </label>
                 <input [(ngModel)]="coursesToEdit.description" [disabled]="isDescriptionDisabled" [ngModelOptions]="{standalone: true}" placeholder="Description"
                     class="inputTool" required>

@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, AbstractControl, FormControl } from
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'src/app/services/users/user.service';
-import { User } from 'src/app/models/users';
+import { Student } from 'src/app/models/student';
 import { AvatarService } from 'src/app/services/avatar/avatar.service';
 
 @Component({

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Message, MessageService } from 'primeng/api';
-import { User } from 'src/app/models/users';
+import { Student } from 'src/app/models/student';
 import { SessionService } from 'src/app/services/session/session.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { UserService } from 'src/app/services/users/user.service';import { PasswordService } from 'src/app/services/password/password.service';
@@ -12,7 +12,7 @@ import { UserService } from 'src/app/services/users/user.service';import { Passw
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  userToLogin: User = {} as User;
+  userToLogin: Student = {} as Student;
   msgs: Message[] = [];
   email: string = '';
   constructor(

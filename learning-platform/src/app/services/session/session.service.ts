@@ -2,29 +2,29 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from 'src/app/models/users';
+import { Student } from 'src/app/models/student';
 import { UserService } from '../users/user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
-  private userSubject: BehaviorSubject<User>;
-  public user: Observable<User>;
+  private userSubject: BehaviorSubject<Student>;
+  public user: Observable<Student>;
 
   constructor(
     private router: Router,
     private http: HttpClient,
     private userService: UserService) {
-    this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user') as any));
+    this.userSubject = new BehaviorSubject<Student>(JSON.parse(localStorage.getItem('user') as any));
     this.user = this.userSubject.asObservable();
   }
 
-  public get userValue(): User {
+  public get userValue(): Student {
     return this.userSubject.value;
   }
 
-  login(user: User) {
+  login(user: Student) {
     this.userSubject.next(user);
   }
 
@@ -34,23 +34,23 @@ export class SessionService {
 
   logout() {
     localStorage.removeItem('user');
-    const u: User = {
+    const u: Student = {
       firstName: 'anonymos',
       lastName: 'anonymos',
-      id: 0,
+      id: '',
       password: '',
       email: '',
-      phone: 0,
+      phone: '',
       level: '',
-      avatar: ''
+      PhotoBase64: ''
     };
     this.userSubject.next(u);
     this.router.navigate(['/']);
   }
 
    // new user
-   register(user: User) {
-    return this.http.post<User>('https://localhost:44355/User', user).toPromise();
+   register(user: Student) {
+    return this.http.post<Student>('https://localhost:44355/User', user).toPromise();
   }
 
   // all user
@@ -59,7 +59,7 @@ export class SessionService {
   }
 
   // get specific user
-  getById(id: User) {
+  getById(id: Student) {
     return this.userService.getUser(id);
   }
 }

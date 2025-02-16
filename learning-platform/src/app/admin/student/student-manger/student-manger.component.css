@@ -1,0 +1,112 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* ثلاثة أعمدة متساوية العرض */
+  gap: 20px; /* المسافة بين البطاقات */
+  padding: 20px;
+}
+
+.cards {
+  display: flex;
+  justify-content: center; 
+}
+
+.card {
+  width: 100%;
+  border: 1px solid #ddd; 
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-body {
+  padding: 16px; /* حواف داخلية للمحتوى */
+  text-align: center; /* توسيط النص */
+}
+.card p,
+.card span {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-all;
+  padding: 10px;
+}
+
+p span {
+  font-weight: 600;
+}
+
+.cardButton{
+  display: flex;
+  justify-content: space-around;
+}
+.editBtn, .deleteBtn {
+  background-color: var(--blue-color);
+  color: var(--white-color);
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.editBtn:hover {
+  background-color: #0056b3;
+}
+
+.deleteBtn {
+  background-color: var(--red-color);
+}
+
+.deleteBtn:hover {
+  background-color: #db0d1e;
+}
+
+
+/* start pagination */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.pagination-controls button {
+  margin: 0 10px;
+  padding: 5px 10px;
+  background-color: var(--blue-color);
+  color: var(--white-color);
+  border: none;
+  border-radius: 25%;
+}
+
+.pagination-controls :disabled{
+  display: none;
+}
+/* end pagination */
+
+.student-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  display: block;
+  margin: 10px auto;
+}
+/* تطبيق تغييرات للشاشات التي حجمها بين 769 بكسل و 1024 بكسل (أجهزة لوحية) */
+@media (min-width: 769px) and (max-width: 1024px) {
+
+  .container {
+  grid-template-columns: repeat(2, 1fr);
+}
+}
+
+/* تطبيق تغييرات للشاشات التي حجمها أقل من 768 بكسل (أجهزة محمولة) */
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: repeat(1, 1fr); /* ثلاثة أعمدة متساوية العرض */
+
+  }
+}
+
+
+

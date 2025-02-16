@@ -13,7 +13,7 @@ import { TeacherService } from 'src/app/services/teacher/teacher.service';
 })
 export class EditTeacherComponent {
   teacherToEdit: Teacher = {
-    id: 0, firstName: '', password: '', email: '', phone: 0,
+    id: 0, firstName: '', password: '', email: '', phone: '',
     lastName: '',
     avatar: ''
   };

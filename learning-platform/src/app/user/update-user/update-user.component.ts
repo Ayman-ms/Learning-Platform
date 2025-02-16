@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Message } from 'primeng/api';
-import { User } from 'src/app/models/users';
+import { Student } from 'src/app/models/student';
 import { SessionService } from 'src/app/services/session/session.service';
 import { UserService } from 'src/app/services/users/user.service';
 
@@ -13,13 +13,13 @@ import { UserService } from 'src/app/services/users/user.service';
   styleUrls: ['./update-user.component.css']
 })
 export class UpdateUserComponent {
-  userToEdit: User = {
-    id: 0, firstName: '', lastName: '', password: '', email: '', phone: 0, level: '',
-    avatar: ''
+  userToEdit: Student = {
+    id: '', firstName: '', lastName: '', password: '', email: '', phone:'', level: '',
+    PhotoBase64: ''
   };
   userIsAdmin = false;
   userLoggedIn = false;
-  userList?: Array<User>;
+  userList?: Array<Student>;
 
   userForm = new FormGroup({
     passwordControl: new FormControl(null,
@@ -51,7 +51,7 @@ export class UpdateUserComponent {
 
 
   ngOnInit(): void {
-    this.httpClient.get<Array<User>>('https://localhost:44355/User').subscribe((userListItems) => {
+    this.httpClient.get<Array<Student>>('https://localhost:44355/User').subscribe((userListItems) => {
       this.route.queryParams
         .subscribe(params => {
           console.log(params['id']);

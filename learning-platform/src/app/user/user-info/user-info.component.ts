@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/users/user.service';
-import { User } from 'src/app/models/users';
+import { Student } from 'src/app/models/student';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Message, MessageService } from 'primeng/api';
@@ -13,11 +13,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./user-info.component.css']
 })
 export class UserInfoComponent implements OnInit {
-  userToEdit: User = {
-    id: 0, firstName: '', password: '', email: '', phone: 0,
+  userToEdit: Student = {
+    id: '', firstName: '', password: '', email: '', phone: '',
     lastName: '',
     level: '',
-    avatar: ''
+    PhotoBase64: ''
   };
   userIsAdmin = false;
   userLoggedIn = false;
@@ -48,10 +48,10 @@ export class UserInfoComponent implements OnInit {
     });
   }
 
-  userList?: Array<User>;
+  userList?: Array<Student>;
 
   ngOnInit(): void {
-    this.httpClient.get<Array<User>>('https://localhost:44355/User').subscribe((userListItems) => {
+    this.httpClient.get<Array<Student>>('https://localhost:44355/User').subscribe((userListItems) => {
       this.route.queryParams.subscribe(params => {
         console.log(params['id']);
         for (let user of userListItems) {

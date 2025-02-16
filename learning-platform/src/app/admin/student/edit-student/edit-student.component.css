@@ -1,0 +1,48 @@
+.infoContainer {
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+
+}
+
+.itemLine {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+}
+
+.itemLine input,
+select {
+    height: 3rem;
+    border: none;
+    flex: 1;
+    margin-bottom: 20px;
+}
+
+.itemLine button {
+    margin-top: 20px;
+    background-color: var(--blue-color);
+    color: var(--white-color);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+span {
+    color: var(--blue-color);
+    cursor: pointer;
+}
+
+/* ///////////// */
+.student-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    display: block;
+    margin: 10px auto;
+}

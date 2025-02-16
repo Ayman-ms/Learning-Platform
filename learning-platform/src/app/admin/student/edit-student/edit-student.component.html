@@ -1,0 +1,46 @@
+<div class="infoContainer">
+    <div [formGroup]="studentForm" ngForm="studentForm">
+        <div class="">
+            <div class="itemLine">
+                <label for="">{{studentToEdit.firstName }} Profile</label>
+                <img [src]="getImageSource(studentToEdit.PhotoBase64)" alt="Profile Picture" class="student-img" />
+            </div>
+            <div class="itemLine">
+                <label>First Name:</label>
+                <input [(ngModel)]="studentToEdit.firstName" [disabled]="isFirstNameDisabled"
+                    [ngModelOptions]="{standalone: true}" placeholder="{{studentToEdit.firstName}}" class="inputTool"
+                    required>
+                <span (click)="toggleFirstNameEdit()">Edit</span>
+            </div>
+            <div class="itemLine">
+                <label>Last Name: </label>
+                <input [(ngModel)]="studentToEdit.lastName" [disabled]="isLastNameDisabled"
+                    [ngModelOptions]="{standalone: true}" placeholder="Last Name" class="inputTool" required>
+                <span (click)="toggleLastNameEdit()">Edit</span>
+            </div>
+            <div class="itemLine">
+                <label>Password: </label>
+                <input [disabled]="isPasswordDisabled" [(ngModel)]="studentToEdit.password"
+                    [ngModelOptions]="{standalone: true}" type="password" placeholder="Password" class="inputTool"
+                    required>
+                <span (click)="togglePasswordEdit()">Edit</span>
+            </div>
+            <div class="itemLine">
+                <label>Email: </label>
+                <input [(ngModel)]="studentToEdit.email" [disabled]="isEmailDisabled"
+                    [ngModelOptions]="{standalone: true}" placeholder="E-Mail" class="inputTool" required type="text">
+                <span (click)="toggleEmailEdit()">Edit</span>
+            </div>
+            <div class="itemLine">
+                <label>Phone: </label>
+                <input [(ngModel)]="studentToEdit.phone" [disabled]="isPhoneDisabled"
+                    [ngModelOptions]="{standalone: true}" placeholder="phone" class="inputTool" required type="text">
+                <span (click)="togglePhoneEdit()">Edit</span>
+            </div>
+
+            <div class="itemLine">
+                <button class="saveButton" type="submit" (click)="updateClick()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

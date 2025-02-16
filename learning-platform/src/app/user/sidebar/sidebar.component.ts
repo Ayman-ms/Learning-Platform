@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from 'src/app/models/users';
+import { Student } from 'src/app/models/student';
 import { SessionService } from 'src/app/services/session/session.service';
 import { UserService } from 'src/app/services/users/user.service';
 
@@ -11,9 +11,9 @@ import { UserService } from 'src/app/services/users/user.service';
   styleUrls: ['./sidebar.component.css']
 })
 export class UserSidebarComponent {
-  userToEdit: User = {
-    id: 0, firstName: '', lastName: '', password: '', email: '', phone: 0, level: '',
-    avatar: ''
+  userToEdit: Student = {
+    id: '', firstName: '', lastName: '', password: '', email: '', phone: '', level: '',
+    PhotoBase64: ''
   };
 
   constructor(public accountService: SessionService) {

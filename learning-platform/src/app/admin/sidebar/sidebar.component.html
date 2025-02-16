@@ -1,32 +1,35 @@
-<div class="userSidebar">
+<button class="open-btn" (click)="openNav()">☰</button>
+<div class="sidebar" [ngClass]="{'show': showSidebar}">
+
+  <a href="javascript:void(0)" class="close-btn" (click)="closeNav()">&times;</a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-            <a routerLink="users" class="nav-link " aria-current="page">
-                All Users
+            <a routerLink="students" class="nav-link " aria-current="page">
+                Students
             </a>
         </li>
         <li class="nav-item">
             <a routerLink="courses" class="nav-link " aria-current="page">
+                Teachers
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link " aria-current="page">
                 Courses
             </a>
         </li>
         <li class="nav-item">
             <a href="#" class="nav-link " aria-current="page">
-                Home
+                Main Category
             </a>
         </li>
         <li class="nav-item">
             <a href="#" class="nav-link " aria-current="page">
-                Home
+                Sub Category
             </a>
         </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link " aria-current="page">
-                Home
-            </a>
-        </li>
-        <li>
+        <!-- <li>
             <a href="#" class="nav-link">
                 Dashboard
             </a>
@@ -45,7 +48,7 @@
             <a href="#" class="nav-link">
                 Customers
             </a>
-        </li>
+        </li> -->
     </ul>
     <hr>
 </div>

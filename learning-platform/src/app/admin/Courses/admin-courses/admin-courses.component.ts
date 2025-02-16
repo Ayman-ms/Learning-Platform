@@ -11,6 +11,7 @@ export class AdminCoursesComponent {
   courseForm: FormGroup;
   selectedImage: File | null = null;
   previewImage: string | null = null;
+currentPage: any;
 
   constructor(private fb: FormBuilder, private coursesService: CoursesService) {
     this.courseForm = this.fb.group({
@@ -50,7 +51,7 @@ export class AdminCoursesComponent {
     formData.append('image', this.selectedImage);
 
     try {
-      await this.coursesService.addCourse(formData);
+      // await this.coursesService.addCourse(formData);
       alert('Course added successfully!');
       this.courseForm.reset();
       this.previewImage = null;

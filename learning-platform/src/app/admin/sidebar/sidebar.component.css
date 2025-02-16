@@ -1,10 +1,24 @@
 /* start sidebar */
-h3{
+.sidebar{
+    /* height: 100%; */
+    /* width: 0; */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    background-color: var(--logo-bg-color);
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-bottom:60px; padding-top: 60px;
+}
+.sidebar .close-btn{
+    display: none;
+}
+h3 {
     text-align: center;
 }
+
 ul {
     background-color: var(--logo-bg-color);
-    ;
     text-align: center;
 }
 
@@ -21,4 +35,91 @@ li a {
     align-items: center;
     color: var(--white-color);
 }
+
+.open-btn {
+    display: none;
+    font-size: 30px;
+    cursor: pointer;
+    background-color: var(--logo-bg-color);
+    color: white;
+    border: none;
+    padding: 10px;
+}
+
 /* end sidebar */
+
+/* تطبيق تغييرات للشاشات التي حجمها أقل من 768 بكسل (أجهزة محمولة) */
+@media (max-width: 768px) {
+    .sidebar {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: var(--logo-bg-color);
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+    .sidebar .close-btn {
+        position: absolute;
+        display: block;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+    }
+    /* الزر لفتح القائمة الجانبية */
+    .open-btn {
+        display: inline;
+    }
+    
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+
+    .sidebar {
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: var(--logo-bg-color);
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+    .sidebar .close-btn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        display: block;
+        font-size: 36px;
+    }
+    /* الزر لفتح القائمة الجانبية */
+    .open-btn {
+
+        display: inline;
+    }
+  }
+.sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 25px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    color: #f1f1f1;
+}
+
+.show {
+    width: 100%;
+}
+
+.content {
+    transition: margin-left 0.5s;
+    padding: 16px;
+
+}

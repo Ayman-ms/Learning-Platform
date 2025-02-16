@@ -1,0 +1,45 @@
+<div class="input-group mb-3">
+  <input type="text" class="form-control" [(ngModel)]="searchText" (input)="updateSearch()"
+    placeholder="Search by First Name, Last Name, or Email">
+</div>
+
+<!-- عرض العدد الإجمالي للطلاب -->
+<p>Total Students: {{filteredStudents.length}}</p>
+
+<div class="container">
+  <div *ngFor="let row of paginatedRows">
+    <div class="">
+      <div class="cards" *ngFor="let student of row">
+        <div class="card student-card">
+          <div class="card-body">
+            <!-- عرض الصورة -->
+            <img [src]="getImageSource(student.PhotoBase64)" alt="Profile Picture" class="student-img" />
+            <p><strong>First Name:</strong> {{ student.firstName }}</p>
+            <p><strong>Last Name:</strong> {{ student.lastName }}</p>
+            <p class="email">{{ student.email }}</p>
+            <p><strong>Phone Nr.:</strong> {{ student.phone }}</p>
+            <div class="cardButton">
+              <button class="btn editBtn" [routerLink]="'/admin/editstudent'" [queryParams]="{ id: student.id }">
+                <i class="bi bi-pencil-square"></i> Edit
+              </button>
+              <button class="btn  deleteBtn" (click)="deleteStudent(student.id)">
+                <i class="bi bi-trash3"></i>Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- عناصر التحكم في التصفح بين الصفحات -->
+<div *ngIf="filteredStudents.length > itemsPerPage" class="pagination-controls">
+  <button (click)="previousPage()" [disabled]="currentPage === 1">
+    <i class="bi bi-arrow-left"></i>
+  </button>
+  <span>Page {{currentPage}}</span>
+  <button (click)="nextPage()" [disabled]="currentPage * itemsPerPage >= filteredStudents.length">
+    <i class="bi bi-arrow-right"></i>
+  </button>
+</div>

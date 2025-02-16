@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -6,5 +6,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent {
+  
+  showSidebar: boolean = false;
 
+  openNav() {
+    this.showSidebar = true;
+  }
+
+  closeNav() {
+    this.showSidebar = false;
+  }
 }

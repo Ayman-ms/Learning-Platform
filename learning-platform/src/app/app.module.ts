@@ -29,14 +29,14 @@ import { MessagesModule } from 'primeng/messages';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { AdminControllComponent } from './admin/admin-controll/admin-controll.component';
-import { UserMangerComponent } from './admin/user-manger/user-manger.component';
-import { EditUserComponent } from './admin/edit-user/edit-user.component';
 import { ForgotPasswordComponent } from './user/forgot-password/forgot-password.component';
 import { SetPasswordComponent } from './user/set-password/set-password.component';
 import { AdminCoursesComponent } from './admin/Courses/admin-courses/admin-courses.component';
 import { EditCourseComponent } from './admin/Courses/edit-course/edit-course.component';
 import { AdminTeacherComponent } from './admin/Teacher/admin-teacher/admin-teacher.component';
 import { EditTeacherComponent } from './admin/Teacher/edit-teacher/edit-teacher.component';
+import { StudentMangerComponent } from './admin/student/student-manger/student-manger.component';
+import { EditStudentComponent } from './admin/student/edit-student/edit-student.component';
 
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -60,14 +60,14 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     UserSidebarComponent,
     UserInfoComponent,
     AdminControllComponent,
-    UserMangerComponent,
-    EditUserComponent,
     ForgotPasswordComponent,
     SetPasswordComponent,
     AdminCoursesComponent,
     EditCourseComponent,
     AdminTeacherComponent,
-    EditTeacherComponent
+    EditTeacherComponent,
+    StudentMangerComponent,
+    EditStudentComponent
   ],
   imports: [
     BrowserModule,
