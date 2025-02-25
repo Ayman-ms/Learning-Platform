@@ -12,6 +12,13 @@ import { SetPasswordComponent } from './user/set-password/set-password.component
 import { AdminCoursesComponent } from './admin/Courses/admin-courses/admin-courses.component';
 import { StudentMangerComponent } from './admin/student/student-manger/student-manger.component';
 import { EditStudentComponent } from './admin/student/edit-student/edit-student.component';
+import { AdminTeacherComponent } from './admin/Teacher/admin-teacher/admin-teacher.component';
+import { EditTeacherComponent } from './admin/Teacher/edit-teacher/edit-teacher.component';
+import { AddTeacherComponent } from './admin/Teacher/add-teacher/add-teacher.component';
+import { AdminMainCategoryComponent } from './admin/main-category/admin-main-category/admin-main-category.component';
+import { AddMainCategoryComponent } from './admin/main-category/add-main-category/add-main-category.component';
+import { AdminSubCategoryComponent } from './admin/sub-category/admin-sub-category/admin-sub-category.component';
+import { AddSubCategoryComponent } from './admin/sub-category/add-sub-category/add-sub-category.component';
 
 
 const routes: Routes = [
@@ -54,9 +61,37 @@ const routes: Routes = [
           component:EditStudentComponent
         },
         {
+          path:'teachers',
+          component: AdminTeacherComponent
+        },
+        {
           path:'courses',
           component: AdminCoursesComponent
-        }
+        },
+        {
+          path:'editteacher',
+          component:EditTeacherComponent
+        },
+        {
+          path:'addteacher',
+          component:AddTeacherComponent
+        },
+        {
+          path:'maincategory',
+          component:AdminMainCategoryComponent
+        },
+        {
+          path:'addmaincategory',
+          component:AddMainCategoryComponent
+        },
+        {
+          path:'subcategory',
+          component:AdminSubCategoryComponent
+        },
+        {
+          path:'addsubcategory',
+          component:AddSubCategoryComponent
+        },
       ]
     },
     {

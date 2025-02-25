@@ -12,8 +12,9 @@ import { UserService } from 'src/app/services/users/user.service';
 })
 export class UserSidebarComponent {
   userToEdit: Student = {
-    id: '', firstName: '', lastName: '', password: '', email: '', phone: '', 
-    PhotoBase64: ''
+    id: '', firstName: '', lastName: '', password: '', email: '', phone: '',
+    profileImage: '',
+    createdAt: ''
   };
 
   constructor(public accountService: SessionService) {

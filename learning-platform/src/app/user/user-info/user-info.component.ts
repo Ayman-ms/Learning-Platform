@@ -16,7 +16,8 @@ export class UserInfoComponent implements OnInit {
   userToEdit: Student = {
     id: '', firstName: '', password: '', email: '', phone: '',
     lastName: '',
-    PhotoBase64: ''
+    profileImage: '',
+    createdAt: ''
   };
   userIsAdmin = false;
   userLoggedIn = false;

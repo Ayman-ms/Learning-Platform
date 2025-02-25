@@ -3,6 +3,6 @@
     width: 10%;
 }
 
-.container{
+router-outlet{
     height: 100vh;
 }

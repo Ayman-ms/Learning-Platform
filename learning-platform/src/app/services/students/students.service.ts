@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Student } from 'src/app/models/student';
+import { MessageService } from 'primeng/api';
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,7 @@ import { Student } from 'src/app/models/student';
 export class StudentsService {
   api = "http://localhost:5270/api/Student/"
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private messageService: MessageService) { }
 
   registerStudent(formData: FormData) {
     const headers = new HttpHeaders({
@@ -30,12 +32,21 @@ export class StudentsService {
     }
   }
 
-  public deleteStudent(id: string): Promise<boolean> {
-    return this.http.delete(`${this.api}${id}`)
+  public async deleteStudent(id: string) {
+    let result = await this.http.delete(`${this.api}${id}`)
       .toPromise()
       .then(() => true)
       .catch(() => false);
+    if (result) {
+      this.messageService.clear();
+      this.messageService.add({ key: 'c', sticky: true, severity: 'error', summary: 'Are you sure?', detail: 'Confirm to proceed' });
+      
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something false!' });
+    }
   }
+
+
   public getStudent(student: Student) {
     return this.http.get<Array<Student>>(this.api).toPromise();
   }
@@ -43,4 +54,7 @@ export class StudentsService {
   public getStudents() {
     return this.http.get<Student[]>(this.api).toPromise();
   }
+
+
+
 }

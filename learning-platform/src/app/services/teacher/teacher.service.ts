@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { Teacher } from 'src/app/models/teacher';
 
@@ -7,23 +8,40 @@ import { Teacher } from 'src/app/models/teacher';
   providedIn: 'root'
 })
 export class TeacherService {
-  api = "https://localhost:44355/api/User"
+  api = "http://localhost:5270/api/Teacher"
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private messageService: MessageService) { }
 
-  public createTeacher(teacher: FormData): Observable<any> {
-    return this.http.post(this.api, teacher);
+  // public createTeacher(teacher: FormData): Observable<any> {
+  //   return this.http.post(this.api, teacher);
+  // }
+  registerTeacher(formData: FormData): Observable<any> {
+    return this.http.post(this.api, formData);
   }
+  
   public updateTeacher(teacher: Teacher) {
     return this.http.put<Teacher>(this.api, teacher).toPromise();
   }
-  public deleteTeacher(id: number) {
-    return this.http.delete<number>(this.api, { params: { id: id } }).toPromise();
+
+  public async deleteStudent(id: string) {
+
+    let result = await this.http.delete(`${this.api}${id}`)
+      .toPromise()
+      .then(() => true)
+      .catch(() => false);
+    if (result) {
+      this.messageService.clear();
+      this.messageService.add({ key: 'c', sticky: true, severity: 'error', summary: 'Are you sure?', detail: 'Confirm to proceed' });
+
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something false!' });
+    }
   }
+
   public getTeacher(teacher: Teacher) {
     return this.http.get<Array<Teacher>>(this.api).toPromise();
   }
-  // all Teacher
+
   public getTeachers() {
     return this.http.get<Teacher[]>(this.api).toPromise();
   }

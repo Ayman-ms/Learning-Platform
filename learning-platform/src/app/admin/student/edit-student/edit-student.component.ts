@@ -16,8 +16,10 @@ export class EditStudentComponent implements OnInit {
   studentToEdit: Student = {
     id: '', firstName: '', password: '', email: '', phone: '',
     lastName: '',
-    PhotoBase64: ''
+    profileImage: '',
+    createdAt: ''
   };
+
   // input status
   isFirstNameDisabled = true;
   isLastNameDisabled = true;
@@ -113,5 +115,18 @@ export class EditStudentComponent implements OnInit {
     }
 
     return `data:image/${imageFormat};base64,${photoBase64.trim()}`;
+  }
+
+  async deleteStudent(id:string){
+    let result = await this.studentsService.deleteStudent(id)
+    this.router.navigate(['/admin/students'])
+  }
+
+  getImagePath(imageFileName: string | undefined): string {
+    if (!imageFileName || imageFileName.trim() === '') {
+      console.warn("❌ لا توجد صورة، سيتم استخدام الصورة الافتراضية.");
+      return 'assets/default-profile.png'; // صورة افتراضية عند عدم وجود صورة
+    }
+    return `${imageFileName}`;
   }
 }

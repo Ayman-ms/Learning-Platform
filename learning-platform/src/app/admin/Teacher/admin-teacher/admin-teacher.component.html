@@ -1,31 +1,135 @@
-<div class="input-group mb-3">
-    <input type="text" class="form-control" [(ngModel)]="searchText" (input)="updateSearch()" placeholder="Search by First Name, Last Name, or Email">
-  </div>
-  
-  <div class="cardContainer">
-    <div class="cards" *ngFor="let teacher of paginatedTeachers">
-      <p-card class="card" header={{teacher.email}}>
-        <ng-template pTemplate="header">
-          <p><span>First Name:</span> {{teacher.firstName}}</p>
-          <p><span>Last Name:</span> {{teacher.lastName}}</p>
-        </ng-template>
-        <ng-template pTemplate="body">
-          <p><span>Phone Nr.:</span> {{teacher.phone}}</p>
-          <button class="editBtn" [routerLink]="'/admin/editteacher'" [queryParams]="{id: teacher.id}">
-            <i class="bi bi-pencil-square"></i> Edit
-          </button>
-        </ng-template>
-      </p-card>
+<!-- <div class="input-group mb-3">
+  <input type="text" class="form-control" [(ngModel)]="searchText" (input)="updateSearch()"
+    placeholder="Search by First Name, Last Name, or Email">
+</div>
+
+<p>Total Students: {{filteredTeachers.length}}</p>
+
+<div class="container">
+  <div *ngFor="let row of paginatedRows">
+    <div class="">
+      <div class="cards" *ngFor="let teacher of row">
+        <div class="card border-bottom-5">
+          <div class="card-body">
+            <img [src]="'data:image/png;base64,' + teacher.PhotoBase64" alt="Teacher Image">
+            <img
+            [src]="'data:image/jpeg;base64,' + teacher.PhotoBase64"
+            alt="Profile Picture"
+            class="student-img"
+            *ngIf="teacher.PhotoBase64"
+          />
+          
+            <p><strong>First Name:</strong> {{ teacher.firstName }}</p>
+            <p><strong>Last Name:</strong> {{ teacher.lastName }}</p>
+            <p class="email">{{ teacher.email }}</p>
+            <p><strong>Phone Nr.:</strong> {{ teacher.phone }}</p>
+            <div class="cardButton">
+              <button class="btn editBtn" [routerLink]="'/admin/editteacher'" [queryParams]="{ id: teacher.id }">
+                <i class="bi bi-pencil-square"></i> Edit
+              </button>
+              <button class="btn  deleteBtn">
+                <i class="bi bi-trash3"></i>Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div> 
-  
-  <!-- Pagination Controls -->
-  <div class="pagination-controls">
-    <button (click)="previousPage()" [disabled]="currentPage === 1"> <i class="bi bi-arrow-left"></i>
-    </button>
-    <span>Page {{currentPage}}</span>
-    <button (click)="nextPage()" [disabled]="currentPage * itemsPerPage >= filteredTeachers.length"> <i
-        class="bi bi-arrow-right"></i>
-    </button>
   </div>
-  
+</div> 
+ -->
+
+ <div class="input-group mb-3">
+  <input type="text" class="form-control" [(ngModel)]="searchText" (input)="updateSearch()"
+    placeholder="Search by First Name, Last Name, or Email">
+</div>
+<!-- زر إضافة مدرس جديد -->
+<button class="btn btn-primary mb-3" (click)="toggleAddTeacherForm()">
+  <i class="bi bi-plus-circle"></i> Add New
+</button>
+<!-- عرض العدد الإجمالي للطلاب -->
+<p>Total Students: {{ filteredTeachers.length }}</p>
+
+<!-- الشبكة التي تحتوي على البطاقات -->
+<div class="container">
+  <div class="card" *ngFor="let teacher of TeachersList">
+    <div class="card-body">
+      <img [src]="'data:image/jpeg;base64,' + teacher.PhotoBase64" alt="Profile Picture" class="student-img"
+        *ngIf="teacher.PhotoBase64" />
+
+      <p><strong>First Name:</strong> {{ teacher.firstName }}</p>
+      <p><strong>Last Name:</strong> {{ teacher.lastName }}</p>
+      <p class="email"><strong>Email:</strong> {{ teacher.email }}</p>
+      <p><strong>Phone Nr.:</strong> {{ teacher.phone }}</p>
+
+      <div class="cardButton">
+        <button class="btn editBtn" [routerLink]="'/admin/editteacher'" [queryParams]="{ id: teacher.id }">
+          <i class="bi bi-pencil-square"></i> Edit
+        </button>
+        <button class="btn deleteBtn">
+          <i class="bi bi-trash3"></i> Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- عناصر التحكم في التصفح بين الصفحات -->
+<div *ngIf="filteredTeachers.length > itemsPerPage" class="pagination-controls">
+  <button (click)="previousPage()" [disabled]="currentPage === 1">
+    <i class="bi bi-arrow-left"></i>
+  </button>
+  <span>Page {{ currentPage }}</span>
+  <button (click)="nextPage()" [disabled]="currentPage * itemsPerPage >= filteredTeachers.length">
+    <i class="bi bi-arrow-right"></i>
+  </button>
+</div>
+
+<!-- الفورم كنافذة منبثقة -->
+<div *ngIf="showAddTeacherForm" [formGroup]="registrationForm"  class="overlay">
+  <div class="popup">
+    <h3>Add New Teacher</h3>
+    <div class="">
+      <!-- الصورة الشخصية القابلة للنقر -->
+      <!-- <i class="bi bi-person"></i> -->
+      <img [src]="selectedImage || './assets/person.svg'" alt="Profile Picture" class="profile-img" (click)="triggerFileInput()">
+
+      <!-- حقل اختيار الصورة (مخفي) -->
+      <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" hidden>
+
+    </div> 
+    <div class="form-group">
+      <label>First Name:</label>
+      <input type="text" class="form-control"  formControlName="firstNameControl" >
+    </div>
+
+    <div class="form-group">
+      <label>Last Name:</label>
+      <input type="text" class="form-control" formControlName="lastNameControl">
+    </div>
+
+    <div class="form-group">
+      <label>Email:</label>
+      <input type="email" class="form-control" formControlName="emailControl" >
+    </div>
+
+    <div class="form-group">
+      <label>Password:</label>
+      <input type="text" class="form-control" formControlName="passwordControl" >
+    </div>
+
+    <div class="form-group">
+      <label>Phone Number:</label>
+      <input type="text" class="form-control" formControlName="phoneControl">
+    </div>
+    <!-- أزرار الحفظ والإلغاء -->
+    <div class="popup-buttons">
+      <button class="btn btn-success" [disabled]="registrationForm.invalid" (click)="addTeacher()">
+        <i class="bi bi-check-circle"></i> Save
+      </button>
+      <button class="btn btn-danger" (click)="toggleAddTeacherForm()">
+        <i class="bi bi-x-circle"></i> Cancel
+      </button>
+    </div>
+  </div>
+</div>

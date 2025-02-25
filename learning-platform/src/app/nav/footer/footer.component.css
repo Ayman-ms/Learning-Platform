@@ -14,3 +14,13 @@
     background: none;
     background-color: transparent;    
   }
+  footer {
+    position: relative; /* تأكد أن الفوتر لا يكون ثابتًا */
+    z-index: 1; /* أقل من `sidebar` */
+    background-color: #f8f9fa;
+    text-align: center;
+    padding: 20px;
+    bottom: 0;
+    width: 100%;
+  }
+  

@@ -41,7 +41,8 @@ export class SessionService {
       password: '',
       email: '',
       phone: '',
-      PhotoBase64: ''
+      profileImage: '',
+      createdAt: ''
     };
     this.userSubject.next(u);
     this.router.navigate(['/']);

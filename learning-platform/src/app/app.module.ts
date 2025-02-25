@@ -37,6 +37,11 @@ import { AdminTeacherComponent } from './admin/Teacher/admin-teacher/admin-teach
 import { EditTeacherComponent } from './admin/Teacher/edit-teacher/edit-teacher.component';
 import { StudentMangerComponent } from './admin/student/student-manger/student-manger.component';
 import { EditStudentComponent } from './admin/student/edit-student/edit-student.component';
+import { AddTeacherComponent } from './admin/Teacher/add-teacher/add-teacher.component';
+import { AddSubCategoryComponent } from './admin/sub-category/add-sub-category/add-sub-category.component';
+import { AdminSubCategoryComponent } from './admin/sub-category/admin-sub-category/admin-sub-category.component';
+import { AdminMainCategoryComponent } from './admin/main-category/admin-main-category/admin-main-category.component';
+import { AddMainCategoryComponent } from './admin/main-category/add-main-category/add-main-category.component';
 
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -67,7 +72,12 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AdminTeacherComponent,
     EditTeacherComponent,
     StudentMangerComponent,
-    EditStudentComponent
+    EditStudentComponent,
+    AddTeacherComponent,
+    AddSubCategoryComponent,
+    AdminSubCategoryComponent,
+    AdminMainCategoryComponent,
+    AddMainCategoryComponent
   ],
   imports: [
     BrowserModule,

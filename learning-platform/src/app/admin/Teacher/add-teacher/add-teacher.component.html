@@ -1,0 +1,48 @@
+<div class="formContainer">
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+      <i class="bi bi-book me-2 logo"> Skill Wave</i>
+  
+      <!-- الصورة الشخصية -->
+      <div class="">
+        <img [src]="selectedImage || './assets/person.svg'" alt="Profile Picture" class="profile-img" (click)="triggerFileInput()">
+        <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" hidden>
+      </div> 
+  
+      <div class="input-container">
+        <input type="text" id="firstName" name="firstName" placeholder=" " required formControlName="firstNameControl">
+        <label for="firstName">First Name</label>
+      </div>
+  
+      <div class="input-container">
+        <input type="text" id="lastName" name="lastName" placeholder=" " formControlName="lastNameControl" required>
+        <label for="lastName">Last Name</label>
+      </div>
+  
+      <div class="input-container">
+        <input type="email" id="email" name="email" placeholder=" " formControlName="emailControl" required>
+        <label for="email">E-Mail</label>
+      </div>
+  
+      <div class="input-container">
+        <input type="password" id="password" name="password" placeholder=" " formControlName="passwordControl" required>
+        <label for="password">Password</label>
+      </div>
+  
+      <div class="input-container">
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder=" " formControlName="confirmPasswordControl" required>
+        <label for="confirmPassword">Confirm Password</label>
+        <div *ngIf="registrationForm.get('confirmPasswordControl')?.errors?.['passwordMismatch']">
+          <small class="error">Passwords do not match</small>
+        </div>
+      </div>
+  
+      <div class="input-container">
+        <input type="tel" id="phone" name="phone" formControlName="phoneControl" placeholder=" " required>
+        <label for="phone">Phone</label>
+      </div>
+  
+      <!-- زر الإرسال -->
+      <button type="submit" [disabled]="registrationForm.invalid">Register</button>
+    </form>
+  </div>
+  

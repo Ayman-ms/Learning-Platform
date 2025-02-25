@@ -1,9 +1,10 @@
 .infoContainer {
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-
+  align-items: center;
+  border: 1px solid #ddd;
+  justify-content: center;
+  margin-bottom: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .itemLine {
@@ -22,7 +23,6 @@ select {
 
 .itemLine button {
     margin-top: 20px;
-    background-color: var(--blue-color);
     color: var(--white-color);
     padding: 10px 20px;
     border: none;
@@ -31,10 +31,29 @@ select {
     font-size: 16px;
 }
 
+.saveBtn{
+    background-color: var(--blue-color);
+  }
+  .saveBtn:hover {
+    background-color: #0056b3;
+  }
+.deleteBtn {
+    background-color: var(--red-color);
+  }
+  
+  .deleteBtn:hover {
+    background-color: #db0d1e;
+  }
+
+.cancelBtn {
+    background-color: #929292;
+}
+
 span {
     color: var(--blue-color);
     cursor: pointer;
 }
+
 
 /* ///////////// */
 .student-img {

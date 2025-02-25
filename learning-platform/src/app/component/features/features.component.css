@@ -1,5 +1,6 @@
+
 .featuresSection {
-    display: -ms-flexbox;
+    /* display: -ms-flexbox; */
     display: flex;
     background: #FFF;
     padding-left: 100px;

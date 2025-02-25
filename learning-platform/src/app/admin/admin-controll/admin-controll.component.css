@@ -4,4 +4,5 @@
 .mangeSide{
 justify-content: center;
 margin-top: 20px;
+min-height: 40vh;
 }

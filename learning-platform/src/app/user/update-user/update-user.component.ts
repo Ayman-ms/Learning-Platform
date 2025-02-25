@@ -14,8 +14,9 @@ import { UserService } from 'src/app/services/users/user.service';
 })
 export class UpdateUserComponent {
   userToEdit: Student = {
-    id: '', firstName: '', lastName: '', password: '', email: '', phone:'',
-    PhotoBase64: ''
+    id: '', firstName: '', lastName: '', password: '', email: '', phone: '',
+    profileImage: '',
+    createdAt: ''
   };
   userIsAdmin = false;
   userLoggedIn = false;

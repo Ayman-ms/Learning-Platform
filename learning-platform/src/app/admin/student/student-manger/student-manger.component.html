@@ -10,17 +10,9 @@
   <div *ngFor="let row of paginatedRows">
     <div class="">
       <div class="cards" *ngFor="let student of row">
-        <div class="card student-card">
+        <div class="card border-bottom-5">
           <div class="card-body">
-            <!-- عرض الصورة -->
-            <img [src]="'data:image/png;base64,' + student.PhotoBase64" alt="Student Image">
-            <img
-            [src]="'data:image/jpeg;base64,' + student.PhotoBase64"
-            alt="Profile Picture"
-            class="student-img"
-            *ngIf="student.PhotoBase64"
-          />
-          
+            <img [src]="getImagePath(student.profileImage)" alt="Profile Picture" class="student-img"/>
             <p><strong>First Name:</strong> {{ student.firstName }}</p>
             <p><strong>Last Name:</strong> {{ student.lastName }}</p>
             <p class="email">{{ student.email }}</p>
