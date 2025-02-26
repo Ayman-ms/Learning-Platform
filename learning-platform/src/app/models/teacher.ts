@@ -5,8 +5,8 @@ export interface Teacher {
     password: string;     // كلمة المرور
     email: string;        // البريد الإلكتروني
 
-    phone?: string;       // رقم الهاتف (اختياري)
-    PhotoBase64?: string;      // الصورة الشخصية (رابط الصورة أو بياناتها)
+    phone: string;       // رقم الهاتف (اختياري)
+    profileImage: string;      // الصورة الشخصية (رابط الصورة أو بياناتها)
    
   }
   

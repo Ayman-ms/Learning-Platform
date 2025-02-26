@@ -1,4 +1,4 @@
 export interface SubCategory {
-    id: number;          // معرف التصنيف الرئيسي
-    name: string;        // اسم التصنيف
+    id: string;          // معرف التصنيف الرئيسي
+    description: string;        // اسم التصنيف
   }

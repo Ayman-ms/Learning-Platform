@@ -1,0 +1,27 @@
+.add-category-container{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.add-category-container input{
+    width: 70%;
+}
+
+.btn{
+    background-color: var(--blue-color);
+    color: var(--white-color);
+    padding: 5px 10px;
+    margin-right: 10px;
+}
+.deleteBtn{
+    background-color: var(--red-color);
+}
+
+.cards{
+    margin-bottom: 10px;
+}
+
+.cardButton{
+    margin-top: 10px;
+}

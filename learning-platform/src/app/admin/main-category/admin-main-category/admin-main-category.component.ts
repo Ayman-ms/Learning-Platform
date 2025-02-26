@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MainCategory } from 'src/app/models/mainCategory';
 import { MainCategoryService } from 'src/app/services/mainCategory/mainCategory.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-admin-main-category',
@@ -8,35 +9,77 @@ import { MainCategoryService } from 'src/app/services/mainCategory/mainCategory.
   styleUrls: ['./admin-main-category.component.css']
 })
 export class AdminMainCategoryComponent implements OnInit {
-  mainCategoryList: Array<MainCategory> = [];
-  userLoggedIn = false;
-  filteredMainCategory: Array<MainCategory> = [];
+  mainCategoryList: MainCategory[] = [];
+  filteredMainCategory: MainCategory[] = [];
+  paginatedRows: MainCategory[][] = [];
   currentPage: number = 1;
   itemsPerPage: number = 9;
-  paginatedStudents: Array<MainCategory> = [];
-  searchText: string = '';
-  paginatedRows: Array<Array<MainCategory>> = [];
-  mainCategories: MainCategory = { id: 0, name: '' };
+  displayAsTable: boolean = true;
+  editMode: { [key: string]: boolean } = {};
+  newCategory: MainCategory = { id: '', description: '' }; // كائن لإضافة تصنيف جديد
 
-constructor(private mainCategoryService: MainCategoryService){}
+  constructor(private mainCategoryService: MainCategoryService, private messageService: MessageService) {}
 
-async ngOnInit() {
-    this.mainCategoryList = await this.mainCategoryService.getMainCategories() || [];
-    this.filteredMainCategory = this.mainCategoryList;
-  
-    console.log("📌 الطلاب المستلمون من API:", this.mainCategoryList);
-  
+  async ngOnInit() {
+    this.mainCategoryList = (await this.mainCategoryService.getMainCategories()) ?? [];
+    this.filteredMainCategory = [...this.mainCategoryList];
     this.updatePagination();
   }
 
-  updatePagination(): void {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedStudents = this.filteredMainCategory.slice(startIndex, endIndex);
+  switchView() {
+    this.displayAsTable = !this.displayAsTable;
+  }
 
+  enableEditMode(category: MainCategory) {
+    this.editMode[category.id] = true;
+  }
+
+  disableEditMode(category: MainCategory) {
+    this.editMode[category.id] = false;
+  }
+
+  async saveCategory(category: MainCategory) {
+    let result = await this.mainCategoryService.updateCategory(category.id, category.description);
+    if (result) {
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Category updated' });
+      this.editMode[category.id] = false;
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update category' });
+    }
+  }
+  
+
+  async deleteCategory(id: string) {
+    let result = await this.mainCategoryService.deleteCategory(id);
+    if (result) {
+      this.mainCategoryList = this.mainCategoryList.filter(c => c.id !== id);
+      this.updatePagination();
+    }
+  }
+
+  async addNewCategory() {
+    try {
+      const newCategory: MainCategory = { id: this.generateId(), description: this.newCategory.description };
+      const addedCategory = await this.mainCategoryService.addMainCategory(newCategory);
+      
+      this.mainCategoryList.push(addedCategory); // ✅ أضف التصنيف للقائمة
+      this.updatePagination(); // ✅ حدّث القائمة
+      this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Category added' });
+    } catch (error) {
+      console.error("❌ Error adding category:", error);
+      alert("Failed to add category");
+    }
+  }
+  
+  generateId(): string {
+    return Math.random().toString(36).substr(2, 9); // ✅ إنشاء ID عشوائي
+  }
+  
+
+  updatePagination(): void {
     this.paginatedRows = [];
-    for (let i = 0; i < this.paginatedStudents.length; i += 3) {
-      this.paginatedRows.push(this.paginatedStudents.slice(i, i + 3));
+    for (let i = 0; i < this.mainCategoryList.length; i += 3) {
+      this.paginatedRows.push(this.mainCategoryList.slice(i, i + 3));
     }
   }
 }

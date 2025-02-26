@@ -16,10 +16,7 @@ import { AdminTeacherComponent } from './admin/Teacher/admin-teacher/admin-teach
 import { EditTeacherComponent } from './admin/Teacher/edit-teacher/edit-teacher.component';
 import { AddTeacherComponent } from './admin/Teacher/add-teacher/add-teacher.component';
 import { AdminMainCategoryComponent } from './admin/main-category/admin-main-category/admin-main-category.component';
-import { AddMainCategoryComponent } from './admin/main-category/add-main-category/add-main-category.component';
 import { AdminSubCategoryComponent } from './admin/sub-category/admin-sub-category/admin-sub-category.component';
-import { AddSubCategoryComponent } from './admin/sub-category/add-sub-category/add-sub-category.component';
-
 
 const routes: Routes = [
     {
@@ -81,16 +78,8 @@ const routes: Routes = [
           component:AdminMainCategoryComponent
         },
         {
-          path:'addmaincategory',
-          component:AddMainCategoryComponent
-        },
-        {
           path:'subcategory',
           component:AdminSubCategoryComponent
-        },
-        {
-          path:'addsubcategory',
-          component:AddSubCategoryComponent
         },
       ]
     },

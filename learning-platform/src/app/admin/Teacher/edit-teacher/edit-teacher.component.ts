@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
+import { firstValueFrom } from 'rxjs';
 import { Teacher } from 'src/app/models/teacher';
 import { TeacherService } from 'src/app/services/teacher/teacher.service';
 
@@ -15,7 +16,7 @@ export class EditTeacherComponent {
   teacherToEdit: Teacher = {
     id: '', firstName: '', password: '', email: '', phone: '',
     lastName: '',
-    PhotoBase64: ''
+    profileImage: ''
   };
 
   // input status
@@ -101,17 +102,34 @@ export class EditTeacherComponent {
     this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Teacher edited' });
   }
 
+
+  teacherToEditFormData(): FormData {
+    const formData = new FormData();
+    formData.append('firstName', this.teacherToEdit.firstName);
+      formData.append('lastName', this.teacherToEdit.lastName);
+      formData.append('phone', this.teacherToEdit.phone);
+      formData.append('email', this.teacherToEdit.email);
+    return formData;
+}
+ 
+
   async updateClick() {
-    let result = await this.teacherService.updateTeacher(this.teacherToEdit);
-    if (result) {
-      this.messageService.add({ severity: 'success', summary: 'Success..', detail: 'Teacher edited' });
-      this.router.navigateByUrl('admin');
-      this.router.navigateByUrl('');
-    } else {
-      console.log('Edit not successful');
-      alert("Edit not successful");
+    try {
+        let formData = this.teacherToEditFormData();
+        let result = await firstValueFrom(this.teacherService.updateTeacher(this.teacherToEdit.id, formData));
+        if (result) {
+            this.messageService.add({ severity: 'success', summary: 'Success..', detail: 'Teacher edited' });
+            this.router.navigateByUrl('admin');
+            this.router.navigateByUrl('');
+        } else {
+            console.log('Edit not successful');
+            alert("Edit not successful");
+        }
+    } catch (error) {
+        console.error("❌ Error updating teacher:", error);
+        alert("Error updating teacher. Please try again later.");
     }
-  }
+}
 
   deleteTeacher(id:string){
 

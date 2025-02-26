@@ -52,10 +52,10 @@
 
 <!-- الشبكة التي تحتوي على البطاقات -->
 <div class="container">
-  <div class="card" *ngFor="let teacher of TeachersList">
+  <div class="card" *ngFor="let teacher of teachersList">
     <div class="card-body">
-      <img [src]="'data:image/jpeg;base64,' + teacher.PhotoBase64" alt="Profile Picture" class="student-img"
-        *ngIf="teacher.PhotoBase64" />
+      <img [src]="getImagePath(teacher.profileImage)" alt="Profile Picture" class="student-img"/>
+
 
       <p><strong>First Name:</strong> {{ teacher.firstName }}</p>
       <p><strong>Last Name:</strong> {{ teacher.lastName }}</p>
@@ -75,7 +75,7 @@
 </div>
 
 <!-- عناصر التحكم في التصفح بين الصفحات -->
-<div *ngIf="filteredTeachers.length > itemsPerPage" class="pagination-controls">
+<!-- <div *ngIf="filteredTeachers.length > itemsPerPage" class="pagination-controls">
   <button (click)="previousPage()" [disabled]="currentPage === 1">
     <i class="bi bi-arrow-left"></i>
   </button>
@@ -83,7 +83,7 @@
   <button (click)="nextPage()" [disabled]="currentPage * itemsPerPage >= filteredTeachers.length">
     <i class="bi bi-arrow-right"></i>
   </button>
-</div>
+</div> -->
 
 <!-- الفورم كنافذة منبثقة -->
 <div *ngIf="showAddTeacherForm" [formGroup]="registrationForm"  class="overlay">
@@ -92,7 +92,7 @@
     <div class="">
       <!-- الصورة الشخصية القابلة للنقر -->
       <!-- <i class="bi bi-person"></i> -->
-      <img [src]="selectedImage || './assets/person.svg'" alt="Profile Picture" class="profile-img" (click)="triggerFileInput()">
+      <img [src]="selectedImage || './assets/default-profile.png'" alt="Profile Picture" class="profile-img" (click)="triggerFileInput()">
 
       <!-- حقل اختيار الصورة (مخفي) -->
       <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" hidden>

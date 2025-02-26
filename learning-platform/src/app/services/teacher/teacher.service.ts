@@ -1,6 +1,5 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MessageService } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { Teacher } from 'src/app/models/teacher';
 
@@ -8,41 +7,23 @@ import { Teacher } from 'src/app/models/teacher';
   providedIn: 'root'
 })
 export class TeacherService {
-  api = "http://localhost:5270/api/Teacher"
+  private api = "http://localhost:5270/api/Teacher";
 
-  constructor(private http: HttpClient, private messageService: MessageService) { }
+  constructor(private http: HttpClient) {}
 
-  // public createTeacher(teacher: FormData): Observable<any> {
-  //   return this.http.post(this.api, teacher);
-  // }
-  registerTeacher(formData: FormData): Observable<any> {
-    return this.http.post(this.api, formData);
-  }
-  
-  public updateTeacher(teacher: Teacher) {
-    return this.http.put<Teacher>(this.api, teacher).toPromise();
+  registerTeacher(formData: FormData): Observable<Teacher> {
+    return this.http.post<Teacher>(`${this.api}/register`, formData);
   }
 
-  public async deleteStudent(id: string) {
-
-    let result = await this.http.delete(`${this.api}${id}`)
-      .toPromise()
-      .then(() => true)
-      .catch(() => false);
-    if (result) {
-      this.messageService.clear();
-      this.messageService.add({ key: 'c', sticky: true, severity: 'error', summary: 'Are you sure?', detail: 'Confirm to proceed' });
-
-    } else {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something false!' });
-    }
+  getTeachers(): Observable<Teacher[]> {
+    return this.http.get<Teacher[]>(this.api);
   }
 
-  public getTeacher(teacher: Teacher) {
-    return this.http.get<Array<Teacher>>(this.api).toPromise();
+  updateTeacher(id: string, formData: FormData): Observable<Teacher> {
+    return this.http.put<Teacher>(`${this.api}/${id}`, formData);
   }
 
-  public getTeachers() {
-    return this.http.get<Teacher[]>(this.api).toPromise();
+  deleteTeacher(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.api}/${id}`);
   }
 }

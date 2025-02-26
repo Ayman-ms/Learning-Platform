@@ -38,11 +38,8 @@ import { EditTeacherComponent } from './admin/Teacher/edit-teacher/edit-teacher.
 import { StudentMangerComponent } from './admin/student/student-manger/student-manger.component';
 import { EditStudentComponent } from './admin/student/edit-student/edit-student.component';
 import { AddTeacherComponent } from './admin/Teacher/add-teacher/add-teacher.component';
-import { AddSubCategoryComponent } from './admin/sub-category/add-sub-category/add-sub-category.component';
 import { AdminSubCategoryComponent } from './admin/sub-category/admin-sub-category/admin-sub-category.component';
 import { AdminMainCategoryComponent } from './admin/main-category/admin-main-category/admin-main-category.component';
-import { AddMainCategoryComponent } from './admin/main-category/add-main-category/add-main-category.component';
-
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -74,10 +71,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     StudentMangerComponent,
     EditStudentComponent,
     AddTeacherComponent,
-    AddSubCategoryComponent,
     AdminSubCategoryComponent,
-    AdminMainCategoryComponent,
-    AddMainCategoryComponent
+    AdminMainCategoryComponent
   ],
   imports: [
     BrowserModule,
