@@ -4,13 +4,12 @@ import { Router } from '@angular/router';
 import { Teacher } from 'src/app/models/teacher';
 import { TeacherService } from 'src/app/services/teacher/teacher.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 
 @Component({
   selector: 'app-admin-teacher',
   templateUrl: './admin-teacher.component.html',
   styleUrls: ['./admin-teacher.component.css'],
-  providers: [ConfirmationService, MessageService] // لإظهار رسائل الحذف والتأكيد
+  providers: [ConfirmationService, MessageService]
 })
 export class AdminTeacherComponent implements OnInit {
   teachersList: Teacher[] = [];
@@ -20,6 +19,9 @@ export class AdminTeacherComponent implements OnInit {
   itemsPerPage: number = 9;
   showAddTeacherForm: boolean = false;
   
+  paginatedTeachers: Array<Teacher> = [];
+  paginatedRows: Array<Array<Teacher>> = [];
+  
   registrationForm: FormGroup;
   selectedImage: string | ArrayBuffer | null = null;
   photoBase64: string = '';
@@ -27,8 +29,6 @@ export class AdminTeacherComponent implements OnInit {
   constructor(
     private teacherService: TeacherService,
     private fb: FormBuilder,
-    private router: Router,
-    private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {
     this.registrationForm = this.fb.group({
@@ -91,47 +91,54 @@ export class AdminTeacherComponent implements OnInit {
       fileInput.click();
     }
   }
-  
-  addTeacher() {
-    // if (this.registrationForm.valid) {
-    //   const teacherData = this.registrationForm.value;
-    //   teacherData.photoBase64 = this.photoBase64;
-
-    //   this.teacherService.registerTeacher(teacherData).subscribe(
-    //     () => {
-    //       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Teacher added successfully!' });
-    //       this.toggleAddTeacherForm();
-    //       this.loadTeachers();
-    //     },
-    //     error => {
-    //       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add teacher.' });
-    //       console.error('Error:', error);
-    //     }
-    //   );
-    // }
-  }
-
-  confirmDeleteTeacher(teacherId: string) {
-    this.confirmationService.confirm({
-      message: 'Are you sure you want to delete this teacher?',
-      accept: () => {
-        this.teacherService.deleteTeacher(teacherId).subscribe(() => {
-          this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'Teacher deleted successfully.' });
-          this.loadTeachers();
-        }, error => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete teacher.' });
-          console.error('Error:', error);
-        });
-      }
-    });
-  }
+   
   getImagePath(imageFileName: string | undefined): string {
     if (!imageFileName || imageFileName.trim() === '') {
-      console.warn("❌ لا توجد صورة، سيتم استخدام الصورة الافتراضية.");
-      return 'assets/default-profile.png'; // صورة افتراضية عند عدم وجود صورة
-    }
-  
-    return `${imageFileName}`; // تعديل المسار حسب مجلد الصور على السيرفر
+      return 'assets/default-profile.png';
+    }  
+    return `${imageFileName}`;
   }
   
+  async deleteUserClick(id: string | undefined) {
+    if (!id) {
+      console.error("❌ Teacher ID is undefined, cannot delete.");
+      return;
+    }  
+    let result = await this.teacherService.deleteTeacher(id);
+
+    if (result) {
+      this.loadTeachers();
+      this.messageService.clear();
+      this.messageService.add({ key: 'c', sticky: true, severity: 'error', summary: 'Are you sure?', detail: 'Confirm to proceed' });
+      window.location.reload()
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete teacher.' });
+    }
+  }
+
+
+  updatePagination(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedTeachers = this.filteredTeachers.slice(startIndex, endIndex);
+
+    this.paginatedRows = [];
+    for (let i = 0; i < this.paginatedTeachers.length; i += 3) {
+      this.paginatedRows.push(this.paginatedTeachers.slice(i, i + 3));
+    }
+  }
+
+  nextPage(): void {
+    if ((this.currentPage * this.itemsPerPage) < this.filteredTeachers.length) {
+      this.currentPage++;
+      this.updatePagination();
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagination();
+    }
+  }
 }

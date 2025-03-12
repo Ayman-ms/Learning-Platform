@@ -1,48 +1,54 @@
 <div class="formContainer">
-    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
-      <i class="bi bi-book me-2 logo"> Skill Wave</i>
-  
-      <!-- الصورة الشخصية -->
-      <div class="">
-        <img [src]="selectedImage || './assets/person.svg'" alt="Profile Picture" class="profile-img" (click)="triggerFileInput()">
-        <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" hidden>
-      </div> 
-  
-      <div class="input-container">
-        <input type="text" id="firstName" name="firstName" placeholder=" " required formControlName="firstNameControl">
-        <label for="firstName">First Name</label>
-      </div>
-  
-      <div class="input-container">
-        <input type="text" id="lastName" name="lastName" placeholder=" " formControlName="lastNameControl" required>
-        <label for="lastName">Last Name</label>
-      </div>
-  
-      <div class="input-container">
-        <input type="email" id="email" name="email" placeholder=" " formControlName="emailControl" required>
-        <label for="email">E-Mail</label>
-      </div>
-  
-      <div class="input-container">
-        <input type="password" id="password" name="password" placeholder=" " formControlName="passwordControl" required>
-        <label for="password">Password</label>
-      </div>
-  
-      <div class="input-container">
-        <input type="password" id="confirmPassword" name="confirmPassword" placeholder=" " formControlName="confirmPasswordControl" required>
-        <label for="confirmPassword">Confirm Password</label>
-        <div *ngIf="registrationForm.get('confirmPasswordControl')?.errors?.['passwordMismatch']">
-          <small class="error">Passwords do not match</small>
-        </div>
-      </div>
-  
-      <div class="input-container">
-        <input type="tel" id="phone" name="phone" formControlName="phoneControl" placeholder=" " required>
-        <label for="phone">Phone</label>
-      </div>
-  
-      <!-- زر الإرسال -->
-      <button type="submit" [disabled]="registrationForm.invalid">Register</button>
-    </form>
-  </div>
-  
+  <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+    <h2 class="logo"><i class="bi bi-book me-2"></i> Skill Wave - Register a new teacher</h2>
+
+    <!-- Success and error messages -->
+    <div *ngIf="successMessage" class="alert alert-success mb-3">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger mb-3">
+      {{ errorMessage }}
+    </div>
+
+    <div class="text-center mb-4">
+      <img [src]="selectedImage || './assets/person.svg'" alt="Profile Picture" class="profile-img" (click)="triggerFileInput()">
+      <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" hidden>
+      <small class="text-muted d-block mt-2">Click on the image to upload a profile picture.</small>
+    </div> 
+
+    <div class="input-container">
+      <input type="text" id="firstName" placeholder=" " formControlName="firstName">
+      <label for="firstName">First Name</label>
+      <small class="text-danger" *ngIf="getFieldError('firstName')">{{ getFieldError('firstName') }}</small>
+    </div>
+
+    <div class="input-container">
+      <input type="text" id="lastName" placeholder=" " formControlName="lastName">
+      <label for="lastName">Last Name</label>
+      <small class="text-danger" *ngIf="getFieldError('lastName')">{{ getFieldError('lastName') }}</small>
+    </div>
+
+    <div class="input-container">
+      <input type="email" id="email" placeholder=" " formControlName="email">
+      <label for="email">E-mail</label>
+      <small class="text-danger" *ngIf="getFieldError('email')">{{ getFieldError('email') }}</small>
+    </div>
+
+    <div class="input-container">
+      <input type="password" id="password" placeholder=" " formControlName="password">
+      <label for="password">Password</label>
+      <small class="text-danger" *ngIf="getFieldError('password')">{{ getFieldError('password') }}</small>
+    </div>
+
+    <div class="input-container">
+      <input type="tel" id="phone" placeholder=" " formControlName="phone">
+      <label for="phone">Phone</label>
+      <small class="text-danger" *ngIf="getFieldError('phone')">{{ getFieldError('phone') }}</small>
+    </div>
+
+    <button type="submit" [disabled]="loading">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+      {{ loading ? 'Registering now...' : 'Done' }}
+    </button>
+  </form>
+</div>

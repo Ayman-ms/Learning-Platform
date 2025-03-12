@@ -124,8 +124,7 @@ export class EditStudentComponent implements OnInit {
 
   getImagePath(imageFileName: string | undefined): string {
     if (!imageFileName || imageFileName.trim() === '') {
-      console.warn("❌ لا توجد صورة، سيتم استخدام الصورة الافتراضية.");
-      return 'assets/default-profile.png'; // صورة افتراضية عند عدم وجود صورة
+      return 'assets/default-profile.png';
     }
     return `${imageFileName}`;
   }

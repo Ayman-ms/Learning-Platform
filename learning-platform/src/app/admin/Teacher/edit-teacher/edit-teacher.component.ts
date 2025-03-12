@@ -1,137 +1,170 @@
-import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, Message } from 'primeng/api';
-import { firstValueFrom } from 'rxjs';
-import { Teacher } from 'src/app/models/teacher';
-import { TeacherService } from 'src/app/services/teacher/teacher.service';
+import { TeacherService } from 'src/app/services/teacher/teacher.service'; 
+import { Teacher } from 'src/app/models/teacher'; 
+import { catchError, finalize, of } from 'rxjs';
 
 @Component({
-  selector: 'app-edit-teacher',
+  selector: 'app-teacher-edit',
   templateUrl: './edit-teacher.component.html',
   styleUrls: ['./edit-teacher.component.css']
 })
-export class EditTeacherComponent {
-  teacherToEdit: Teacher = {
-    id: '', firstName: '', password: '', email: '', phone: '',
-    lastName: '',
-    profileImage: ''
-  };
-
-  // input status
-  isFirstNameDisabled = true;
-  isLastNameDisabled = true;
-  isPasswordDisabled = true;
-  isEmailDisabled = true;
-  isPhoneDisabled = true;
-
-  // teacher
-  teacherIsAdmin = false;
-  teacherLoggedIn = false;
-  teacherForm = new FormGroup({
-    firstName: new FormControl(this.teacherToEdit.firstName, Validators.required),
-    lastName: new FormControl(this.teacherToEdit.lastName, Validators.required),
-    password: new FormControl(this.teacherToEdit.password, [
-      Validators.minLength(6),
-      Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$"),
-      Validators.required
-    ]),
-    email: new FormControl(this.teacherToEdit.email, [Validators.required, Validators.email])
-  });
-
+export class TeacherEditComponent implements OnInit {
+  teacherForm!: FormGroup;
+  teacherId!: string;
+  isLoading = false;
+  isSubmitting = false;
+  errorMessage = '';
+  selectedFile: File | null = null;
+  imagePreview: string | null = null;
+  
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private httpClient: HttpClient,
+    private fb: FormBuilder,
     private teacherService: TeacherService,
-    private messageService: MessageService
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
-  teacherList?: Array<Teacher>;
-
   ngOnInit(): void {
-    this.httpClient.get<Array<Teacher>>('http://localhost:5270/api/Teacher').subscribe((teacherListItems) => {
-      this.route.queryParams.subscribe(params => {
-        console.log(params['id']);
-        for (let teacher of teacherListItems) {
-          if (teacher.id == params['id']) {
-            this.teacherToEdit = teacher;
-            this.teacherForm.patchValue(teacher);
-            break;
+    // إنشاء نموذج التعديل
+    this.teacherForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', Validators.required],
+      // Password غير مطلوب عند التعديل
+      password: ['', [Validators.required, Validators.minLength(6), Validators.pattern("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$")]],
+    });
+
+    // استخراج معرف المدرس من عنوان URL
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      this.teacherId = idParam;
+      this.loadTeacherData();
+    } else {
+      this.errorMessage = 'معرف المدرس غير موجود';
+    }
+  }
+
+  // تحميل بيانات المدرس الحالية
+  loadTeacherData(): void {
+    this.isLoading = true;
+    this.teacherService.getTeacher(this.teacherId)
+      .pipe(
+        catchError(error => {
+          this.errorMessage = 'حدث خطأ أثناء تحميل بيانات المدرس';
+          console.error('Error loading teacher:', error);
+          return of(null);
+        }),
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
+      .subscribe(teacher => {
+        if (teacher) {
+          // تعبئة النموذج بالبيانات الحالية
+          this.teacherForm.patchValue({
+            firstName: teacher.firstName,
+            lastName: teacher.lastName,
+            email: teacher.email,
+            phone: teacher.phone
+            // لا نقوم بتعبئة كلمة المرور لأسباب أمنية
+          });
+          
+          if (teacher.profileImage) {
+            this.imagePreview = teacher.profileImage;
           }
         }
       });
+  }
+
+  // معالجة تحديد الصورة
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+      
+      // عرض معاينة الصورة
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result as string;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  // التحقق من وجود أخطاء في حقل معين
+  hasError(controlName: string, errorName: string): boolean {
+    const control = this.teacherForm.get(controlName);
+    return !!control && control.hasError(errorName) && (control.touched || control.dirty);
+  }
+
+  // إرسال النموذج
+// تعديل جزء onSubmit فقط من المكون
+onSubmit(): void {
+  if (this.teacherForm.invalid) {
+    // تحديد جميع الحقول كـ touched لإظهار أخطاء التحقق
+    Object.keys(this.teacherForm.controls).forEach(key => {
+      const control = this.teacherForm.get(key);
+      control?.markAsTouched();
     });
+    return;
+  }
+
+  this.isSubmitting = true;
+  
+  // إنشاء FormData لإرسال البيانات والملف
+  const formData = new FormData();
+  
+  // إضافة جميع البيانات من النموذج - حتى إذا لم تتغير
+  // API الخلفي سيتعامل مع القيم الفارغة
+  const formValue = this.teacherForm.value;
+  
+  // بدل الاعتماد على حالة dirty فقط، سنرسل جميع الحقول
+  // تذكر أن الخادم الخلفي يتعامل مع هذا باستخدام Null Coalescing في C#
+  formData.append('FirstName', formValue.firstName || '');
+  formData.append('LastName', formValue.lastName || '');
+  formData.append('Email', formValue.email || '');
+  formData.append('Phone', formValue.phone || '');
+  
+  // إضافة كلمة المرور فقط إذا تم إدخالها
+  if (formValue.password) {
+    formData.append('Password', formValue.password);
   }
   
-  getImageSource(photoBase64: string | undefined): string {
-    if (!photoBase64 || photoBase64.trim() === '' || photoBase64 === 'undefined' || photoBase64 === 'null') {
-      console.warn("❌ PhotoBase64 غير موجودة!");
-      return 'assets/default-profile.png'; // صورة افتراضية
-    }
-
-    // التحقق من نوع الصورة
-    let imageFormat = "jpeg"; // الافتراضي
-    if (photoBase64.startsWith("iVBORw0KGgo")) {
-      imageFormat = "png"; // صورة بصيغة PNG
-    }
-
-    return `data:image/${imageFormat};base64,${photoBase64.trim()}`;
+  // إضافة الصورة إذا تم تحديدها
+  if (this.selectedFile) {
+    formData.append('imageFile', this.selectedFile);
   }
 
-  // toggle input status
-  toggleFirstNameEdit() {
-    this.isFirstNameDisabled = !this.isFirstNameDisabled;
+  // قم بطباعة قيم FormData للتصحيح
+  console.log('Sending FormData:');
+  for (const pair of (formData as any).entries()) {
+    console.log(pair[0] + ': ' + pair[1]);
   }
-  toggleLastNameEdit() {
-    this.isLastNameDisabled = !this.isLastNameDisabled;
-  }
-  togglePasswordEdit() {
-    this.isPasswordDisabled = !this.isPasswordDisabled;
-  }
-  toggleEmailEdit() {
-    this.isEmailDisabled = !this.isEmailDisabled;
-  }
-  togglePhoneEdit() {
-    this.isPhoneDisabled = !this.isPhoneDisabled;
-  }
-  msgs = new Array<Message>();
-
-  clickMessage() {
-    this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Teacher edited' });
-  }
-
-
-  teacherToEditFormData(): FormData {
-    const formData = new FormData();
-    formData.append('firstName', this.teacherToEdit.firstName);
-      formData.append('lastName', this.teacherToEdit.lastName);
-      formData.append('phone', this.teacherToEdit.phone);
-      formData.append('email', this.teacherToEdit.email);
-    return formData;
+  
+  // تحديث خدمة تحديث المدرس
+  this.teacherService.updateTeacherWithFormData(this.teacherId, formData)
+    .pipe(
+      catchError(error => {
+        this.errorMessage = 'حدث خطأ أثناء تحديث بيانات المدرس: ' + (error.error?.message || error.message);
+        console.error('Error updating teacher:', error);
+        return of(null);
+      }),
+      finalize(() => {
+        this.isSubmitting = false;
+      })
+    )
+    .subscribe(response => {
+      if (response) {
+        // التنقل إلى صفحة قائمة المدرسين أو صفحة التفاصيل
+        this.router.navigate(['/admin/teachers']);
+      }
+    });
 }
- 
-
-  async updateClick() {
-    try {
-        let formData = this.teacherToEditFormData();
-        let result = await firstValueFrom(this.teacherService.updateTeacher(this.teacherToEdit.id, formData));
-        if (result) {
-            this.messageService.add({ severity: 'success', summary: 'Success..', detail: 'Teacher edited' });
-            this.router.navigateByUrl('admin');
-            this.router.navigateByUrl('');
-        } else {
-            console.log('Edit not successful');
-            alert("Edit not successful");
-        }
-    } catch (error) {
-        console.error("❌ Error updating teacher:", error);
-        alert("Error updating teacher. Please try again later.");
-    }
-}
-
-  deleteTeacher(id:string){
-
+  // إلغاء عملية التعديل
+  onCancel(): void {
+    this.router.navigate(['/admin/teachers']);
   }
 }

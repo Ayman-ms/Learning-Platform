@@ -22,7 +22,7 @@ import { SignupComponent } from './user/signup/signup.component';
 import { UpdateUserComponent } from './user/update-user/update-user.component';
 import { UserSidebarComponent } from './user/sidebar/sidebar.component';
 import { UserInfoComponent } from './user/user-info/user-info.component';
-
+import { CommonModule } from '@angular/common'; 
 //primeng 
 import { MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
@@ -34,12 +34,13 @@ import { SetPasswordComponent } from './user/set-password/set-password.component
 import { AdminCoursesComponent } from './admin/Courses/admin-courses/admin-courses.component';
 import { EditCourseComponent } from './admin/Courses/edit-course/edit-course.component';
 import { AdminTeacherComponent } from './admin/Teacher/admin-teacher/admin-teacher.component';
-import { EditTeacherComponent } from './admin/Teacher/edit-teacher/edit-teacher.component';
+import { TeacherEditComponent } from './admin/Teacher/edit-teacher/edit-teacher.component';
 import { StudentMangerComponent } from './admin/student/student-manger/student-manger.component';
 import { EditStudentComponent } from './admin/student/edit-student/edit-student.component';
 import { AddTeacherComponent } from './admin/Teacher/add-teacher/add-teacher.component';
 import { AdminSubCategoryComponent } from './admin/sub-category/admin-sub-category/admin-sub-category.component';
 import { AdminMainCategoryComponent } from './admin/main-category/admin-main-category/admin-main-category.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -67,7 +68,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AdminCoursesComponent,
     EditCourseComponent,
     AdminTeacherComponent,
-    EditTeacherComponent,
+    TeacherEditComponent,
     StudentMangerComponent,
     EditStudentComponent,
     AddTeacherComponent,
@@ -77,6 +78,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   imports: [
     BrowserModule,
     RouterModule,
+    CommonModule, 
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
@@ -84,6 +86,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     MessagesModule,
     CardModule,
     DividerModule,
+    ProgressSpinnerModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

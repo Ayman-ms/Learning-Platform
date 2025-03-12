@@ -13,7 +13,7 @@ import { AdminCoursesComponent } from './admin/Courses/admin-courses/admin-cours
 import { StudentMangerComponent } from './admin/student/student-manger/student-manger.component';
 import { EditStudentComponent } from './admin/student/edit-student/edit-student.component';
 import { AdminTeacherComponent } from './admin/Teacher/admin-teacher/admin-teacher.component';
-import { EditTeacherComponent } from './admin/Teacher/edit-teacher/edit-teacher.component';
+import { TeacherEditComponent } from './admin/Teacher/edit-teacher/edit-teacher.component';
 import { AddTeacherComponent } from './admin/Teacher/add-teacher/add-teacher.component';
 import { AdminMainCategoryComponent } from './admin/main-category/admin-main-category/admin-main-category.component';
 import { AdminSubCategoryComponent } from './admin/sub-category/admin-sub-category/admin-sub-category.component';
@@ -65,9 +65,13 @@ const routes: Routes = [
           path:'courses',
           component: AdminCoursesComponent
         },
+        // RouterModule.forChild([
+        //   { path: 'teachers/edit/:id', component: TeacherEditComponent },
+        //   // مسارات أخرى
+        // ])
         {
-          path:'editteacher',
-          component:EditTeacherComponent
+          path:'editteacher/:id',
+          component:TeacherEditComponent
         },
         {
           path:'addteacher',

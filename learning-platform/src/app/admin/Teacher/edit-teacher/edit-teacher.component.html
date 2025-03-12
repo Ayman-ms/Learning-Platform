@@ -1,48 +1,111 @@
-<div class="infoContainer">
-    <div [formGroup]="teacherForm" ngForm="teacherForm">
-        <div class="">
-            <div class="itemLine">
-                <label for="">{{teacherToEdit.firstName }} Profile</label>
-                <img [src]="getImageSource(teacherToEdit.profileImage)" alt="Profile Picture" class="student-img" />
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h2>Edit</h2>
+    </div>
+    <div class="card-body">
+      <!-- loading message -->
+      <div *ngIf="isLoading" class="text-center my-3">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+
+      <!-- error message -->
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <!-- edit form -->
+      <form [formGroup]="teacherForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+        <div class="row">
+          <!-- photo -->
+          <div class="col-md-4 mb-3 text-center">
+            <div class="mb-3">
+              <img [src]="imagePreview || 'assets/default-profile.png'" alt="profilt image"
+                class="img-thumbnail rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
             </div>
-            <div class="itemLine">
-                <label>First Name:</label>
-                <input [(ngModel)]="teacherToEdit.firstName" [disabled]="isFirstNameDisabled"
-                    [ngModelOptions]="{standalone: true}" placeholder="{{teacherToEdit.firstName}}" class="inputTool"
-                    required>
-                <span (click)="toggleFirstNameEdit()">Edit</span>
+            <!-- new photo -->
+            <div class="mb-3">
+              <label for="profileImage" class="form-label">Profile Image</label>
+              <input type="file" class="form-control" id="profileImage" accept="image/*"
+                (change)="onFileSelected($event)">
+              <small class="form-text text-muted">Optional: Leave blank to keep the current image.</small>
             </div>
-            <div class="itemLine">
-                <label>Last Name: </label>
-                <input [(ngModel)]="teacherToEdit.lastName" [disabled]="isLastNameDisabled"
-                    [ngModelOptions]="{standalone: true}" placeholder="Last Name" class="inputTool" required>
-                <span (click)="toggleLastNameEdit()">Edit</span>
-            </div>
-            <div class="itemLine">
-                <label>Password: </label>
-                <input [disabled]="isPasswordDisabled" [(ngModel)]="teacherToEdit.password"
-                    [ngModelOptions]="{standalone: true}" type="password" placeholder="Password" class="inputTool"
-                    required>
-                <span (click)="togglePasswordEdit()">Edit</span>
-            </div>
-            <div class="itemLine">
-                <label>Email: </label>
-                <input [(ngModel)]="teacherToEdit.email" [disabled]="isEmailDisabled"
-                    [ngModelOptions]="{standalone: true}" placeholder="E-Mail" class="inputTool" required type="text">
-                <span (click)="toggleEmailEdit()">Edit</span>
-            </div>
-            <div class="itemLine">
-                <label>Phone: </label>
-                <input [(ngModel)]="teacherToEdit.phone" [disabled]="isPhoneDisabled"
-                    [ngModelOptions]="{standalone: true}" placeholder="phone" class="inputTool" required type="text">
-                <span (click)="togglePhoneEdit()">Edit</span>
+          </div>
+
+          <!-- Teacher Info -->
+          <div class="col-md-8">
+            <div class="row">
+              <!-- First Name -->
+              <div class="col-md-6 mb-3">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstName" formControlName="firstName"
+                  [ngClass]="{'is-invalid': hasError('firstName', 'required')}">
+                <div class="invalid-feedback" *ngIf="hasError('firstName', 'required')">
+                  required
+                </div>
+              </div>
+
+              <!--Last Name-->
+              <div class="col-md-6 mb-3">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="lastName" formControlName="lastName"
+                  [ngClass]="{'is-invalid': hasError('lastName', 'required')}">
+                <div class="invalid-feedback" *ngIf="hasError('lastName', 'required')">
+                  required
+                </div>
+              </div>
             </div>
 
-            <div class="itemLine">
-                <button class="saveBtn" type="submit" (click)="updateClick()">Save</button>
-                <button class="deleteBtn" type="submit" (click)="deleteTeacher(teacherToEdit.id)">Delete</button>
-                <button class="cancelBtn" type="submit" routerLink="/admin/teachers">Cancel</button>
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" formControlName="email"
+                [ngClass]="{'is-invalid': hasError('email', 'required') || hasError('email', 'email')}">
+              <div class="invalid-feedback" *ngIf="hasError('email', 'required')">
+                required
+              </div>
+              <div class="invalid-feedback" *ngIf="hasError('email', 'email')">
+                Please enter a valid email address.
+              </div>
             </div>
+
+            <!-- Phone Number -->
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" id="phone" formControlName="phone"
+                [ngClass]="{'is-invalid': hasError('phone', 'required')}">
+              <div class="invalid-feedback" *ngIf="hasError('phone', 'required')">
+                required
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" class="form-control" id="password" formControlName="password"
+                [ngClass]="{'is-invalid': hasError('password', 'minlength')}">
+              <small class="form-text text-muted">Optional: Leave blank if you do not want to change your
+                password.</small>
+              <div class="invalid-feedback" *ngIf="hasError('password', 'minlength')">
+                The password must be at least 6 characters long and contain a special symbol and a number.
+              </div>
+            </div>
+          </div>
         </div>
+
+        <div class="d-flex justify-content-end mt-3">
+          <button type="button" class="btn btn-secondary me-2" (click)="onCancel()" [disabled]="isSubmitting">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1" role="status"
+              aria-hidden="true"></span>
+            Save
+          </button>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
