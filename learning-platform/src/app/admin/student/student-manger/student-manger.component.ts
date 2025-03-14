@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Student } from 'src/app/models/student';
 import { SessionService } from 'src/app/services/session/session.service';
 import { StudentsService } from 'src/app/services/students/students.service';
 import { MessageService } from 'primeng/api';
+import { PaginationControlComponent } from '../../components/pagination-control/pagination-control.component';
 @Component({
   selector: 'app-student-manger',
   templateUrl: './student-manger.component.html',
   styleUrls: ['./student-manger.component.css']
 })
 export class StudentMangerComponent implements OnInit {
+
   userLoggedIn = false;
   studentsList: Array<Student> = [];
   filteredStudents: Array<Student> = [];
@@ -22,63 +24,36 @@ export class StudentMangerComponent implements OnInit {
 
   async ngOnInit() {
     this.studentsList = await this.studentsService.getStudents() || [];
-    this.filteredStudents = this.studentsList;
-  
-    console.log("📌 الطلاب المستلمون من API:", this.studentsList);
-  
-    this.updatePagination();
-  }
-  
-
-  updateSearch() {
-    if (this.searchText) {
-      this.filteredStudents = this.studentsList.filter(student =>
-        student.firstName.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        student.lastName.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        student.email.toLowerCase().includes(this.searchText.toLowerCase())
-      );
-    } else {
-      this.filteredStudents = this.studentsList;
-    }
-    this.currentPage = 1;
-    this.updatePagination();
+    this.filteredStudents = [...this.studentsList];
+    this.updateSearch('');
   }
 
-  updatePagination(): void {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedStudents = this.filteredStudents.slice(startIndex, endIndex);
+  updateSearch(searchText: string) {
+    this.filteredStudents = searchText
+      ? this.studentsList.filter(student =>
+          student.firstName.toLowerCase().includes(searchText.toLowerCase()) ||
+          student.lastName.toLowerCase().includes(searchText.toLowerCase()) ||
+          student.email.toLowerCase().includes(searchText.toLowerCase())
+        )
+      : [...this.studentsList];
 
-    this.paginatedRows = [];
-    for (let i = 0; i < this.paginatedStudents.length; i += 3) {
-      this.paginatedRows.push(this.paginatedStudents.slice(i, i + 3));
-    }
+    this.paginatedStudents = [...this.filteredStudents]; // تحديث بيانات الـ Pagination
   }
 
- async deleteStudent(id:string){
+  onPaginatedData(event: Student[]) {
+    this.paginatedStudents = event;
+  }
+
+  async deleteStudent(id: string) {
     let result = await this.studentsService.deleteStudent(id)
     window.location.reload()
   }
 
-  nextPage(): void {
-    if ((this.currentPage * this.itemsPerPage) < this.filteredStudents.length) {
-      this.currentPage++;
-      this.updatePagination();
-    }
-  }
-
-  previousPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updatePagination();
-    }
-  }
-  
   getImagePath(imageFileName: string | undefined): string {
     if (!imageFileName || imageFileName.trim() === '') {
       return 'assets/default-profile.png';
     }
-  
+
     return `${imageFileName}`;
   }
 }

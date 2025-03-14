@@ -82,16 +82,10 @@
             </div>
 
             <!-- Password -->
-            <div class="mb-3">
-              <label for="password" class="form-label">Password</label>
-              <input type="password" class="form-control" id="password" formControlName="password"
-                [ngClass]="{'is-invalid': hasError('password', 'minlength')}">
-              <small class="form-text text-muted">Optional: Leave blank if you do not want to change your
-                password.</small>
-              <div class="invalid-feedback" *ngIf="hasError('password', 'minlength')">
-                The password must be at least 6 characters long and contain a special symbol and a number.
-              </div>
-            </div>
+            <app-password-input formControlName="password" label="New Password" placeholder="Enter new password"></app-password-input>
+
+
+
           </div>
         </div>
 

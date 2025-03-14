@@ -49,3 +49,8 @@ body {
     /* min-height: 100vh; */
     color: white;
   }
+
+
+app-search-bar{
+  width: 100%;
+}

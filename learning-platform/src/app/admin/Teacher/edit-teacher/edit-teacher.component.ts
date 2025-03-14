@@ -18,7 +18,8 @@ export class TeacherEditComponent implements OnInit {
   errorMessage = '';
   selectedFile: File | null = null;
   imagePreview: string | null = null;
-  
+  isPasswordVisible: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private teacherService: TeacherService,
@@ -32,9 +33,9 @@ export class TeacherEditComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
+      phone: ['', Validators.required], password: ['']
       // Password غير مطلوب عند التعديل
-      password: ['', [Validators.required, Validators.minLength(6), Validators.pattern("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$")]],
+      // password: ['', [Validators.required, Validators.minLength(6), Validators.pattern("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$")]],
     });
 
     // استخراج معرف المدرس من عنوان URL
@@ -100,11 +101,42 @@ export class TeacherEditComponent implements OnInit {
     return !!control && control.hasError(errorName) && (control.touched || control.dirty);
   }
 
+
+  generateRandomPassword(): void {
+    const length = 10; // يمكنك تعديل الطول حسب الحاجة
+    const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const lowercase = "abcdefghijklmnopqrstuvwxyz";
+    const numbers = "0123456789";
+    const specialChars = "!@#$%^&*()_+[]{}|;:,.<>?";
+  
+    const allChars = uppercase + lowercase + numbers + specialChars;
+  
+    let password = '';
+    password += uppercase[Math.floor(Math.random() * uppercase.length)];
+    password += lowercase[Math.floor(Math.random() * lowercase.length)];
+    password += numbers[Math.floor(Math.random() * numbers.length)];
+    password += specialChars[Math.floor(Math.random() * specialChars.length)];
+  
+    for (let i = 4; i < length; i++) {
+      password += allChars[Math.floor(Math.random() * allChars.length)];
+    }
+  
+    // ترتيب عشوائي للحروف لتجنب النمط الثابت
+    password = password.split('').sort(() => 0.5 - Math.random()).join('');
+  
+    // تحديث قيمة كلمة المرور في الحقل
+    this.teacherForm.patchValue({ password });
+  
+    // إظهار كلمة المرور عند توليدها
+    this.isPasswordVisible = true;
+  }
+  
+  
+
   // إرسال النموذج
 // تعديل جزء onSubmit فقط من المكون
 onSubmit(): void {
   if (this.teacherForm.invalid) {
-    // تحديد جميع الحقول كـ touched لإظهار أخطاء التحقق
     Object.keys(this.teacherForm.controls).forEach(key => {
       const control = this.teacherForm.get(key);
       control?.markAsTouched();
@@ -113,43 +145,36 @@ onSubmit(): void {
   }
 
   this.isSubmitting = true;
-  
-  // إنشاء FormData لإرسال البيانات والملف
   const formData = new FormData();
-  
-  // إضافة جميع البيانات من النموذج - حتى إذا لم تتغير
-  // API الخلفي سيتعامل مع القيم الفارغة
   const formValue = this.teacherForm.value;
-  
-  // بدل الاعتماد على حالة dirty فقط، سنرسل جميع الحقول
-  // تذكر أن الخادم الخلفي يتعامل مع هذا باستخدام Null Coalescing في C#
+
+  // ✅ إرسال القيم حتى لو كانت فارغة لتجنب الخطأ 400
   formData.append('FirstName', formValue.firstName || '');
   formData.append('LastName', formValue.lastName || '');
   formData.append('Email', formValue.email || '');
   formData.append('Phone', formValue.phone || '');
-  
-  // إضافة كلمة المرور فقط إذا تم إدخالها
-  if (formValue.password) {
+
+  // ✅ لا ترسل كلمة المرور إذا لم يتم تعديلها
+  if (formValue.password && formValue.password.trim()) {
     formData.append('Password', formValue.password);
   }
-  
-  // إضافة الصورة إذا تم تحديدها
+
+  // ✅ تحقق مما إذا كانت هناك صورة جديدة وأضفها إلى FormData
   if (this.selectedFile) {
     formData.append('imageFile', this.selectedFile);
   }
 
-  // قم بطباعة قيم FormData للتصحيح
-  console.log('Sending FormData:');
+  // ✅ طباعة `FormData` لفحص القيم المرسلة
+  console.log('🚀 Sending FormData:');
   for (const pair of (formData as any).entries()) {
     console.log(pair[0] + ': ' + pair[1]);
   }
-  
-  // تحديث خدمة تحديث المدرس
+
   this.teacherService.updateTeacherWithFormData(this.teacherId, formData)
     .pipe(
       catchError(error => {
         this.errorMessage = 'حدث خطأ أثناء تحديث بيانات المدرس: ' + (error.error?.message || error.message);
-        console.error('Error updating teacher:', error);
+        console.error('❌ Error updating teacher:', error);
         return of(null);
       }),
       finalize(() => {
@@ -158,11 +183,12 @@ onSubmit(): void {
     )
     .subscribe(response => {
       if (response) {
-        // التنقل إلى صفحة قائمة المدرسين أو صفحة التفاصيل
+        console.log('✅ Teacher updated successfully:', response);
         this.router.navigate(['/admin/teachers']);
       }
     });
 }
+
   // إلغاء عملية التعديل
   onCancel(): void {
     this.router.navigate(['/admin/teachers']);

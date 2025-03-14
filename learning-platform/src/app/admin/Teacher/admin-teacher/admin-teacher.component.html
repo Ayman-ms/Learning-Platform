@@ -11,11 +11,10 @@
 
 <!-- Card Grid -->
 <div class="container">
-  <div class="card" *ngFor="let teacher of teachersList">
+  <div class="card" *ngFor="let teacher of filteredTeachers">
+
     <div class="card-body">
       <img [src]="getImagePath(teacher.profileImage)" alt="Profile Picture" class="student-img"/>
-
-
       <p><strong>First Name:</strong> {{ teacher.firstName }}</p>
       <p><strong>Last Name:</strong> {{ teacher.lastName }}</p>
       <p class="email"><strong>Email:</strong> {{ teacher.email }}</p>
@@ -35,15 +34,11 @@
 </div>
 
 <!-- Pagination Control -->
-<div *ngIf="filteredTeachers.length > itemsPerPage" class="pagination-controls">
-  <button (click)="previousPage()" [disabled]="currentPage === 1">
-    <i class="bi bi-arrow-left"></i>
-  </button>
-  <span>Page {{ currentPage }}</span>
-  <button (click)="nextPage()" [disabled]="currentPage * itemsPerPage >= filteredTeachers.length">
-    <i class="bi bi-arrow-right"></i>
-  </button>
-</div>
+<app-pagination-control 
+  [items]="filteredTeachers"
+  [itemsPerPage]="9"
+  (paginatedItems)="onPaginatedData($event)">
+</app-pagination-control>
 
 <!-- form new teacher -->
 <div *ngIf="showAddTeacherForm" [formGroup]="registrationForm"  class="overlay">

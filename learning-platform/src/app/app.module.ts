@@ -41,6 +41,9 @@ import { AddTeacherComponent } from './admin/Teacher/add-teacher/add-teacher.com
 import { AdminSubCategoryComponent } from './admin/sub-category/admin-sub-category/admin-sub-category.component';
 import { AdminMainCategoryComponent } from './admin/main-category/admin-main-category/admin-main-category.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { PaginationControlComponent } from './admin/components/pagination-control/pagination-control.component';
+import { SearchBarComponent } from './admin/components/search-bar/search-bar.component';
+import { PasswordInputComponent } from './admin/components/password-input/password-input.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -73,7 +76,10 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     EditStudentComponent,
     AddTeacherComponent,
     AdminSubCategoryComponent,
-    AdminMainCategoryComponent
+    AdminMainCategoryComponent,
+    PaginationControlComponent,
+    SearchBarComponent,
+    PasswordInputComponent
   ],
   imports: [
     BrowserModule,

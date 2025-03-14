@@ -1,17 +1,17 @@
 <div class="input-group mb-3">
-  <input type="text" class="form-control" [(ngModel)]="searchText" (input)="updateSearch()"
-    placeholder="Search by First Name, Last Name, or Email">
+  <!-- <input type="text" class="form-control" [(ngModel)]="searchText" 
+    placeholder="Search by First Name, Last Name, or Email"> -->
+    <app-search-bar placeholder="Search by First Name, Last Name, or Email" (searchTextChanged)="updateSearch($event)"></app-search-bar>
 </div>
 
-<!-- عرض العدد الإجمالي للطلاب -->
+<!-- Students Count -->
 <p>Total Students: {{filteredStudents.length}}</p>
 
 <div class="container">
-  <div class="card" *ngFor="let student of studentsList">
+  <div class="card" *ngFor="let student of filteredStudents">
+
     <div class="card-body">
       <img [src]="getImagePath(student.profileImage)" alt="Profile Picture" class="student-img"/>
-
-
       <p><strong>First Name:</strong> {{ student.firstName }}</p>
       <p><strong>Last Name:</strong> {{ student.lastName }}</p>
       <p class="email"><strong>Email:</strong> {{ student.email }}</p>
@@ -29,13 +29,9 @@
   </div>
 </div>
 
-<!-- عناصر التحكم في التصفح بين الصفحات -->
-<div *ngIf="filteredStudents.length > itemsPerPage" class="pagination-controls">
-  <button (click)="previousPage()" [disabled]="currentPage === 1">
-    <i class="bi bi-arrow-left"></i>
-  </button>
-  <span>Page {{currentPage}}</span>
-  <button (click)="nextPage()" [disabled]="currentPage * itemsPerPage >= filteredStudents.length">
-    <i class="bi bi-arrow-right"></i>
-  </button>
-</div>
+<!-- pagination controls -->
+<app-pagination-control 
+  [items]="filteredStudents"
+  [itemsPerPage]="9"
+  (paginatedItems)="onPaginatedData($event)">
+</app-pagination-control>

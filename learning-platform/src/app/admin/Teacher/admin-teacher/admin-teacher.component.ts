@@ -45,6 +45,22 @@ export class AdminTeacherComponent implements OnInit {
     this.loadTeachers();
   }
 
+  updateSearch() {
+    this.filteredTeachers = this.searchText
+      ? this.teachersList.filter(teacher =>
+          teacher.firstName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+          teacher.lastName.toLowerCase().includes(this.searchText.toLowerCase()) ||
+          teacher.email.toLowerCase().includes(this.searchText.toLowerCase())
+        )
+      : [...this.teachersList];
+
+    this.paginatedTeachers = [...this.filteredTeachers]; // إعادة ضبط البيانات للـ pagination
+  }
+
+  onPaginatedData(event: Teacher[]) {
+    this.paginatedTeachers = event;
+  }
+
   loadTeachers() {
     this.teacherService.getTeachers().subscribe(
         (teachers) => {
@@ -56,15 +72,6 @@ export class AdminTeacherComponent implements OnInit {
         }
     );
 }
-
-  updateSearch() {
-    this.filteredTeachers = this.searchText
-      ? this.teachersList.filter(t =>
-          t.firstName.toLowerCase().includes(this.searchText.toLowerCase()) ||
-          t.lastName.toLowerCase().includes(this.searchText.toLowerCase()) ||
-          t.email.toLowerCase().includes(this.searchText.toLowerCase()))
-      : this.teachersList;
-  }
 
   toggleAddTeacherForm() {
     this.showAddTeacherForm = !this.showAddTeacherForm;
@@ -85,6 +92,7 @@ export class AdminTeacherComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
+
   triggerFileInput() {
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
     if (fileInput) {
@@ -117,28 +125,4 @@ export class AdminTeacherComponent implements OnInit {
   }
 
 
-  updatePagination(): void {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedTeachers = this.filteredTeachers.slice(startIndex, endIndex);
-
-    this.paginatedRows = [];
-    for (let i = 0; i < this.paginatedTeachers.length; i += 3) {
-      this.paginatedRows.push(this.paginatedTeachers.slice(i, i + 3));
-    }
-  }
-
-  nextPage(): void {
-    if ((this.currentPage * this.itemsPerPage) < this.filteredTeachers.length) {
-      this.currentPage++;
-      this.updatePagination();
-    }
-  }
-
-  previousPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updatePagination();
-    }
-  }
 }
