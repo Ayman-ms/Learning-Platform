@@ -1,35 +1,30 @@
-<!-- <div class="input-group mb-3">
-    <input type="text" class="form-control" [(ngModel)]="searchText" (input)="updateSearch()" placeholder="Search by First Name, Last Name, or Email">
-  </div>
-  <div class="cardContainer">
-    <div class="cards" *ngFor="let course of paginatedCourses">
-      <p-card class="card" header={{course.id}}>
-        <ng-template pTemplate="header">
-          <p><span>Course Name:</span> {{course.name}}</p>
-          <p><span>Category:</span> {{course.category}}</p>
-        </ng-template>
-        <ng-template pTemplate="body">
-          <p><span>Description:</span> {{course.description}}</p>
-          <button class="editBtn" [routerLink]="'/admin/edituser'" [queryParams]="{id: course.id}">
-            <i class="bi bi-pencil-square"></i> Edit
-          </button>
-        </ng-template>
-        <ng-template>
-          <p><span>Status:</span> {{course.status}}</p>
-        </ng-template>
-        <ng-template>
-          <p><span>Teacher</span> {{course.teacherID}}</p>
-        </ng-template>
-      </p-card>
+<div class="input-group mb-3">
+  <input type="text" class="form-control" [(ngModel)]="searchText" (input)="updateSearch()"
+    placeholder="Search by Course Name, Teacher Name">
+</div>
+<div class="container">
+  <div class="card" *ngFor="let course of filteredCourses">
+
+    <div class="card-body">
+      <img [src]="getImagePath(course.courseImage)" alt="Profile Picture" class="student-img" />
+      <p><strong>Course:</strong> {{ course.name }}</p>
+      <p><strong>Description:</strong> {{ course.description }}</p>
+      <p><strong>Teacher:</strong> {{ course.teacher }}</p>
+      <p><strong>Main Categorry:</strong> {{ course.mainCategory }}</p>
+      <p><strong>Sub Categorry:</strong> {{ course.subCategory }}</p>
+
+      <div class="cardButton">
+        <button class="btn editBtn" [routerLink]="['/admin/editcourse', course.id]">
+          <i class="bi bi-pencil-square"></i> Edit
+        </button>
+
+        <button class="btn deleteBtn" (click)="deleteUserClick(course.id)">
+          <i class="bi bi-trash3"></i>Delete
+        </button>
+      </div>
     </div>
-  </div> 
-   
-   <div class="pagination-controls">
-    <button (click)="previousPage()" [disabled]="currentPage === 1"> <i class="bi bi-arrow-left"></i>
-    </button>
-    <span>Page {{currentPage}}</span>
-    <button (click)="nextPage()" [disabled]="currentPage * itemsPerPage >= filteredCourses.length"> <i
-        class="bi bi-arrow-right"></i>
-    </button>
   </div>
-    -->
+</div>
+<!-- pagination controls -->
+<app-pagination-control [items]="filteredCourses" [itemsPerPage]="9" (paginatedItems)="onPaginatedData($event)">
+</app-pagination-control>

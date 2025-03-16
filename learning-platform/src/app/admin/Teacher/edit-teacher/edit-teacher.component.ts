@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TeacherService } from 'src/app/services/teacher/teacher.service'; 
-import { Teacher } from 'src/app/models/teacher'; 
+import { TeacherService } from 'src/app/services/teacher/teacher.service';
+import { Teacher } from 'src/app/models/teacher';
 import { catchError, finalize, of } from 'rxjs';
 
 @Component({
@@ -72,7 +72,7 @@ export class TeacherEditComponent implements OnInit {
             phone: teacher.phone
             // لا نقوم بتعبئة كلمة المرور لأسباب أمنية
           });
-          
+
           if (teacher.profileImage) {
             this.imagePreview = teacher.profileImage;
           }
@@ -85,7 +85,7 @@ export class TeacherEditComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
-      
+
       // عرض معاينة الصورة
       const reader = new FileReader();
       reader.onload = () => {
@@ -108,86 +108,86 @@ export class TeacherEditComponent implements OnInit {
     const lowercase = "abcdefghijklmnopqrstuvwxyz";
     const numbers = "0123456789";
     const specialChars = "!@#$%^&*()_+[]{}|;:,.<>?";
-  
+
     const allChars = uppercase + lowercase + numbers + specialChars;
-  
+
     let password = '';
     password += uppercase[Math.floor(Math.random() * uppercase.length)];
     password += lowercase[Math.floor(Math.random() * lowercase.length)];
     password += numbers[Math.floor(Math.random() * numbers.length)];
     password += specialChars[Math.floor(Math.random() * specialChars.length)];
-  
+
     for (let i = 4; i < length; i++) {
       password += allChars[Math.floor(Math.random() * allChars.length)];
     }
-  
+
     // ترتيب عشوائي للحروف لتجنب النمط الثابت
     password = password.split('').sort(() => 0.5 - Math.random()).join('');
-  
+
     // تحديث قيمة كلمة المرور في الحقل
     this.teacherForm.patchValue({ password });
-  
+
     // إظهار كلمة المرور عند توليدها
     this.isPasswordVisible = true;
   }
-  
-  
+
+
 
   // إرسال النموذج
-// تعديل جزء onSubmit فقط من المكون
-onSubmit(): void {
-  if (this.teacherForm.invalid) {
-    Object.keys(this.teacherForm.controls).forEach(key => {
-      const control = this.teacherForm.get(key);
-      control?.markAsTouched();
-    });
-    return;
+  // تعديل جزء onSubmit فقط من المكون
+  onSubmit(): void {
+    if (this.teacherForm.invalid) {
+      Object.keys(this.teacherForm.controls).forEach(key => {
+        const control = this.teacherForm.get(key);
+        control?.markAsTouched();
+      });
+      return;
+    }
+
+    this.isSubmitting = true;
+    const formData = new FormData();
+    const formValue = this.teacherForm.value;
+
+    // ✅ إرسال القيم حتى لو كانت فارغة لتجنب الخطأ 400
+    formData.append('FirstName', formValue.firstName || '');
+    formData.append('LastName', formValue.lastName || '');
+    formData.append('Email', formValue.email || '');
+    formData.append('Phone', formValue.phone || '');
+
+    // ✅ لا ترسل كلمة المرور إذا لم يتم تعديلها
+    if (formValue.password && formValue.password.trim()) {
+      formData.append('Password', formValue.password);
+    }
+
+    // ✅ تحقق مما إذا كانت هناك صورة جديدة وأضفها إلى FormData
+    if (this.selectedFile) {
+      formData.append('imageFile', this.selectedFile);
+    }
+
+    // ✅ طباعة `FormData` لفحص القيم المرسلة
+    console.log('🚀 Sending FormData:');
+    for (const pair of (formData as any).entries()) {
+      console.log(pair[0] + ': ' + pair[1]);
+    }
+
+    this.teacherService.updateTeacherWithFormData(this.teacherId, formData)
+      .pipe(
+        catchError(error => {
+          this.errorMessage = 'حدث خطأ أثناء تحديث بيانات المدرس: ' + (error.error?.message || error.message);
+          console.error('❌ Error updating teacher:', error);
+          return of(null);
+        }),
+        finalize(() => {
+          this.isSubmitting = false;
+        })
+      )
+      .subscribe(response => {
+        if (response) {
+          console.log('✅ Teacher updated successfully:', response);
+          this.router.navigate(['/admin/teachers']);
+        }
+      });
   }
-
-  this.isSubmitting = true;
-  const formData = new FormData();
-  const formValue = this.teacherForm.value;
-
-  // ✅ إرسال القيم حتى لو كانت فارغة لتجنب الخطأ 400
-  formData.append('FirstName', formValue.firstName || '');
-  formData.append('LastName', formValue.lastName || '');
-  formData.append('Email', formValue.email || '');
-  formData.append('Phone', formValue.phone || '');
-
-  // ✅ لا ترسل كلمة المرور إذا لم يتم تعديلها
-  if (formValue.password && formValue.password.trim()) {
-    formData.append('Password', formValue.password);
-  }
-
-  // ✅ تحقق مما إذا كانت هناك صورة جديدة وأضفها إلى FormData
-  if (this.selectedFile) {
-    formData.append('imageFile', this.selectedFile);
-  }
-
-  // ✅ طباعة `FormData` لفحص القيم المرسلة
-  console.log('🚀 Sending FormData:');
-  for (const pair of (formData as any).entries()) {
-    console.log(pair[0] + ': ' + pair[1]);
-  }
-
-  this.teacherService.updateTeacherWithFormData(this.teacherId, formData)
-    .pipe(
-      catchError(error => {
-        this.errorMessage = 'حدث خطأ أثناء تحديث بيانات المدرس: ' + (error.error?.message || error.message);
-        console.error('❌ Error updating teacher:', error);
-        return of(null);
-      }),
-      finalize(() => {
-        this.isSubmitting = false;
-      })
-    )
-    .subscribe(response => {
-      if (response) {
-        console.log('✅ Teacher updated successfully:', response);
-        this.router.navigate(['/admin/teachers']);
-      }
-    });
-}
 
   // إلغاء عملية التعديل
   onCancel(): void {

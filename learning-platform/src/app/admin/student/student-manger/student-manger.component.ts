@@ -37,7 +37,7 @@ export class StudentMangerComponent implements OnInit {
         )
       : [...this.studentsList];
 
-    this.paginatedStudents = [...this.filteredStudents]; // تحديث بيانات الـ Pagination
+    this.paginatedStudents = [...this.filteredStudents];
   }
 
   onPaginatedData(event: Student[]) {

@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService, Message } from 'primeng/api';
+import { catchError, finalize, of } from 'rxjs';
 import { Course } from 'src/app/models/courses';
 import { CoursesService } from 'src/app/services/courses/courses.service';
 import { SessionService } from 'src/app/services/session/session.service';
@@ -14,27 +15,16 @@ import { SessionService } from 'src/app/services/session/session.service';
 })
 export class EditCourseComponent {
   coursesToEdit: Course = {
-    id: 0, name: '', description: '', status: false, teacherID: 0,
-    time: 0
+    id: '', name: '', description: '', status: false, teacher: '',
+    time: 0, courseImage: '', mainCategory: '', subCategory: ''
   };
-  // input status
-  isNameDisabled = true;
-  isCategoryDisabled = true;
-  isDescriptionDisabled = true;
-  isTeacherIDDisabled = true;
-  isStatusDisabled = true;
-  isTimeDisabled = true;
-  // course
-  courseIsAdmin = false;
-  courseLoggedIn = false;
-  courseForm = new FormGroup({
-    name: new FormControl(this.coursesToEdit.name, Validators.required),
-    description: new FormControl(this.coursesToEdit.description, Validators.required),
-    status: new FormControl(this.coursesToEdit.status, Validators.required),
-    teacherID: new FormControl(this.coursesToEdit.teacherID, Validators.required),
-    time: new FormControl(this.coursesToEdit.time, Validators.required)
-
-  });
+  courseId!: string;
+  isLoading = false;
+  isSubmitting = false;
+  errorMessage = '';
+  selectedFile: File | null = null;
+  imagePreview: string | null = null;
+  courseForm!: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,60 +32,148 @@ export class EditCourseComponent {
     private httpClient: HttpClient,
     private courseService: CoursesService,
     public accountService: SessionService,
-    private messageService: MessageService
-  ) {
-  }
+    private messageService: MessageService,
+    private fb: FormBuilder,
+  ) { }
 
   courseList?: Array<Course>;
 
   ngOnInit(): void {
-    this.httpClient.get<Array<Course>>('https://localhost:44355/User').subscribe((courseListItems) => {
-      this.route.queryParams.subscribe(params => {
-        console.log(params['id']);
-        for (let course of courseListItems) {
-          if (course.id == params['id']) {
-            this.coursesToEdit = course;
-            this.courseForm.patchValue(course);
-            break;
+    // إنشاء نموذج التعديل
+    this.courseForm = this.fb.group({
+      name: ['', Validators.required],
+      teacher: ['', Validators.required],
+      description: ['', Validators.required],
+      mainCategory: ['', Validators.required],
+      subCategory: ['', Validators.required],
+      status: [false],
+      time: [0]
+    });
+    
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      this.courseId = idParam;
+      this.loadCourseData();
+    } else {
+      this.errorMessage = 'معرف المدرس غير موجود';
+    }
+  }
+
+  // معالجة تحديد الصورة
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+
+      // عرض معاينة الصورة
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result as string;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+  // التحقق من وجود أخطاء في حقل معين
+  hasError(controlName: string, errorName: string): boolean {
+    const control = this.courseForm.get(controlName);
+    return !!control && control.hasError(errorName) && (control.touched || control.dirty);
+  }
+
+  loadCourseData(): void {
+    this.isLoading = true;
+    this.courseService.getCourseById(this.courseId)
+      .pipe(
+        catchError(error => {
+          this.errorMessage = 'حدث خطأ أثناء تحميل بيانات الكورس';
+          console.error('Error loading course:', error);
+          return of(null);
+        }),
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
+      .subscribe(course => {
+        if (course) {
+          this.coursesToEdit = course;
+
+          // تعبئة النموذج بالبيانات الحالية
+          this.courseForm.patchValue({
+            name: course.name,
+            description: course.description,
+            teacher: course.teacher,
+            mainCategory: course.mainCategory,
+            subCategory: course.subCategory,
+            status: course.status,
+            time: course.time
+          });
+
+          if (course.courseImage) {
+            this.imagePreview = course.courseImage;
           }
         }
       });
-    });
   }
 
-  async updateClick() {
-    let result = await this.courseService.updateCourse(this.coursesToEdit.id,this.coursesToEdit);
-    if (result) {
-      this.messageService.add({ severity: 'success', summary: 'Success..', detail: 'Course edited' });
-      this.router.navigateByUrl('admin');
-    } else {
-      console.log('Edit not successful');
-      alert("Edit not successful");
+  async onSubmit() {
+    if (this.courseForm.invalid) {
+      // Mark all fields as touched to show validation errors
+      Object.keys(this.courseForm.controls).forEach(key => {
+        this.courseForm.get(key)?.markAsTouched();
+      });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please fix form errors' });
+      return;
+    }
+
+    this.isSubmitting = true;
+
+    try {
+      // Update coursesToEdit with form values
+      const formValues = this.courseForm.value;
+      this.coursesToEdit = {
+        ...this.coursesToEdit,
+        name: formValues.name,
+        description: formValues.description,
+        teacher: formValues.teacher,
+        mainCategory: formValues.mainCategory,
+        subCategory: formValues.subCategory,
+        status: formValues.status || this.coursesToEdit.status,
+        time: formValues.time || this.coursesToEdit.time
+      };
+
+      // Handle image upload with FormData
+      if (this.selectedFile) {
+        const formData = new FormData();
+        formData.append('imageFile', this.selectedFile);
+        
+        // Add all course properties to FormData
+        Object.keys(this.coursesToEdit).forEach(key => {
+          formData.append(key, (this.coursesToEdit as any)[key]);
+        });
+        
+        // Use a specific method for updating with image
+        let result = await this.courseService.updateCourseWithImage(this.coursesToEdit.id, formData).toPromise();
+        if (result) {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Course edited with new image' });
+          this.router.navigateByUrl('admin/courses');
+        }
+      } else {
+        // Update without changing the image
+        let result = await this.courseService.updateCourse(this.coursesToEdit.id, this.coursesToEdit).toPromise();
+        if (result) {
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Course edited' });
+          this.router.navigateByUrl('admin/courses');
+        }
+      }
+    } catch (error) {
+      console.error('Edit not successful', error);
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Edit not successful' });
+    } finally {
+      this.isSubmitting = false;
     }
   }
-  // toggle input status
-  toggleNameEdit() {
-    this.isNameDisabled = !this.isNameDisabled;
-  }
-  toggleCategoryEdit() {
-    this.isCategoryDisabled = !this.isCategoryDisabled;
-  }
-  toggleDescription() {
-    this.isDescriptionDisabled = !this.isDescriptionDisabled;
-  }
-  toggleTeacherIDEdit() {
-    this.isTeacherIDDisabled = !this.isTeacherIDDisabled;
-  }
-  toggleStatusEdit() {
-    this.isStatusDisabled = !this.isStatusDisabled;
-  }
-  toggleTimeEdit() {
-    this.isTimeDisabled = !this.isTimeDisabled;
-  }
-  msgs = new Array<Message>();
 
-  clickMessage() {
-    this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Course edited' });
+  onCancel(): void {
+    this.router.navigate(['/admin/courses']);
   }
 }
-

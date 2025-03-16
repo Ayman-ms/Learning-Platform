@@ -17,6 +17,7 @@ import { TeacherEditComponent } from './admin/Teacher/edit-teacher/edit-teacher.
 import { AddTeacherComponent } from './admin/Teacher/add-teacher/add-teacher.component';
 import { AdminMainCategoryComponent } from './admin/main-category/admin-main-category/admin-main-category.component';
 import { AdminSubCategoryComponent } from './admin/sub-category/admin-sub-category/admin-sub-category.component';
+import { EditCourseComponent } from './admin/Courses/edit-course/edit-course.component';
 
 const routes: Routes = [
     {
@@ -65,10 +66,10 @@ const routes: Routes = [
           path:'courses',
           component: AdminCoursesComponent
         },
-        // RouterModule.forChild([
-        //   { path: 'teachers/edit/:id', component: TeacherEditComponent },
-        //   // مسارات أخرى
-        // ])
+        {
+          path:'editcourse/:id',
+          component:EditCourseComponent
+        },
         {
           path:'editteacher/:id',
           component:TeacherEditComponent

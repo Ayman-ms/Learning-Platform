@@ -1,47 +1,107 @@
-<div class="infoContainer">
-    <div [formGroup]="courseForm" ngForm="userForm">
-        <div class="">
-            <div class="itemLine">
-                <label>Name:</label>
-                <input [(ngModel)]="coursesToEdit.name" [disabled]="isNameDisabled" [ngModelOptions]="{standalone: true}" placeholder="Name"
-                    class="inputTool" required>
-                <span (click)="toggleNameEdit()">Edit</span>
-            </div>
-            <div class="itemLine">
-                <label>Description: </label>
-                <input [(ngModel)]="coursesToEdit.description" [disabled]="isDescriptionDisabled" [ngModelOptions]="{standalone: true}" placeholder="Description"
-                    class="inputTool" required>
-                <span (click)="toggleDescription()">Edit</span>
-            </div>
-            <div class="itemLine">
-                <label>Teacher ID: </label>
-                <input [disabled]="isTeacherIDDisabled" [(ngModel)]="coursesToEdit.teacherID" [ngModelOptions]="{standalone: true}" placeholder="Teacher ID"
-                class="inputTool" required>
-                <span (click)="toggleTeacherIDEdit()">Edit</span>
-            </div>
-            <div class="itemLine">
-                <label>Status: </label>
-                <input [(ngModel)]="coursesToEdit.status" [disabled]="isStatusDisabled" [ngModelOptions]="{standalone: true}" placeholder="Status"
-                    class="inputTool" required type="text">
-                <span (click)="toggleStatusEdit()">Edit</span>
-            </div>
-            <div class="itemLine">
-                <label>Time: </label>
-                <input [(ngModel)]="coursesToEdit.time" [disabled]="isTimeDisabled" [ngModelOptions]="{standalone: true}" placeholder="Time"
-                    class="inputTool" required type="text">
-                <span (click)="toggleTimeEdit()">Edit</span>
-            </div>
-            <!-- <div class="itemLine">
-                <label>Level: </label>
-                <select [(ngModel)]="coursesToEdit.level" [ngModelOptions]="{standalone: true}" class="form-select"
-                    *ngIf="userIsAdmin" required>
-                    <option value="admin">Admin</option>
-                    <option value="user">User</option>
-                </select>
-            </div> -->
-            <div class="itemLine">
-                <button class="saveButton" type="submit" (click)="updateClick()">Save</button>
-            </div>
-        </div>
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header">
+      <h2>Edit Course</h2>
     </div>
+    <div class="card-body"> 
+      <!-- loading message -->
+      <div *ngIf="isLoading" class="text-center my-3">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+
+      <!-- error message -->
+       <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div> 
+
+      <!-- edit form -->
+      <form [formGroup]="courseForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+        <div class="row"> 
+          <!-- photo -->
+          <div class="col-md-4 mb-3 text-center">
+            <div class="mb-3">
+              <img [src]="imagePreview || 'assets/default-profile.png'" alt="Course image"
+                class="img-thumbnail rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+            </div> 
+            <!-- new photo -->
+            <div class="mb-3">
+              <label for="courseImage" class="form-label">Course Image</label>
+              <input type="file" class="form-control" id="courseImage" accept="image/*"
+                (change)="onFileSelected($event)">
+              <small class="form-text text-muted">Optional: Leave blank to keep the current image.</small>
+            </div>
+          </div> 
+
+          <!-- Course Info -->
+          <div class="col-md-8">
+            <div class="row"> 
+              <!-- Course Name -->
+              <div class="col-md-6 mb-3">
+                <label for="name" class="form-label">Course Name</label>
+                <input type="text" class="form-control" id="name" formControlName="name"
+                  [ngClass]="{'is-invalid': hasError('name', 'required')}">
+                <div class="invalid-feedback" *ngIf="hasError('name', 'required')">
+                  Course name is required
+                </div>
+              </div> 
+
+              <!-- Teacher -->
+              <div class="col-md-6 mb-3">
+                <label for="teacher" class="form-label">Teacher</label>
+                <input type="text" class="form-control" id="teacher" formControlName="teacher"
+                  [ngClass]="{'is-invalid': hasError('teacher', 'required')}">
+                <div class="invalid-feedback" *ngIf="hasError('teacher', 'required')">
+                  Teacher name is required
+                </div>
+              </div>
+            </div> 
+
+            <!-- Description -->
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea class="form-control" id="description" formControlName="description" rows="3"
+                [ngClass]="{'is-invalid': hasError('description', 'required')}"></textarea>
+              <div class="invalid-feedback" *ngIf="hasError('description', 'required')">
+                Description is required
+              </div>
+            </div> 
+
+            <!-- Main Category -->
+            <div class="mb-3">
+              <label for="mainCategory" class="form-label">Main Category</label>
+              <input type="text" class="form-control" id="mainCategory" formControlName="mainCategory"
+                [ngClass]="{'is-invalid': hasError('mainCategory', 'required')}">
+              <div class="invalid-feedback" *ngIf="hasError('mainCategory', 'required')">
+                Main category is required
+              </div>
+            </div> 
+
+            <!-- Sub Category -->
+            <div class="mb-3">
+              <label for="subCategory" class="form-label">Sub Category</label>
+              <input type="text" class="form-control" id="subCategory" formControlName="subCategory"
+                [ngClass]="{'is-invalid': hasError('subCategory', 'required')}">
+              <div class="invalid-feedback" *ngIf="hasError('subCategory', 'required')">
+                Sub category is required
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-3">
+          <button type="button" class="btn btn-secondary me-2" (click)="onCancel()" [disabled]="isSubmitting">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="courseForm.invalid || isSubmitting">
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1" role="status"
+              aria-hidden="true"></span>
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>

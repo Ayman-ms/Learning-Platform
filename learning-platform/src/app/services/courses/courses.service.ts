@@ -7,13 +7,13 @@ import { Course } from 'src/app/models/courses';
   providedIn: 'root',
 })
 export class CoursesService {
-  private apiUrl = 'https://api.skillwave.com/courses'; // رابط الـ API الخاص بالكورسات
+  private apiUrl = 'http://localhost:5270/api/Courses'; // رابط الـ API الخاص بالكورسات
 
   constructor(private http: HttpClient) {}
 
   // جلب جميع الكورسات
-  getCourses(): Observable<Course[]> {
-    return this.http.get<Course[]>(this.apiUrl);
+  getCourses() {
+    return this.http.get<Course[]>(this.apiUrl).toPromise();
   }
 
   // إضافة كورس جديد
@@ -21,18 +21,22 @@ export class CoursesService {
     return this.http.post<Course>(this.apiUrl, course);
   }
 
-  // تحديث بيانات كورس
-  updateCourse(id: number, course: Course): Observable<Course> {
-    return this.http.put<Course>(`${this.apiUrl}/${id}`, course);
+  updateCourse(id: string, course: Course): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, course);
+  }
+
+  // New method for updating with image
+  updateCourseWithImage(id: string, formData: FormData): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, formData);
   }
 
   // حذف كورس
-  deleteCourse(id: number): Observable<void> {
+  deleteCourse(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
   // الحصول على كورس واحد
-  getCourseById(id: number): Observable<Course> {
+  getCourseById(id: string): Observable<Course> {
     return this.http.get<Course>(`${this.apiUrl}/${id}`);
   }
 }
