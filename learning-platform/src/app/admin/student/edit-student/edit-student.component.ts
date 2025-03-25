@@ -80,7 +80,14 @@ export class EditStudentComponent implements OnInit {
       alert("Edit not successful");
     }
   }
-
+  generateRandomPassword(): void {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+    let password = '';
+    for (let i = 0; i < 10; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    this.studentForm.patchValue({ password });
+  }
   // toggle input status
   toggleFirstNameEdit() {
     this.isFirstNameDisabled = !this.isFirstNameDisabled;

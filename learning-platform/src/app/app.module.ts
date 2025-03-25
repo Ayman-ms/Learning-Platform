@@ -44,6 +44,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PaginationControlComponent } from './admin/components/pagination-control/pagination-control.component';
 import { SearchBarComponent } from './admin/components/search-bar/search-bar.component';
 import { PasswordInputComponent } from './admin/components/password-input/password-input.component';
+import { AddCourseComponent } from './admin/Courses/add-course/add-course.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -79,7 +80,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     AdminMainCategoryComponent,
     PaginationControlComponent,
     SearchBarComponent,
-    PasswordInputComponent
+    PasswordInputComponent,
+    AddCourseComponent
   ],
   imports: [
     BrowserModule,

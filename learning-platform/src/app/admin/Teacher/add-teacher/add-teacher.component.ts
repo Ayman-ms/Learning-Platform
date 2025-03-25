@@ -34,6 +34,10 @@ export class AddTeacherComponent implements OnInit {
     
   }
 
+  triggerFileInput(): void {
+    document.getElementById('fileInput')?.click();
+  }
+
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
@@ -45,13 +49,10 @@ export class AddTeacherComponent implements OnInit {
       };
       reader.readAsDataURL(file);
       
-      console.log('📌 تم اختيار الصورة:', file.name);
+      console.log('📌 Image selected :', file.name);
     }
   }
 
-  triggerFileInput(): void {
-    document.getElementById('fileInput')?.click();
-  }
 
   onSubmit(): void {
     // Reset messages

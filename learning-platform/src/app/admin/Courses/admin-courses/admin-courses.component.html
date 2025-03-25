@@ -2,6 +2,8 @@
   <input type="text" class="form-control" [(ngModel)]="searchText" (input)="updateSearch()"
     placeholder="Search by Course Name, Teacher Name">
 </div>
+<button routerLink="new-courses">NEW</button>
+
 <div class="container">
   <div class="card" *ngFor="let course of filteredCourses">
 

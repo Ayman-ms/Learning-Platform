@@ -1093,19 +1093,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\moham\\.nuget\\packages\\": {}
+    "C:\\Users\\amslmani\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\angular\\testchatgpt\\SkillwaveAPI\\SkillwaveAPI.csproj",
+      "projectUniqueName": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\SkillwaveAPI.csproj",
       "projectName": "SkillwaveAPI",
-      "projectPath": "D:\\angular\\testchatgpt\\SkillwaveAPI\\SkillwaveAPI.csproj",
-      "packagesPath": "C:\\Users\\moham\\.nuget\\packages\\",
-      "outputPath": "D:\\angular\\testchatgpt\\SkillwaveAPI\\obj\\",
+      "projectPath": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\SkillwaveAPI.csproj",
+      "packagesPath": "C:\\Users\\amslmani\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\moham\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\amslmani\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1173,7 +1173,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

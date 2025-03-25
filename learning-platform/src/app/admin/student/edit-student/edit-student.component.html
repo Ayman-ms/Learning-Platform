@@ -19,13 +19,7 @@
                     [ngModelOptions]="{standalone: true}" placeholder="Last Name" class="inputTool" required>
                 <span (click)="toggleLastNameEdit()">Edit</span>
             </div>
-            <div class="itemLine">
-                <label>Password: </label>
-                <input [disabled]="isPasswordDisabled" [(ngModel)]="studentToEdit.password"
-                    [ngModelOptions]="{standalone: true}" type="password" placeholder="Password" class="inputTool"
-                    required>
-                <span (click)="togglePasswordEdit()">Edit</span>
-            </div>
+         
             <div class="itemLine">
                 <label>Email: </label>
                 <input [(ngModel)]="studentToEdit.email" [disabled]="isEmailDisabled"

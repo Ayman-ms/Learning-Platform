@@ -1,4 +1,4 @@
-/* تصميم الحاوية الرئيسية */
+/* main container */
 .infoContainer {
     padding: 20px;
     display: flex;
@@ -13,7 +13,6 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* تصميم البنود */
 .itemLine {
     display: flex;
     justify-content: space-between;
@@ -22,7 +21,6 @@
     width: 100%;
 }
 
-/* تصميم العناصر الداخلية */
 .itemLine label {
     flex: 1;
     font-weight: bold;
@@ -36,7 +34,6 @@
     margin-left: 10px;
 }
 
-/* تصميم الأزرار */
 .itemLine span {
     margin-left: 10px;
     cursor: pointer;
@@ -71,7 +68,6 @@
     background-color: var(--red-color);
 }
 
-/* تصميم صورة الملف الشخصي */
 .student-img {
     width: 100px;
     height: 100px;

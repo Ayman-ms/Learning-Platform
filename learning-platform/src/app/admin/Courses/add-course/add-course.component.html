@@ -1,0 +1,67 @@
+<p>add-course works!</p>
+<div class="container mt-4">
+    <div class="formContainer">
+        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+            <h2 class="logo">New Course</h2>
+
+            <!-- Success and error messages -->
+            <div *ngIf="successMessage" class="alert alert-success mb-3">
+                {{ successMessage }}
+            </div>
+            <div *ngIf="errorMessage" class="alert alert-danger mb-3">
+                {{ errorMessage }}
+            </div>
+
+            <div class="text-center mb-4">
+                <img [src]="selectedImage || './assets/courseImage.svg'" alt="Profile Picture" class="profile-img"
+                    (click)="triggerFileInput()">
+                <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" hidden>
+                <small class="text-muted d-block mt-2">Click on the image to upload a profile picture.</small>
+            </div>
+
+            <div class="input-container">
+                <input type="text" id="name" placeholder=" " formControlName="name">
+                <label for="name">Course Name</label>
+                <small class="text-danger" *ngIf="getFieldError('name')">{{ getFieldError('name') }}</small>
+            </div>
+
+            <div class="input-container">
+                <input type="text" id="description" placeholder=" " formControlName="description">
+                <label for="description">Description</label>
+                <small class="text-danger" *ngIf="getFieldError('description')">{{ getFieldError('description') }}</small>
+              </div>
+
+              <div class="input-container">
+                <input type="text" id="teacher" placeholder=" " formControlName="teacher">
+                <label for="teacher">Teacher</label>
+                <small class="text-danger" *ngIf="getFieldError('teacher')">{{ getFieldError('teacher') }}</small>
+              </div>
+              <div class="input-container">
+                <select matNativeControl id="mySelectId">
+                    <option value="" disabled selected>Select Teacher</option>
+                    <option *ngFor="let teacher of teachers" [value]="teacher.id">
+                        {{ teacher.firstName }} {{ teacher.lastName }}
+                      </option>
+                  </select>
+              </div>
+              <div class="input-container">
+                <select matNativeControl id="mySelectId">
+                    <option value="" disabled selected>Select Teacher</option>
+                    <option *ngFor="let mainCategory of mainCategory" [value]="mainCategory.id">
+                        {{ mainCategory.description }}
+                      </option>
+                  </select>
+              </div>
+              <div class="input-container">
+                <mat-form-field>
+                    <mat-label>Toppings</mat-label>
+                    <mat-select [formControl]="toppings" multiple>
+                      @for (topping of toppingList; track topping) {
+                        <mat-option [value]="topping">{{topping}}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+              </div>
+        </form>
+    </div>
+</div>

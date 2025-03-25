@@ -18,11 +18,13 @@ import { AddTeacherComponent } from './admin/Teacher/add-teacher/add-teacher.com
 import { AdminMainCategoryComponent } from './admin/main-category/admin-main-category/admin-main-category.component';
 import { AdminSubCategoryComponent } from './admin/sub-category/admin-sub-category/admin-sub-category.component';
 import { EditCourseComponent } from './admin/Courses/edit-course/edit-course.component';
+import { AddCourseComponent } from './admin/Courses/add-course/add-course.component';
 
 const routes: Routes = [
     {
       path: '',
-      component: HomeComponent
+      component: HomeComponent,
+      pathMatch:'full'
     },
     {
       path: 'register',
@@ -65,6 +67,10 @@ const routes: Routes = [
         {
           path:'courses',
           component: AdminCoursesComponent
+        },
+        {
+          path:'courses/new-courses',
+          component: AddCourseComponent
         },
         {
           path:'editcourse/:id',
