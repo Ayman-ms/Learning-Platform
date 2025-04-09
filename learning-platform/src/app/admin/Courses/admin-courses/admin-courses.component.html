@@ -1,29 +1,44 @@
-<div class="input-group mb-3">
-  <input type="text" class="form-control" [(ngModel)]="searchText" (input)="updateSearch()"
-    placeholder="Search by Course Name, Teacher Name">
-</div>
-<button routerLink="new-courses">NEW</button>
-
-<div class="container">
-  <div class="card" *ngFor="let course of filteredCourses">
-
-    <div class="card-body">
-      <img [src]="getImagePath(course.courseImage)" alt="Profile Picture" class="student-img" />
-      <p><strong>Course:</strong> {{ course.name }}</p>
-      <p><strong>Description:</strong> {{ course.description }}</p>
-      <p><strong>Teacher:</strong> {{ course.teacher }}</p>
-      <p><strong>Main Categorry:</strong> {{ course.mainCategory }}</p>
-      <p><strong>Sub Categorry:</strong> {{ course.subCategory }}</p>
-
-      <div class="cardButton">
-        <button class="btn editBtn" [routerLink]="['/admin/editcourse', course.id]">
-          <i class="bi bi-pencil-square"></i> Edit
-        </button>
-
-        <button class="btn deleteBtn" (click)="deleteUserClick(course.id)">
-          <i class="bi bi-trash3"></i>Delete
-        </button>
+<!-- HTML -->
+ <i class="bi bi-file-earmark-plus btn edit-btn" routerLink="/new-courses" >NEW</i>
+<div class="courses-container">
+  <div class="course-card" *ngFor="let course of filteredCourses">
+    <div class="course-header">
+      <img [src]="getImagePath(course.photoPath)" alt="Course Image" class="course-img">
+      <h3 class="course-title">{{ course.name }}</h3>
+    </div>
+    
+    <div class="course-content">
+      <div class="info-row">
+        <span class="label">Teacher:</span>
+        <span class="value">{{ course.teacher }}</span>
       </div>
+      
+      <div class="info-row">
+        <span class="label">Description:</span>
+        <p class="value description">{{ course.description }}</p>
+      </div>
+
+      <div class="info-row">
+        <span class="label">Main Category:</span>
+        <span class="value category">{{ course.mainCategory }}</span>
+      </div>
+
+      <div class="info-row">
+        <span class="label">Sub Categories:</span>
+        <div class="sub-categories">
+          <span class="sub-category-tag" *ngFor="let subCat of course.subCategories">
+            {{ subCat }}
+          </span>
+          <span *ngIf="!course.subCategories?.length" class="no-categories">
+            No sub categories
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="course-actions">
+        <i class="bi bi-pencil-square btn edit-btn" [routerLink]="['/admin/editcourse', course.id]">Edit</i> 
+        <i class="bi bi-trash3 btn delete-btn" (click)="deleteUserClick(course.id)">Delete</i> 
     </div>
   </div>
 </div>

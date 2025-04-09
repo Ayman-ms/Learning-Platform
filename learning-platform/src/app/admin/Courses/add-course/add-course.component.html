@@ -1,67 +1,112 @@
-<p>add-course works!</p>
 <div class="container mt-4">
-    <div class="formContainer">
-        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-            <h2 class="logo">New Course</h2>
+    <div class="course-form-container">
+        <div class="form-header">
+            <h2>Create New Course</h2>
+            <p>Fill in the course details below</p>
+        </div>
 
-            <!-- Success and error messages -->
-            <div *ngIf="successMessage" class="alert alert-success mb-3">
-                {{ successMessage }}
-            </div>
-            <div *ngIf="errorMessage" class="alert alert-danger mb-3">
-                {{ errorMessage }}
+        <form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
+            <!-- Alert Messages -->
+            <div class="alerts-container">
+                <div *ngIf="successMessage" class="alert success-alert">
+                    <i class="bi bi-check-circle"></i>
+                    {{ successMessage }}
+                </div>
+                <div *ngIf="errorMessage" class="alert error-alert">
+                    <i class="bi bi-exclamation-circle"></i>
+                    {{ errorMessage }}
+                </div>
             </div>
 
-            <div class="text-center mb-4">
-                <img [src]="selectedImage || './assets/courseImage.svg'" alt="Profile Picture" class="profile-img"
-                    (click)="triggerFileInput()">
+            <!-- Image Upload Section -->
+            <div class="image-upload-section">
+                <div class="image-preview">
+                    <img [src]="selectedImage || './assets/courseImage.svg'" alt="Course Image">
+                    <div class="upload-overlay" (click)="triggerFileInput()">
+                        <i class="bi bi-camera"></i>
+                        <span>Upload Image</span>
+                    </div>
+                </div>
                 <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" hidden>
-                <small class="text-muted d-block mt-2">Click on the image to upload a profile picture.</small>
             </div>
 
-            <div class="input-container">
-                <input type="text" id="name" placeholder=" " formControlName="name">
-                <label for="name">Course Name</label>
-                <small class="text-danger" *ngIf="getFieldError('name')">{{ getFieldError('name') }}</small>
+            <!-- Form Fields -->
+            <div class="form-grid">
+                <!-- Course Name -->
+                <div class="form-group full-width">
+                    <label>Course Name</label>
+                    <input type="text" formControlName="courseName" placeholder="Enter course name">
+                    <small class="error-message" *ngIf="getFieldError('courseName')">
+                        {{ getFieldError('courseName') }}
+                    </small>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group full-width">
+                    <label>Description</label>
+                    <textarea formControlName="description" placeholder="Enter course description"></textarea>
+                    <small class="error-message" *ngIf="getFieldError('description')">
+                        {{ getFieldError('description') }}
+                    </small>
+                </div>
+
+                <!-- Teacher Selection -->
+                <div class="form-group">
+                    <label>Select Teacher</label>
+                    <div class="select-wrapper">
+                        <select formControlName="teacher">
+                            <option value="" disabled>Choose a teacher</option>
+                            <option *ngFor="let teacher of teachers" [value]="teacher.firstName + ' ' + teacher.lastName">
+                                {{ teacher.firstName }} {{ teacher.lastName }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Main Category -->
+                <div class="form-group">
+                    <label>Main Category</label>
+                    <div class="select-wrapper">
+                        <select formControlName="mainCategory">
+                            <option value="" disabled>Select category</option>
+                            <option *ngFor="let mainCategory of mainCategories" [value]="mainCategory.description">
+                                {{ mainCategory.description }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Sub Categories -->
+                <div class="form-group full-width">
+                    <label>Sub Categories</label>
+                    <ng-multiselect-dropdown 
+                        [placeholder]="'Select sub categories'"
+                        [data]="subCategories"
+                        [settings]="dropdownSettings"
+                        formControlName="subCategories">
+                    </ng-multiselect-dropdown>
+                </div>
+
+                <!-- Status Toggle -->
+                <div class="form-group full-width">
+                    <div class="status-toggle">
+                        <label class="toggle-switch">
+                            <input type="checkbox" formControlName="status">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="toggle-label">Course Available</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="input-container">
-                <input type="text" id="description" placeholder=" " formControlName="description">
-                <label for="description">Description</label>
-                <small class="text-danger" *ngIf="getFieldError('description')">{{ getFieldError('description') }}</small>
-              </div>
-
-              <div class="input-container">
-                <input type="text" id="teacher" placeholder=" " formControlName="teacher">
-                <label for="teacher">Teacher</label>
-                <small class="text-danger" *ngIf="getFieldError('teacher')">{{ getFieldError('teacher') }}</small>
-              </div>
-              <div class="input-container">
-                <select matNativeControl id="mySelectId">
-                    <option value="" disabled selected>Select Teacher</option>
-                    <option *ngFor="let teacher of teachers" [value]="teacher.id">
-                        {{ teacher.firstName }} {{ teacher.lastName }}
-                      </option>
-                  </select>
-              </div>
-              <div class="input-container">
-                <select matNativeControl id="mySelectId">
-                    <option value="" disabled selected>Select Teacher</option>
-                    <option *ngFor="let mainCategory of mainCategory" [value]="mainCategory.id">
-                        {{ mainCategory.description }}
-                      </option>
-                  </select>
-              </div>
-              <div class="input-container">
-                <mat-form-field>
-                    <mat-label>Toppings</mat-label>
-                    <mat-select [formControl]="toppings" multiple>
-                      @for (topping of toppingList; track topping) {
-                        <mat-option [value]="topping">{{topping}}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
-              </div>
+            <!-- Submit Button -->
+            <div class="form-actions">
+                <button type="button" class="secondary-btn">Cancel</button>
+                <button type="submit" class="primary-btn" [disabled]="loading || !courseForm.valid">
+                    <span *ngIf="loading" class="spinner"></span>
+                    {{ loading ? 'Creating...' : 'Create Course' }}
+                </button>
+            </div>
         </form>
     </div>
 </div>

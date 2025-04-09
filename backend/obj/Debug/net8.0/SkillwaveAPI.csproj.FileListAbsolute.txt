@@ -91,3 +91,5 @@ C:\Users\amslmani\OneDrive - Meta-Level Software AG\Desktop\Angular\Learning-Pla
 C:\Users\amslmani\OneDrive - Meta-Level Software AG\Desktop\Angular\Learning-Platform\backend\obj\Debug\net8.0\SkillwaveAPI.pdb
 C:\Users\amslmani\OneDrive - Meta-Level Software AG\Desktop\Angular\Learning-Platform\backend\obj\Debug\net8.0\SkillwaveAPI.genruntimeconfig.cache
 C:\Users\amslmani\OneDrive - Meta-Level Software AG\Desktop\Angular\Learning-Platform\backend\obj\Debug\net8.0\ref\SkillwaveAPI.dll
+C:\Users\amslmani\OneDrive - Meta-Level Software AG\Desktop\Angular\Learning-Platform\backend\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\amslmani\OneDrive - Meta-Level Software AG\Desktop\Angular\Learning-Platform\backend\bin\Debug\net8.0\SkillwaveAPI.staticwebassets.runtime.json

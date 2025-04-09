@@ -21,11 +21,7 @@
 .sectionTitle{
     color: var(--blue-color);
 }
-/* @media (max-width: 480px) {
-    body{
-        width: 100%;
-    }
-  } */
+
   .sectionText {
     font-size: 20px;
     font-weight: 400;
@@ -53,4 +49,13 @@ body {
 
 app-search-bar{
   width: 100%;
+}
+.main-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.content-wrapper {
+  flex: 1;
+  display: flex;
 }

@@ -1,125 +1,142 @@
-/* start sidebar */
-.sidebar{
-    z-index: 1;
-    height: 100%;
-    background-color: var(--logo-bg-color);
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-bottom:60px; 
-    padding-top: 60px;
-}
-.sidebar .close-btn{
-    display: none;
-}
-h3 {
-    text-align: center;
+.layout-container {
+  display: flex;
+  min-height: 100vh;
 }
 
-ul {
-    background-color: var(--logo-bg-color);
-    text-align: center;
+.menu-toggle {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  background: var(--logo-bg-color);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-li {
-    margin: 10px;
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--logo-bg-color);
+  color: white;
+  height: 100vh;
+  /* position: fixed; */
+  transition: transform var(--transition-speed);
 }
 
-li:active,
-li:hover {
-    background-color: var(--blue-color);
+.sidebar-header {
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-li a {
-    align-items: center;
-    color: var(--white-color);
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
 }
 
-.open-btn {
-    display: none;
-    font-size: 30px;
-    cursor: pointer;
-    background-color: var(--logo-bg-color);
-    color: white;
-    border: none;
-    padding: 10px;
+.close-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.5rem;
 }
 
-/* end sidebar */
+.nav-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
-/* تطبيق تغييرات للشاشات التي حجمها أقل من 768 بكسل (أجهزة محمولة) */
+.nav-item {
+  margin: 0;
+}
+
+.nav-item a {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  color: white;
+  text-decoration: none;
+  transition: background-color var(--transition-speed);
+}
+
+.nav-item a:hover,
+.nav-item a.active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-item i {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  padding: 20px;
+  transition: margin var(--transition-speed);
+}
+
 @media (max-width: 768px) {
-    .sidebar {
-        height: 100%;
-        width: 0;
-        position: fixed;
-        z-index: 1;
-        top: 0;
-        left: 0;
-        background-color: var(--logo-bg-color);
-        overflow-x: hidden;
-        transition: 0.5s;
-        padding-top: 60px;
-    }
-    .sidebar .close-btn {
-        position: absolute;
-        display: block;
-        top: 0;
-        right: 25px;
-        font-size: 36px;
-    }
-    /* الزر لفتح القائمة الجانبية */
-    .open-btn {
-        display: inline;
-    }
-    
-}
-@media (min-width: 769px) and (max-width: 1024px) {
-
-    .sidebar {
-        height: 100%;
-
-        width: 0;
-        position: fixed;
-        z-index: 1;
-        top: 0;
-        left: 0;
-        background-color: var(--logo-bg-color);
-        overflow-x: hidden;
-        transition: 0.5s;
-        padding-top: 60px;
-    }
-    .sidebar .close-btn {
-        position: absolute;
-        top: 0;
-        right: 25px;
-        display: block;
-        font-size: 36px;
-    }
-    /* الزر لفتح القائمة الجانبية */
-    .open-btn {
-
-        display: inline;
-    }
-  }
-.sidebar a {
-    padding: 10px 15px;
-    text-decoration: none;
-    font-size: 25px;
-    color: white;
+  .menu-toggle {
     display: block;
-    transition: 0.3s;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    z-index: 1000;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  .close-btn {
+    display: block;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding-top: 60px;
+  }
+
+  .main-content.sidebar-active {
+    position: relative;
+  }
+
+  .main-content.sidebar-active::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
 }
 
-.sidebar a:hover {
-    color: #f1f1f1;
+/* تحسينات إضافية للموبايل */
+@media (max-width: 480px) {
+  .nav-item a {
+    padding: 12px 15px;
+    font-size: 0.9rem;
+  }
+
+  .nav-item i {
+    font-size: 1rem;
+  }
+
+  .sidebar-header h3 {
+    font-size: 1rem;
+  }
 }
 
-.show {
-    width: 100%;
-}
-
-.content {
-    transition: margin-left 0.5s;
-    padding: 16px;
-
-}

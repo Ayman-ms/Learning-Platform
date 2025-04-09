@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "jXg7YOtJwh0=",
+  "dgSpecHash": "2KrbatxQK/c=",
   "success": true,
   "projectFilePath": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\SkillwaveAPI.csproj",
   "expectedPackageFiles": [
@@ -14,6 +14,7 @@
     "C:\\Users\\amslmani\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
     "C:\\Users\\amslmani\\.nuget\\packages\\mongodb.bson\\3.1.0\\mongodb.bson.3.1.0.nupkg.sha512",
     "C:\\Users\\amslmani\\.nuget\\packages\\mongodb.driver\\3.1.0\\mongodb.driver.3.1.0.nupkg.sha512",
+    "C:\\Users\\amslmani\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\amslmani\\.nuget\\packages\\sharpcompress\\0.30.1\\sharpcompress.0.30.1.nupkg.sha512",
     "C:\\Users\\amslmani\\.nuget\\packages\\snappier\\1.0.0\\snappier.1.0.0.nupkg.sha512",
     "C:\\Users\\amslmani\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",

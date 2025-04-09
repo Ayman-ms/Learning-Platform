@@ -1,55 +1,47 @@
-<button class="open-btn" (click)="openNav()">☰</button>
-<div class="sidebar" [ngClass]="{'show': showSidebar}">
-
-  <a href="javascript:void(0)" class="close-btn" (click)="closeNav()">&times;</a>
-    <hr>
-    <ul class="nav nav-pills flex-column mb-auto">
+<div class="layout-container">
+    <button class="menu-toggle" (click)="toggleNav()">
+      <i class="bi bi-list"></i>
+    </button>
+  
+    <nav class="sidebar" [class.active]="showSidebar">
+      <div class="sidebar-header">
+        <h3>Admin Panel</h3>
+        <button class="close-btn" (click)="closeNav()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+  
+      <ul class="nav-menu">
         <li class="nav-item">
-            <a routerLink="students" class="nav-link " aria-current="page">
-                Students
-            </a>
-        </li>
-        <li class="nav-item">
-            <a routerLink="teachers" class="nav-link " aria-current="page">
-                Teachers
-            </a>
-        </li>
-        <li class="nav-item">
-            <a routerLink="courses" class="nav-link " aria-current="page">
-                Courses
-            </a>
-        </li>
-        <li class="nav-item">
-            <a routerLink="maincategory" class="nav-link " aria-current="page">
-                Main Category
-            </a>
+          <a routerLink="students" routerLinkActive="active">
+            <i class="bi bi-people"></i>
+            <span>Students</span>
+          </a>
         </li>
         <li class="nav-item">
-            <a routerLink="subcategory" class="nav-link " aria-current="page">
-                Sub Category
-            </a>
+          <a routerLink="teachers" routerLinkActive="active">
+            <i class="bi bi-person-video3"></i>
+            <span>Teachers</span>
+          </a>
         </li>
-        <!-- <li>
-            <a href="#" class="nav-link">
-                Dashboard
-            </a>
+        <li class="nav-item">
+          <a routerLink="courses" routerLinkActive="active">
+            <i class="bi bi-book"></i>
+            <span>Courses</span>
+          </a>
         </li>
-        <li>
-            <a href="#" class="nav-link">
-                Orders
-            </a>
+        <li class="nav-item">
+          <a routerLink="maincategory" routerLinkActive="active">
+            <i class="bi bi-grid"></i>
+            <span>Main Category</span>
+          </a>
         </li>
-        <li>
-            <a href="#" class="nav-link">
-                Products
-            </a>
+        <li class="nav-item">
+          <a routerLink="subcategory" routerLinkActive="active">
+            <i class="bi bi-diagram-3"></i>
+            <span>Sub Category</span>
+          </a>
         </li>
-        <li>
-            <a href="#" class="nav-link">
-                Customers
-            </a>
-        </li> -->
-    </ul>
-    <hr>
-</div>
-<div class="mangeSide col-8"></div>
+      </ul>
+    </nav>
+  </div>

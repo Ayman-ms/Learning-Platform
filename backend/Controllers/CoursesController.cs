@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using SkillwaveAPI.Services;
 using SkillwaveAPI.Models;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace SkillwaveAPI.Controllers
 {
@@ -17,9 +18,22 @@ namespace SkillwaveAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Course>>> GetCourses()
+        public async Task<ActionResult<List<Student>>> GetCourses()
         {
             var courses = await _jsonFileService.ReadAsync();
+
+            foreach (var course in courses)
+            {
+                if (string.IsNullOrEmpty(course.PhotoPath))
+                {
+                    Console.WriteLine($"🚨 تحذير: {course.Name} لا يحتوي على صورة!");
+                }
+                else
+                {
+                    Console.WriteLine($"✅ {course.Name} لديه صورة");
+                }
+            }
+
             return Ok(courses);
         }
 
@@ -35,24 +49,58 @@ namespace SkillwaveAPI.Controllers
             return Ok(course);
         }
 
+
         [HttpPost]
-        public async Task<ActionResult<Course>> CreateCourse(Course course, IFormFile photo)
+        public async Task<ActionResult<Course>> CreateCourse(
+    [FromForm] string courseName,
+    [FromForm] string description,
+    [FromForm] string status,
+    [FromForm] string teacher,
+    [FromForm] string mainCategory,
+    [FromForm] string subCategories,
+    IFormFile? photo)
         {
             var courses = await _jsonFileService.ReadAsync();
+            var courseId = Guid.NewGuid().ToString();
 
-            // تحويل الصورة إلى Base64
+            var newCourse = new Course
+            {
+                Id = courseId,
+                Name = courseName,
+                Description = description,
+                Status = status,
+                Teacher = teacher,
+                MainCategory = mainCategory,
+                SubCategories = JsonConvert.DeserializeObject<List<string>>(subCategories) ?? new List<string>()
+            };
+
             if (photo != null)
             {
-                using (var memoryStream = new MemoryStream())
+                // إنشاء مجلد للصور إذا لم يكن موجوداً
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "courses");
+                if (!Directory.Exists(uploadsFolder))
                 {
-                    await photo.CopyToAsync(memoryStream);
-                    course.PhotoBase64 = Convert.ToBase64String(memoryStream.ToArray());
+                    Directory.CreateDirectory(uploadsFolder);
                 }
+
+                // حفظ الصورة باسم يتضمن معرف الكورس
+                var fileExtension = Path.GetExtension(photo.FileName);
+                var fileName = $"{courseId}{fileExtension}";
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await photo.CopyToAsync(fileStream);
+                }
+
+                // حفظ مسار الصورة في الكورس
+                newCourse.PhotoPath = $"/courses/{fileName}";
             }
 
-            courses.Add(course);
+            courses.Add(newCourse);
             await _jsonFileService.WriteAsync(courses);
-            return CreatedAtAction(nameof(GetCourse), new { id = course.Id }, course);
+
+            return CreatedAtAction(nameof(GetCourse), new { id = newCourse.Id }, newCourse);
         }
 
         [HttpPut("{id}")]
@@ -65,25 +113,41 @@ namespace SkillwaveAPI.Controllers
                 return NotFound();
             }
 
-            // تحويل الصورة إلى Base64
             if (photo != null)
             {
-                using (var memoryStream = new MemoryStream())
+                // حذف الصورة القديمة إذا وجدت
+                if (!string.IsNullOrEmpty(courses[courseIndex].PhotoPath))
                 {
-                    await photo.CopyToAsync(memoryStream);
-                    updatedCourse.PhotoBase64 = Convert.ToBase64String(memoryStream.ToArray());
+                    var oldPhotoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot",
+                        courses[courseIndex].PhotoPath.TrimStart('/'));
+                    if (System.IO.File.Exists(oldPhotoPath))
+                    {
+                        System.IO.File.Delete(oldPhotoPath);
+                    }
                 }
+
+                // حفظ الصورة الجديدة
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "courses");
+                var fileExtension = Path.GetExtension(photo.FileName);
+                var fileName = $"{id}{fileExtension}";
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await photo.CopyToAsync(fileStream);
+                }
+
+                updatedCourse.PhotoPath = $"/courses/{fileName}";
             }
             else
             {
-                updatedCourse.PhotoBase64 = courses[courseIndex].PhotoBase64;
+                updatedCourse.PhotoPath = courses[courseIndex].PhotoPath;
             }
 
             courses[courseIndex] = updatedCourse;
             await _jsonFileService.WriteAsync(courses);
             return NoContent();
         }
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(string id)
         {
@@ -99,3 +163,4 @@ namespace SkillwaveAPI.Controllers
         }
     }
 }
+

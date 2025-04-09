@@ -34,19 +34,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
-
-// تمكين سياسة CORS
+app.UseStaticFiles();
 app.UseCors("AllowAngular"); 
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-
 app.UseSwagger();
 app.UseSwaggerUI();
-// (c =>
-// {
-//     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-// }
-// );
 
 app.Run();

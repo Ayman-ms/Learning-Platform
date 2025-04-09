@@ -15,8 +15,8 @@ import { SessionService } from 'src/app/services/session/session.service';
 })
 export class EditCourseComponent {
   coursesToEdit: Course = {
-    id: '', name: '', description: '', status: false, teacher: '',
-    time: 0, courseImage: '', mainCategory: '', subCategory: ''
+    id: '', name: '', description: '', status: '', teacher: '',
+    time: '', photoPath: '', mainCategory: '', subCategories: []
   };
   courseId!: string;
   isLoading = false;
@@ -103,13 +103,13 @@ export class EditCourseComponent {
             description: course.description,
             teacher: course.teacher,
             mainCategory: course.mainCategory,
-            subCategory: course.subCategory,
+            subCategory: course.subCategories,
             status: course.status,
             time: course.time
           });
 
-          if (course.courseImage) {
-            this.imagePreview = course.courseImage;
+          if (course.photoPath) {
+            this.imagePreview = course.photoPath;
           }
         }
       });
@@ -136,7 +136,7 @@ export class EditCourseComponent {
         description: formValues.description,
         teacher: formValues.teacher,
         mainCategory: formValues.mainCategory,
-        subCategory: formValues.subCategory,
+        subCategories: formValues.subCategories,
         status: formValues.status || this.coursesToEdit.status,
         time: formValues.time || this.coursesToEdit.time
       };

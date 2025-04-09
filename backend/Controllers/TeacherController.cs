@@ -36,29 +36,42 @@ namespace SkillwaveAPI.Controllers
             return Ok(teacher);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Teacher>> CreateTeacher(Teacher teacher, IFormFile photo)
+         [HttpPost("register")]
+    public async Task<ActionResult<Teacher>> Register([FromForm] TeacherDTO teacherDto)
+    {
+        try
         {
-            var teachers = await _jsonFileService.ReadAsync();
+            var teacher = new Teacher
+            {
+                FirstName = teacherDto.FirstName,
+                LastName = teacherDto.LastName,
+                Email = teacherDto.Email,
+                Phone = teacherDto.Phone,
+                Password = BCrypt.Net.BCrypt.HashPassword(teacherDto.Password)
+            };
 
-            // تشفير كلمة المرور
-            teacher.Password = BCrypt.Net.BCrypt.HashPassword(teacher.Password);
-
-            // تحويل الصورة إلى Base64
-            if (photo != null)
+            if (teacherDto.Photo != null)
             {
                 using (var memoryStream = new MemoryStream())
                 {
-                    await photo.CopyToAsync(memoryStream);
-                    teacher.PhotoBase64 = Convert.ToBase64String(memoryStream.ToArray());
+                    await teacherDto.Photo.CopyToAsync(memoryStream);
+                    teacher.ProfileImage = Convert.ToBase64String(memoryStream.ToArray());
                 }
             }
 
+            var teachers = await _jsonFileService.ReadAsync();
             teachers.Add(teacher);
             await _jsonFileService.WriteAsync(teachers);
+
             return CreatedAtAction(nameof(GetTeacher), new { id = teacher.Id }, teacher);
         }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
+    }
 
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTeacher(string id, Teacher updatedTeacher, IFormFile photo)
         {
@@ -78,12 +91,12 @@ namespace SkillwaveAPI.Controllers
                 using (var memoryStream = new MemoryStream())
                 {
                     await photo.CopyToAsync(memoryStream);
-                    updatedTeacher.PhotoBase64 = Convert.ToBase64String(memoryStream.ToArray());
+                    updatedTeacher.ProfileImage = Convert.ToBase64String(memoryStream.ToArray());
                 }
             }
             else
             {
-                updatedTeacher.PhotoBase64 = teachers[teacherIndex].PhotoBase64;
+                updatedTeacher.ProfileImage = teachers[teacherIndex].ProfileImage;
             }
 
             teachers[teacherIndex] = updatedTeacher;

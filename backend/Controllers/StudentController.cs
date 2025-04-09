@@ -18,25 +18,11 @@ namespace SkillwaveAPI.Controllers
             _jsonFileService = jsonFileService;
         }
 
-        // [HttpGet]
-        // public async Task<ActionResult<List<Student>>> GetStudents()
-        // {
-        //     var students = await _jsonFileService.ReadAsync();
-        //     // التحقق من البيانات
-        //     foreach (var student in students)
-        //     {
-        //         Console.WriteLine($"Student: {student.FirstName}, Avatar: {student.PhotoBase64}");
-        //     }
-        //     return Ok(students);
-        // }
-
-
         [HttpGet]
         public async Task<ActionResult<List<Student>>> GetStudents()
         {
             var students = await _jsonFileService.ReadAsync();
 
-            // ✅ التحقق من صحة البيانات
             foreach (var student in students)
             {
                 if (string.IsNullOrEmpty(student.PhotoBase64))

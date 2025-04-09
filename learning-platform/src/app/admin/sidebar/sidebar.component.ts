@@ -16,4 +16,9 @@ export class SidebarComponent {
   closeNav() {
     this.showSidebar = false;
   }
+
+  toggleNav() {
+    this.showSidebar = !this.showSidebar;
+  }
+
 }

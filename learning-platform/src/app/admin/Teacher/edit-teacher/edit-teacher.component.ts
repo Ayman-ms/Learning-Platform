@@ -170,7 +170,7 @@ export class TeacherEditComponent implements OnInit {
       console.log(pair[0] + ': ' + pair[1]);
     }
 
-    this.teacherService.updateTeacherWithFormData(this.teacherId, formData)
+    this.teacherService.updateTeacher(this.teacherId, formData)
       .pipe(
         catchError(error => {
           this.errorMessage = 'حدث خطأ أثناء تحديث بيانات المدرس: ' + (error.error?.message || error.message);

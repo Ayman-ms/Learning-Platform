@@ -9,7 +9,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
   templateUrl: './admin-courses.component.html',
   styleUrls: ['./admin-courses.component.css'],
   providers: [ConfirmationService, MessageService]
-
 })
 export class AdminCoursesComponent {
   courseForm: FormGroup;
@@ -25,9 +24,7 @@ export class AdminCoursesComponent {
   paginatedRows: Array<Array<Course>> = [];
 
   constructor(private fb: FormBuilder, private coursesService: CoursesService, 
-    private messageService: MessageService
-
-  ) {
+    private messageService: MessageService) {
     this.courseForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', Validators.required],
@@ -37,9 +34,28 @@ export class AdminCoursesComponent {
   }
 
   async ngOnInit() {
-    this.coursessList = await this.coursesService.getCourses() || [];
+    this.coursessList = await this.coursesService.getCourses() || [];console.log('Courses received:', this.coursessList); 
     this.filteredCourses = [...this.coursessList];
     this.updateSearch();
+    try {
+      this.coursessList = await this.coursesService.getCourses() || [];
+      console.log('Courses loaded:', this.coursessList); // للتحقق من البيانات
+      this.filteredCourses = [...this.coursessList];
+      this.updateSearch();
+  } catch (error) {
+      console.error('Error loading courses:', error);
+  }
+  }
+  // دالة مساعدة للتحقق من وجود تصنيفات فرعية
+  hasSubCategories(course: Course): boolean {
+    return Array.isArray(course.subCategories) && course.subCategories.length > 0;
+}
+    // دالة مساعدة للحصول على نص التصنيفات الفرعية
+    getSubCategoriesText(course: Course): string {
+      if (this.hasSubCategories(course)) {
+          return course.subCategories.join(', ');
+      }
+      return 'No sub categories';
   }
 
   updateSearch() {
@@ -50,20 +66,24 @@ export class AdminCoursesComponent {
         )
       : [...this.coursessList];
 
-    this.paginatedCourses = [...this.filteredCourses]; // إعادة ضبط البيانات للـ pagination
+    this.paginatedCourses = [...this.filteredCourses];
   }
-
+  getSubCategoriesDisplay(course: Course): string {
+    if (!course.subCategories || course.subCategories.length === 0) {
+        return 'No sub categories';
+    }
+    return course.subCategories.join(', ');
+}
   onPaginatedData(event: Course[]) {
     this.paginatedCourses = event;
   }
 
-  // معالجة اختيار الصورة
   onImageSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
       this.selectedImage = file;
 
-      // عرض الصورة في واجهة المستخدم قبل الرفع
+      // العرض المسبق للصورة
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.previewImage = e.target.result;
@@ -72,13 +92,13 @@ export class AdminCoursesComponent {
     }
   }
 
-  getImagePath(imageFileName: string | undefined): string {
-    if (!imageFileName || imageFileName.trim() === '') {
-      return 'assets/default-profile.png';
-    }  
-    return `${imageFileName}`;
+  getImagePath(imageFilePath: string | undefined): string {
+    if (!imageFilePath || imageFilePath.trim() === '') {
+      return 'assets/default-profile.png'; // صورة افتراضية
+    }
+    return `http://localhost:5270${imageFilePath}`; // تأكد من ربط الصورة بالسيرفر
   }
-  // رفع النموذج إلى الخادم
+
   async onSubmit() {
     if (this.courseForm.invalid || !this.selectedImage) {
       alert('Please fill all fields and select an image.');
@@ -104,18 +124,17 @@ export class AdminCoursesComponent {
 
   async deleteUserClick(id: string | undefined) {
     if (!id) {
-      console.error("❌ Teacher ID is undefined, cannot delete.");
+      console.error("❌ Course ID is undefined, cannot delete.");
       return;
     }  
     let result = await this.coursesService.deleteCourse(id);
 
     if (result) {
-      // this.lo();
       this.messageService.clear();
       this.messageService.add({ key: 'c', sticky: true, severity: 'error', summary: 'Are you sure?', detail: 'Confirm to proceed' });
-      window.location.reload()
+      window.location.reload();
     } else {
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete teacher.' });
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete course.' });
     }
   }
 }

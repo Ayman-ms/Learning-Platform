@@ -5,7 +5,7 @@ import { FormsModule , ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './nav/navbar/navbar.component';
@@ -22,7 +22,8 @@ import { SignupComponent } from './user/signup/signup.component';
 import { UpdateUserComponent } from './user/update-user/update-user.component';
 import { UserSidebarComponent } from './user/sidebar/sidebar.component';
 import { UserInfoComponent } from './user/user-info/user-info.component';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
+
 //primeng 
 import { MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
@@ -85,6 +86,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   ],
   imports: [
     BrowserModule,
+    NgMultiSelectDropDownModule.forRoot(),
     RouterModule,
     CommonModule, 
     AppRoutingModule,
