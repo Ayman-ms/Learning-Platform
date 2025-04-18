@@ -32,11 +32,12 @@ export class EditCourseComponent implements OnInit {
   selectedFile: File | null = null;
   imagePreview: SafeUrl | null = null;
   courseForm!: FormGroup;
-  subCategories: SubCategory[] = []; // قائمة الفئات الفرعية
+  subCategoriesList: SubCategory[] = []; // قائمة الفئات الفرعية
   teachers: any[] = []; // قائمة المدرسين 
   mainCategories: MainCategory[] = [];
   dropdownSettings: IDropdownSettings = {};
-  
+
+
   getImagePath(imageFilePath: string | undefined): string {
     if (!imageFilePath || imageFilePath.trim() === '') {
       return 'assets/default-profile.png'; // صورة افتراضية
@@ -67,7 +68,7 @@ export class EditCourseComponent implements OnInit {
         teacher: ['', Validators.required],
         description: ['', Validators.required],
         mainCategory: ['', Validators.required],
-        subCategories: [[], Validators.required], // إضافة الحقل subCategories كقائمة
+        subCategories: [[], Validators.required], // إضافة الحقل subCategoriesList كقائمة
         status: [false, Validators.required],
         time: [0]
       });
@@ -97,8 +98,8 @@ export class EditCourseComponent implements OnInit {
   
       // تحميل الفئات الفرعية
       this.subCategoryService.getSubCategories().then(subCategories => {
-        this.subCategories = subCategories;
-        console.log('Loaded subcategories:', this.subCategories); // للتأكد من تحميل الفئات الفرعية
+        this.subCategoriesList = subCategories;
+        console.log('Loaded subcategories:', this.subCategoriesList); // للتأكد من تحميل الفئات الفرعية
       });
   
       // تحميل بيانات الكورس
@@ -161,7 +162,7 @@ export class EditCourseComponent implements OnInit {
             });
   
             // ضبط القيم المختارة في Sub Categories
-            this.subCategories = this.subCategories.filter(subCategory =>
+            this.subCategoriesList = this.subCategoriesList.filter(subCategory =>
               course.subCategories.includes(subCategory.id)
             );
   
@@ -235,15 +236,15 @@ export class EditCourseComponent implements OnInit {
   
     // معالجة اختيار Sub Category
     onSubCategorySelect(event: any): void {
-      const selectedIds = this.subCategories.map(subCategory => subCategory.id);
+      const selectedIds = this.subCategoriesList.map(subCategory => subCategory.id);
       if (!selectedIds.includes(event.id)) {
-        this.subCategories.push(event);
+        this.subCategoriesList.push(event);
       }
     }
   
     // معالجة إلغاء اختيار Sub Category
     onSubCategoryDeselect(event: any): void {
-      this.subCategories = this.subCategories.filter(subCategory => subCategory.id !== event.id);
+      this.subCategoriesList = this.subCategoriesList.filter(subCategory => subCategory.id !== event.id);
     }
   }
   

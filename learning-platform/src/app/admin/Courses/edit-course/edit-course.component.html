@@ -90,9 +90,9 @@
               <label>Sub Categories</label>
               <ng-multiselect-dropdown 
                   [placeholder]="'Select sub categories'"
-                  [data]="mainCategories"
+                  [data]="subCategoriesList"
                   [settings]="dropdownSettings"
-                  [ngModel]="mainCategories"
+                  [ngModel]="subCategoriesList"
                   (onSelect)="onSubCategorySelect($event)"
                   (onDeSelect)="onSubCategoryDeselect($event)"
                   formControlName="subCategories">
