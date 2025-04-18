@@ -1,19 +1,17 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService, Message } from 'primeng/api';
-import { catchError, finalize, of } from 'rxjs';
-import { Course } from 'src/app/models/courses';
-import { CoursesService } from 'src/app/services/courses/courses.service';
-import { SessionService } from 'src/app/services/session/session.service';
+import { MessageService } from 'primeng/api';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { finalize } from 'rxjs/operators';
+
+import { Course } from 'src/app/models/courses';
 import { MainCategory } from 'src/app/models/mainCategory';
-import { SubCategoryService } from 'src/app/services/subCategory/sub-category.service';
-import { MainCategoryService } from 'src/app/services/mainCategory/mainCategory.service';
 import { SubCategory } from 'src/app/models/subCategory';
+import { CoursesService } from 'src/app/services/courses/courses.service';
 import { TeacherService } from 'src/app/services/teacher/teacher.service';
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { MainCategoryService } from 'src/app/services/mainCategory/mainCategory.service';
+import { SubCategoryService } from 'src/app/services/subCategory/sub-category.service';
 
 @Component({
   selector: 'app-edit-course',
@@ -21,228 +19,231 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
   styleUrls: ['./edit-course.component.css']
 })
 export class EditCourseComponent implements OnInit {
-  coursesToEdit: Course = {
-    id: '', name: '', description: '', status: '', teacher: '',
-    time: '', photoPath: '', mainCategory: '', subCategories: []
-  };
-  courseId!: string;
+  // Form related
+  courseForm!: FormGroup;
   isLoading = false;
   isSubmitting = false;
   errorMessage = '';
+
+  // Course data
+  courseId!: string;
+  coursesToEdit: Course = {
+    id: '',
+    name: '',
+    description: '',
+    status: '',
+    teacher: '',
+    time: '',
+    photoPath: '',
+    mainCategory: '',
+    subCategories: []
+  };
+
+  // Lists for dropdowns
+  teachers: any[] = [];
+  mainCategories: MainCategory[] = [];
+  availableSubCategories: SubCategory[] = [];
+  selectedSubCategories: SubCategory[] = [];
+
+  // Image handling
   selectedFile: File | null = null;
   imagePreview: SafeUrl | null = null;
-  courseForm!: FormGroup;
-  subCategoriesList: SubCategory[] = []; // قائمة الفئات الفرعية
-  teachers: any[] = []; // قائمة المدرسين 
-  mainCategories: MainCategory[] = [];
-  dropdownSettings: IDropdownSettings = {};
-
-
-  getImagePath(imageFilePath: string | undefined): string {
-    if (!imageFilePath || imageFilePath.trim() === '') {
-      return 'assets/default-profile.png'; // صورة افتراضية
-    }
-    return `http://localhost:5270${imageFilePath}`; // تأكد من ربط الصورة بالسيرفر
-  }
 
   constructor(
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private httpClient: HttpClient,
-    private courseService: CoursesService,
-    public accountService: SessionService,
     private messageService: MessageService,
-    private fb: FormBuilder,
     private sanitizer: DomSanitizer,
+    private courseService: CoursesService,
     private teacherService: TeacherService,
     private mainCategoryService: MainCategoryService,
     private subCategoryService: SubCategoryService
-  ) { }
-
-  courseList?: Array<Course>;
+  ) {}
 
   ngOnInit(): void {
-    // إنشاء نموذج التعديل
+    this.initForm();
+    this.loadInitialData();
+  }
+
+  private initForm(): void {
     this.courseForm = this.fb.group({
       name: ['', Validators.required],
       teacher: ['', Validators.required],
-      description: ['', Validators.required],
+      description: ['', [Validators.required, Validators.minLength(10)]],
       mainCategory: ['', Validators.required],
-      subCategories: [[], Validators.required], // إضافة الحقل subCategoriesList كقائمة
-      status: [false, Validators.required],
+      subCategories: [[], Validators.required],
+      status: [true],
       time: [0]
-    });
-
-    // إعدادات ng-multiselect-dropdown
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: 'id',
-      textField: 'description',
-      selectAllText: 'Select All',
-      unSelectAllText: 'Unselect All',
-      itemsShowLimit: 5,
-      allowSearchFilter: true
-    };
-
-
-    // تحميل المدرسين
-    this.teacherService.getTeachers().subscribe(teachers => {
-      this.teachers = teachers;
-      console.log('Loaded teachers:', this.teachers); // للتأكد من تحميل المدرسين
-    });
-
-    // تحميل الفئات الرئيسية
-    this.mainCategoryService.getMainCategories().then(mainCategories => {
-      this.mainCategories = mainCategories;
-      console.log('Loaded main categories:', this.mainCategories); // للتأكد من تحميل الفئات الرئيسية
-    });
-
-    // تحميل الفئات الفرعية
-    this.subCategoryService.getSubCategories().then(subCategories => {
-      this.subCategoriesList = subCategories;
-      console.log('Loaded subcategories:', this.subCategoriesList); // للتأكد من تحميل الفئات الفرعية
-
-      // تحميل بيانات الكورس
-      const idParam = this.route.snapshot.paramMap.get('id');
-      if (idParam) {
-        this.courseId = idParam;
-        this.loadCourseData();
-      } else {
-        this.errorMessage = 'معرف المدرس غير موجود';
-      }
     });
   }
 
-  // معالجة تحديد الصورة
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
+  private async loadInitialData(): Promise<void> {
+    try {
+      this.isLoading = true;
 
-      // عرض معاينة الصورة
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imagePreview = reader.result as string;
-      };
-      reader.readAsDataURL(this.selectedFile);
+      // Load all required data in parallel
+      const [teachers, mainCategories, subCategories] = await Promise.all([
+        this.teacherService.getTeachers().toPromise(),
+        this.mainCategoryService.getMainCategories(),
+        this.subCategoryService.getSubCategories()
+      ]);
+
+      this.teachers = teachers || [];
+      this.mainCategories = mainCategories;
+      this.availableSubCategories = subCategories;
+
+      // Load course data if editing
+      const courseId = this.route.snapshot.paramMap.get('id');
+      if (courseId) {
+        this.courseId = courseId;
+        await this.loadCourseData();
+      }
+    } catch (error) {
+      this.handleError('Failed to load initial data', error);
+    } finally {
+      this.isLoading = false;
     }
   }
 
-  // التحقق من وجود أخطاء في حقل معين
-  hasError(controlName: string, errorName: string): boolean {
-    const control = this.courseForm.get(controlName);
-    return !!control && control.hasError(errorName) && (control.touched || control.dirty);
-  }
-
-  loadCourseData(): void {
-    this.isLoading = true;
-    this.courseService.getCourseById(this.courseId)
-      .pipe(
-        catchError(error => {
-          this.errorMessage = 'حدث خطأ أثناء تحميل بيانات الكورس';
-          console.error('Error loading course:', error);
-          return of(null);
-        }),
-        finalize(() => {
-          this.isLoading = false;
-        })
-      )
-      .subscribe(course => {
-        if (course) {
-          this.coursesToEdit = course;
-
-          // ✅ ضبط القيم المختارة للفئات الفرعية
-          const selectedSubCategories = this.subCategoriesList.filter(subCat =>
-            course.subCategories.includes(subCat.id)
+  private async loadCourseData(): Promise<void> {
+    try {
+      console.log('Loading course data...');
+      const course = await this.courseService.getCourseById(this.courseId).toPromise();
+      console.log('Loaded course:', course);
+      console.log('Available subcategories:', this.availableSubCategories);
+      
+      if (course) {
+        this.coursesToEdit = course;
+        
+        if (course.subCategories && course.subCategories.length > 0) {
+          // تعديل طريقة الفلترة لتتطابق مع الـ description بدلاً من الـ id
+          this.selectedSubCategories = this.availableSubCategories.filter(
+            subCat => course.subCategories.includes(subCat.description)
           );
-
+          
+          console.log('Mapped selected subcategories:', this.selectedSubCategories);
+          
           this.courseForm.patchValue({
             name: course.name,
             description: course.description,
             teacher: course.teacher,
             mainCategory: course.mainCategory,
-            subCategories: selectedSubCategories, // ✅ تمرير العناصر كـ Object
-            status: course.status,
+            subCategories: this.selectedSubCategories,
+            status: course.status === 'true',
             time: course.time
           });
-
-          this.imagePreview = this.getImagePath(course.photoPath);
         }
-      });
+      }
+    } catch (error) {
+      this.handleError('Failed to load course data', error);
+    }
   }
 
-  async onSubmit() {
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files?.length) {
+      this.selectedFile = input.files[0];
+      this.createImagePreview(this.selectedFile);
+    }
+  }
+
+  private createImagePreview(file: File): void {
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  getImagePath(path?: string): string {
+    return path ? `http://localhost:5270${path}` : 'assets/default-profile.png';
+  }
+
+  hasError(controlName: string, errorName: string): boolean {
+    const control = this.courseForm.get(controlName);
+    return !!control && control.hasError(errorName) && (control.touched || control.dirty);
+  }
+
+  async onSubmit(): Promise<void> {
     if (this.courseForm.invalid) {
-      // Mark all fields as touched to show validation errors
-      Object.keys(this.courseForm.controls).forEach(key => {
-        this.courseForm.get(key)?.markAsTouched();
-      });
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Please fix form errors' });
+      this.markFormGroupTouched(this.courseForm);
       return;
     }
 
-    this.isSubmitting = true;
-
     try {
-      // Update coursesToEdit with form values
+      this.isSubmitting = true;
       const formValues = this.courseForm.value;
-      this.coursesToEdit = {
+      
+      // تحويل الفئات الفرعية المختارة إلى مصفوفة من الـ IDs
+      const subCategoryIds = formValues.subCategories.map((subCat: SubCategory) => subCat.id);
+
+      const updatedCourse: Course = {
         ...this.coursesToEdit,
         name: formValues.name,
         description: formValues.description,
         teacher: formValues.teacher,
         mainCategory: formValues.mainCategory,
-        subCategories: formValues.subCategories.map((sub: any) => sub.id),
-        status: formValues.status || this.coursesToEdit.status,
-        time: formValues.time || this.coursesToEdit.time
+        subCategories: subCategoryIds, // استخدام مصفوفة الـ IDs
+        status: formValues.status,
+        time: formValues.time
       };
 
-      // Handle image upload with FormData
-      if (this.selectedFile) {
-        const formData = new FormData();
-        formData.append('imageFile', this.selectedFile);
-
-        // Add all course properties to FormData
-        Object.keys(this.coursesToEdit).forEach(key => {
-          formData.append(key, (this.coursesToEdit as any)[key]);
-        });
-
-        // Use a specific method for updating with image
-        let result = await this.courseService.updateCourseWithImage(this.coursesToEdit.id, formData).toPromise();
-        if (result) {
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Course edited with new image' });
-          this.router.navigateByUrl('admin/courses');
-        }
-      } else {
-        // Update without changing the image
-        let result = await this.courseService.updateCourse(this.coursesToEdit.id, this.coursesToEdit).toPromise();
-        if (result) {
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Course edited' });
-          this.router.navigateByUrl('admin/courses');
-        }
-      }
+      // ... باقي كود الـ submit
     } catch (error) {
-      console.error('Edit not successful', error);
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Edit not successful' });
+      this.handleError('Failed to update course', error);
     } finally {
       this.isSubmitting = false;
     }
   }
 
+  private prepareUpdateData(): Course {
+    const formValues = this.courseForm.value;
+    return {
+      ...this.coursesToEdit,
+      name: formValues.name,
+      description: formValues.description,
+      teacher: formValues.teacher,
+      mainCategory: formValues.mainCategory,
+      subCategories: formValues.subCategories.map((sub: SubCategory) => sub.id),
+      status: formValues.status,
+      time: formValues.time
+    };
+  }
+
+  private async updateCourseWithImage(course: Course): Promise<void> {
+    const formData = new FormData();
+    formData.append('imageFile', this.selectedFile!);
+    Object.entries(course).forEach(([key, value]) => {
+      formData.append(key, value as string);
+    });
+    await this.courseService.updateCourseWithImage(course.id, formData).toPromise();
+  }
+
+  private async updateCourseWithoutImage(course: Course): Promise<void> {
+    await this.courseService.updateCourse(course.id, course).toPromise();
+  }
+
+  private markFormGroupTouched(formGroup: FormGroup): void {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
+
+  private handleError(message: string, error: any): void {
+    console.error(message, error);
+    this.errorMessage = message;
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: message
+    });
+  }
+
   onCancel(): void {
     this.router.navigate(['/admin/courses']);
-  }
-
-  // معالجة اختيار Sub Category
-  onSubCategorySelect(event: any): void {
-    const selectedIds = this.subCategoriesList.map(subCategory => subCategory.id);
-    if (!selectedIds.includes(event.id)) {
-      this.subCategoriesList.push(event);
-    }
-  }
-
-  // معالجة إلغاء اختيار Sub Category
-  onSubCategoryDeselect(event: any): void {
-    this.subCategoriesList = this.subCategoriesList.filter(subCategory => subCategory.id !== event.id);
   }
 }

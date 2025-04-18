@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { FormsModule , ReactiveFormsModule } from '@angular/forms'; 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -26,7 +27,6 @@ import { CommonModule } from '@angular/common';
 
 //primeng 
 import { MessageService } from 'primeng/api';
-import { MessagesModule } from 'primeng/messages';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { AdminControllComponent } from './admin/admin-controll/admin-controll.component';
@@ -41,12 +41,21 @@ import { EditStudentComponent } from './admin/student/edit-student/edit-student.
 import { AddTeacherComponent } from './admin/Teacher/add-teacher/add-teacher.component';
 import { AdminSubCategoryComponent } from './admin/sub-category/admin-sub-category/admin-sub-category.component';
 import { AdminMainCategoryComponent } from './admin/main-category/admin-main-category/admin-main-category.component';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { PaginationControlComponent } from './admin/components/pagination-control/pagination-control.component';
 import { SearchBarComponent } from './admin/components/search-bar/search-bar.component';
 import { PasswordInputComponent } from './admin/components/password-input/password-input.component';
 import { AddCourseComponent } from './admin/Courses/add-course/add-course.component';
-
+// PrimeNG Modules
+import { MultiSelectModule } from 'primeng/multiselect';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DropdownModule } from 'primeng/dropdown';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ButtonModule } from 'primeng/button';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -86,6 +95,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     NgMultiSelectDropDownModule.forRoot(),
     RouterModule,
     CommonModule, 
@@ -103,8 +113,19 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
-    })
-    
+    }),
+    // PrimeNG Modules
+    MultiSelectModule,
+    InputTextModule,
+    InputTextareaModule,
+    DropdownModule,
+    FileUploadModule,
+    ButtonModule,
+    InputSwitchModule,
+    ProgressSpinnerModule,
+    MessagesModule,
+    MessageModule
+
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]
