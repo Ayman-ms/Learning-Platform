@@ -1,1 +1,67 @@
-[{"Id":"2","Name":"Advanced Mathematics","Description":"Explore advanced mathematical concepts.","Status":"Active","Teacher":"Jane Smith","MainCategory":null,"SubCategories":[],"PhotoPath":null},{"Id":"1","Name":"1","Description":"1","Status":"1","Teacher":"1","MainCategory":"1","SubCategories":[],"PhotoPath":null},{"Id":"068e5c17-8b60-4fb2-8a3a-339e14db89b9","Name":"m","Description":"m","Status":"true","Teacher":"John Doe","MainCategory":"Science","SubCategories":[null,null,null,null],"PhotoPath":"/courses/068e5c17-8b60-4fb2-8a3a-339e14db89b9.png"}]
+[
+    {
+        "Id": "2",
+        "Name": "Advanced Mathematics",
+        "Description": "Explore advanced mathematical concepts.",
+        "Status": "Active",
+        "Teacher": "Jane Smith",
+        "MainCategory": null,
+        "SubCategories": [],
+        "PhotoPath": null
+    },
+    {
+        "Id": "c5bd40a7-af83-4ba1-b01c-a7b2320b6c57",
+        "Name": "\u0633\u0634\u0633\u0634",
+        "Description": "\u0634\u0633\u064A",
+        "Status": "false",
+        "Teacher": "John Doe",
+        "MainCategory": "asassas",
+        "SubCategories": [
+            null,
+            null,
+            null,
+            null
+        ],
+        "PhotoPath": "/courses/c5bd40a7-af83-4ba1-b01c-a7b2320b6c57.webp"
+    },
+    {
+        "Id": "740119b1-c570-42fa-98cf-d9826b6bedae",
+        "Name": "123",
+        "Description": "123",
+        "Status": "true",
+        "Teacher": "John Doe",
+        "MainCategory": "Science",
+        "SubCategories": [
+            "null",
+            "null",
+            "null",
+            null
+        ],
+        "PhotoPath": "/courses/740119b1-c570-42fa-98cf-d9826b6bedae.png"
+    },
+    {
+        "Id": "6a81393b-e01b-488e-8a1b-02b5e4faf4ec",
+        "Name": "asd",
+        "Description": "asd",
+        "Status": "false",
+        "Teacher": "m\u0633\u0629 m",
+        "MainCategory": "Arts",
+        "SubCategories": [],
+        "PhotoPath": "/courses/6a81393b-e01b-488e-8a1b-02b5e4faf4ec.png"
+    },
+    {
+        "Id": "c06a3867-6272-4782-9c3e-6af308ea6972",
+        "Name": "cxyxc",
+        "Description": "cxyxc",
+        "Status": "false",
+        "Teacher": "Jane Smith",
+        "MainCategory": "Science",
+        "SubCategories": [
+            "Physics",
+            "Chemistry",
+            "aASS",
+            "\u0628\u064A\u0628\u0633\u064A"
+        ],
+        "PhotoPath": "/courses/c06a3867-6272-4782-9c3e-6af308ea6972.png"
+    }
+]

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Course } from 'src/app/models/courses'; 
+import { catchError, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -11,8 +12,18 @@ export class CoursesService {
   constructor(private http: HttpClient) {}
 
   // جلب جميع الكورسات
-  getCourses() {
-    return this.http.get<Course[]>(this.apiUrl).toPromise();
+  getCourses(): Observable<Course[]> {
+    return this.http.get<Course[]>(`${this.apiUrl}`)
+      .pipe(
+        tap(courses => {
+          // تصفية القيم null من subCategories
+          courses.forEach(course => {
+            course.subCategories = course.subCategories?.filter(subCat => subCat !== null) || [];
+          });
+          console.log('Fetched courses:', courses);
+        }),
+        catchError(this.handleError)
+      );
   }
 
   addCourse(formData: FormData): Observable<Course> {
@@ -50,5 +61,10 @@ createCourse(course: Course, photo: File): Observable<Course> {
   // الحصول على كورس واحد
   getCourseById(id: string): Observable<Course> {
     return this.http.get<Course>(`${this.apiUrl}/${id}`);
+  }
+
+  private handleError(error: any): Observable<never> {
+    console.error('An error occurred:', error);
+    throw error;
   }
 }

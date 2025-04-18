@@ -22,8 +22,9 @@
           <!-- photo -->
           <div class="col-md-4 mb-3 text-center">
             <div class="mb-3">
-              <img [src]="imagePreview || 'assets/default-profile.png'" alt="Course image"
-                class="img-thumbnail rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+              <!-- استخدام imagePreview لعرض الصورة -->
+              <img [src]="imagePreview" alt="Course image"
+                class="img-thumbnail" style="width: 150px; height: 150px; object-fit: cover;">
             </div> 
             <!-- new photo -->
             <div class="mb-3">
@@ -50,8 +51,11 @@
               <!-- Teacher -->
               <div class="col-md-6 mb-3">
                 <label for="teacher" class="form-label">Teacher</label>
-                <input type="text" class="form-control" id="teacher" formControlName="teacher"
-                  [ngClass]="{'is-invalid': hasError('teacher', 'required')}">
+                <select class="form-control" id="teacher" formControlName="teacher">
+                  <option *ngFor="let teacher of teachers" [value]="teacher.firstName + ' ' + teacher.lastName">
+                    {{ teacher.firstName }} {{ teacher.lastName }}
+                  </option>
+                </select>
                 <div class="invalid-feedback" *ngIf="hasError('teacher', 'required')">
                   Teacher name is required
                 </div>
@@ -71,21 +75,37 @@
             <!-- Main Category -->
             <div class="mb-3">
               <label for="mainCategory" class="form-label">Main Category</label>
-              <input type="text" class="form-control" id="mainCategory" formControlName="mainCategory"
-                [ngClass]="{'is-invalid': hasError('mainCategory', 'required')}">
+              <select class="form-control" id="mainCategory" formControlName="mainCategory">
+                <option *ngFor="let category of mainCategories" [value]="category.description">
+                  {{ category.description }}
+                </option>
+              </select>
               <div class="invalid-feedback" *ngIf="hasError('mainCategory', 'required')">
                 Main category is required
               </div>
             </div> 
 
-            <!-- Sub Category -->
+            <!-- Sub Categories -->
+            <div class="form-group full-width">
+              <label>Sub Categories</label>
+              <ng-multiselect-dropdown 
+                  [placeholder]="'Select sub categories'"
+                  [data]="mainCategories"
+                  [settings]="dropdownSettings"
+                  [ngModel]="mainCategories"
+                  (onSelect)="onSubCategorySelect($event)"
+                  (onDeSelect)="onSubCategoryDeselect($event)"
+                  formControlName="subCategories">
+              </ng-multiselect-dropdown>
+            </div>
+
+            <!-- Course Available -->
             <div class="mb-3">
-              <label for="subCategory" class="form-label">Sub Category</label>
-              <input type="text" class="form-control" id="subCategory" formControlName="subCategory"
-                [ngClass]="{'is-invalid': hasError('subCategory', 'required')}">
-              <div class="invalid-feedback" *ngIf="hasError('subCategory', 'required')">
-                Sub category is required
-              </div>
+              <label for="status" class="form-label">Course Available</label>
+              <select class="form-control" id="status" formControlName="status">
+                <option [value]="true">Available</option>
+                <option [value]="false">Not Available</option>
+              </select>
             </div>
 
           </div>

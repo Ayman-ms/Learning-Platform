@@ -1,36 +1,37 @@
 <div class="container mt-4">
   <div class="card">
     <div class="card-header">
-      <h2>Edit</h2>
+      <h2>Edit Teacher</h2>
     </div>
     <div class="card-body">
-      <!-- loading message -->
+      <!-- Loading Spinner -->
       <div *ngIf="isLoading" class="text-center my-3">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
 
-      <!-- error message -->
+      <!-- Error Message -->
       <div *ngIf="errorMessage" class="alert alert-danger">
         {{ errorMessage }}
       </div>
 
-      <!-- edit form -->
+      <!-- Edit Form -->
       <form [formGroup]="teacherForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
         <div class="row">
-          <!-- photo -->
+          <!-- Photo Section -->
           <div class="col-md-4 mb-3 text-center">
             <div class="mb-3">
-              <img [src]="imagePreview || 'assets/default-profile.png'" alt="profilt image"
-                class="img-thumbnail rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+              <img [src]="imagePreview" alt="Teacher Profile Image" class="profile-image" *ngIf="imagePreview">
             </div>
-            <!-- new photo -->
             <div class="mb-3">
               <label for="profileImage" class="form-label">Profile Image</label>
-              <input type="file" class="form-control" id="profileImage" accept="image/*"
-                (change)="onFileSelected($event)">
-              <small class="form-text text-muted">Optional: Leave blank to keep the current image.</small>
+              <input type="file"
+                     class="form-control"
+                     id="profileImage"
+                     accept="image/*"
+                     (change)="onFileSelected($event)">
+              <small class="form-text text-muted">Optional: Leave blank to keep current image.</small>
             </div>
           </div>
 
@@ -40,20 +41,26 @@
               <!-- First Name -->
               <div class="col-md-6 mb-3">
                 <label for="firstName" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="firstName" formControlName="firstName"
-                  [ngClass]="{'is-invalid': hasError('firstName', 'required')}">
+                <input type="text"
+                       class="form-control"
+                       id="firstName"
+                       formControlName="firstName"
+                       [ngClass]="{'is-invalid': hasError('firstName', 'required')}">
                 <div class="invalid-feedback" *ngIf="hasError('firstName', 'required')">
-                  required
+                  First name is required
                 </div>
               </div>
 
-              <!--Last Name-->
+              <!-- Last Name -->
               <div class="col-md-6 mb-3">
                 <label for="lastName" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="lastName" formControlName="lastName"
-                  [ngClass]="{'is-invalid': hasError('lastName', 'required')}">
+                <input type="text"
+                       class="form-control"
+                       id="lastName"
+                       formControlName="lastName"
+                       [ngClass]="{'is-invalid': hasError('lastName', 'required')}">
                 <div class="invalid-feedback" *ngIf="hasError('lastName', 'required')">
-                  required
+                  Last name is required
                 </div>
               </div>
             </div>
@@ -61,42 +68,58 @@
             <!-- Email -->
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" formControlName="email"
-                [ngClass]="{'is-invalid': hasError('email', 'required') || hasError('email', 'email')}">
+              <input type="email"
+                     class="form-control"
+                     id="email"
+                     formControlName="email"
+                     [ngClass]="{'is-invalid': hasError('email', 'required') || hasError('email', 'email')}">
               <div class="invalid-feedback" *ngIf="hasError('email', 'required')">
-                required
+                Email is required
               </div>
               <div class="invalid-feedback" *ngIf="hasError('email', 'email')">
-                Please enter a valid email address.
+                Please enter a valid email address
               </div>
             </div>
 
-            <!-- Phone Number -->
+            <!-- Phone -->
             <div class="mb-3">
               <label for="phone" class="form-label">Phone Number</label>
-              <input type="tel" class="form-control" id="phone" formControlName="phone"
-                [ngClass]="{'is-invalid': hasError('phone', 'required')}">
+              <input type="tel"
+                     class="form-control"
+                     id="phone"
+                     formControlName="phone"
+                     [ngClass]="{'is-invalid': hasError('phone', 'required')}">
               <div class="invalid-feedback" *ngIf="hasError('phone', 'required')">
-                required
+                Phone number is required
               </div>
             </div>
 
             <!-- Password -->
-            <app-password-input formControlName="password" label="New Password" placeholder="Enter new password"></app-password-input>
-
-
-
+            <div class="mb-3">
+              <label for="password" class="form-label">New Password</label>
+              <app-password-input
+                formControlName="password"
+                [label]="'New Password'"
+                [placeholder]="'Leave blank to keep current password'"
+                [showGenerate]="true">
+              </app-password-input>
+            </div>
           </div>
         </div>
 
+        <!-- Form Actions -->
         <div class="d-flex justify-content-end mt-3">
-          <button type="button" class="btn btn-secondary me-2" (click)="onCancel()" [disabled]="isSubmitting">
+          <button type="button"
+                  class="btn btn-secondary me-2"
+                  (click)="onCancel()"
+                  [disabled]="isSubmitting">
             Cancel
           </button>
-          <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
-            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1" role="status"
-              aria-hidden="true"></span>
-            Save
+          <button type="submit"
+                  class="btn btn-primary"
+                  [disabled]="isSubmitting || teacherForm.invalid">
+            <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1" role="status"></span>
+            Save Changes
           </button>
         </div>
       </form>

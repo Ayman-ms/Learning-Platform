@@ -137,10 +137,9 @@ export class AddCourseComponent implements OnInit {
 
     formData.append('teacher', this.courseForm.value.teacher);
     formData.append('mainCategory', this.courseForm.value.mainCategory);
-    const subCategoriesArray = this.courseForm.value.subCategories.map((item: any) => {
-      const subCategory = this.subCategories.find(subCat => subCat.id === item.id); // تعديل هنا للسحب
-      return subCategory; // إرجاع الكائن الكامل بدلاً من المعرف فقط
-    });
+    const subCategoriesArray = this.courseForm.value.subCategories.map((item: any) => item.description);
+
+
     formData.append('subCategories', JSON.stringify(subCategoriesArray));
 
 

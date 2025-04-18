@@ -49,19 +49,34 @@ namespace SkillwaveAPI.Controllers
             return Ok(course);
         }
 
-
         [HttpPost]
         public async Task<ActionResult<Course>> CreateCourse(
-    [FromForm] string courseName,
-    [FromForm] string description,
-    [FromForm] string status,
-    [FromForm] string teacher,
-    [FromForm] string mainCategory,
-    [FromForm] string subCategories,
-    IFormFile? photo)
+            [FromForm] string courseName,
+            [FromForm] string description,
+            [FromForm] string status,
+            [FromForm] string teacher,
+            [FromForm] string mainCategory,
+            [FromForm] string subCategories, // يتم إرسال القيم هنا كـ JSON
+            IFormFile? photo)
         {
             var courses = await _jsonFileService.ReadAsync();
             var courseId = Guid.NewGuid().ToString();
+
+            // معالجة الحقل SubCategories
+            List<string> subCategoriesList = new List<string>();
+            if (!string.IsNullOrEmpty(subCategories))
+            {
+                try
+                {
+                    subCategoriesList = JsonConvert.DeserializeObject<List<string>>(subCategories)?
+                        .Where(s => !string.IsNullOrEmpty(s)) // إزالة القيم الفارغة أو null
+                        .ToList() ?? new List<string>();
+                }
+                catch (JsonException)
+                {
+                    return BadRequest(new { message = "Invalid format for subCategories. It must be a valid JSON array." });
+                }
+            }
 
             var newCourse = new Course
             {
@@ -71,7 +86,7 @@ namespace SkillwaveAPI.Controllers
                 Status = status,
                 Teacher = teacher,
                 MainCategory = mainCategory,
-                SubCategories = JsonConvert.DeserializeObject<List<string>>(subCategories) ?? new List<string>()
+                SubCategories = subCategoriesList
             };
 
             if (photo != null)

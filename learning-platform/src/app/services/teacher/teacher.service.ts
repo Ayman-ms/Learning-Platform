@@ -48,9 +48,8 @@ export class TeacherService {
     return this.http.delete<string>(`${this.apiUrl}/${id}`).toPromise();
   }
 
-  updateTeacher(id: string, formData: FormData): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, formData)
-      .pipe(catchError(this.handleError));
+  updateTeacher(teacherId: string, formData: FormData) {
+    return this.http.put(`${this.apiUrl}/${teacherId}`, formData); // إزالة Content-Type لأن المتصفح يحددها تلقائيًا عند استخدام FormData
   }
 
   private handleError(error: HttpErrorResponse) {

@@ -68,7 +68,7 @@
     background-color: var(--red-color);
 }
 
-.student-img {
+img {
     width: 100px;
     height: 100px;
     object-fit: cover;
@@ -79,7 +79,7 @@
     transition: transform 0.3s ease;
 }
 
-.student-img:hover {
+img:hover {
     transform: scale(1.1);
 }
 
