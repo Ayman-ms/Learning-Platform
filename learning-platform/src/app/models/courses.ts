@@ -4,7 +4,6 @@ export interface Course {
   description: string;
   status: string;
   teacher: string;
-  time: string
   photoPath?: string;
   mainCategory?: string;
   subCategories: string[];

@@ -26,6 +26,7 @@
               <img [src]="imagePreview" alt="Course image" class="img-thumbnail"
                 style="width: 150px; height: 150px; object-fit: cover;">
             </div>
+
             <!-- new photo -->
             <div class="mb-3">
               <label for="courseImage" class="form-label">Course Image</label>
@@ -90,7 +91,6 @@
               <label for="subCategories">Sub Categories</label>
               <p-multiSelect
                 [options]="availableSubCategories"
-                [(ngModel)]="selectedSubCategories"
                 formControlName="subCategories"
                 optionLabel="description"
                 [filter]="true"
@@ -110,8 +110,7 @@
               <small class="p-error" *ngIf="hasError('subCategories', 'required')">
                 Please select at least one sub category
               </small>
-            </div>s
-
+            </div>
 
             <!-- Course Available -->
             <div class="mb-3">
@@ -129,7 +128,7 @@
           <button type="button" class="btn btn-secondary me-2" (click)="onCancel()" [disabled]="isSubmitting">
             Cancel
           </button>
-          <button type="submit" class="btn btn-primary" [disabled]="courseForm.invalid || isSubmitting">
+          <button type="submit" class="btn btn-primary">
             <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1" role="status"
               aria-hidden="true"></span>
             Save

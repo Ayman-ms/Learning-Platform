@@ -33,7 +33,6 @@ export class EditCourseComponent implements OnInit {
     description: '',
     status: '',
     teacher: '',
-    time: '',
     photoPath: '',
     mainCategory: '',
     subCategories: []
@@ -59,9 +58,10 @@ export class EditCourseComponent implements OnInit {
     private teacherService: TeacherService,
     private mainCategoryService: MainCategoryService,
     private subCategoryService: SubCategoryService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
+    console.log("Component loaded - isLoading:", this.isLoading);
     this.initForm();
     this.loadInitialData();
   }
@@ -73,7 +73,7 @@ export class EditCourseComponent implements OnInit {
       description: ['', [Validators.required, Validators.minLength(10)]],
       mainCategory: ['', Validators.required],
       subCategories: [[], Validators.required],
-      status: [true],
+      status: ['', Validators.required],
       time: [0]
     });
   }
@@ -103,6 +103,8 @@ export class EditCourseComponent implements OnInit {
       this.handleError('Failed to load initial data', error);
     } finally {
       this.isLoading = false;
+      console.log("Done loading - isLoading:", this.isLoading);
+
     }
   }
 
@@ -111,29 +113,26 @@ export class EditCourseComponent implements OnInit {
       console.log('Loading course data...');
       const course = await this.courseService.getCourseById(this.courseId).toPromise();
       console.log('Loaded course:', course);
-      console.log('Available subcategories:', this.availableSubCategories);
-      
+
       if (course) {
         this.coursesToEdit = course;
-        
+
         if (course.subCategories && course.subCategories.length > 0) {
-          // تعديل طريقة الفلترة لتتطابق مع الـ description بدلاً من الـ id
-          this.selectedSubCategories = this.availableSubCategories.filter(
+          const selectedSubCategories = this.availableSubCategories.filter(
             subCat => course.subCategories.includes(subCat.description)
           );
-          
-          console.log('Mapped selected subcategories:', this.selectedSubCategories);
-          
+
           this.courseForm.patchValue({
             name: course.name,
             description: course.description,
             teacher: course.teacher,
             mainCategory: course.mainCategory,
-            subCategories: this.selectedSubCategories,
-            status: course.status === 'true',
-            time: course.time
+            subCategories: selectedSubCategories, // تحديث الحقل مباشرة
+            status: course.status === 'true'
           });
         }
+
+        this.imagePreview = this.getImagePath(course.photoPath); // تحديث الصورة
       }
     } catch (error) {
       this.handleError('Failed to load course data', error);
@@ -156,8 +155,17 @@ export class EditCourseComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  getImagePath(path?: string): string {
-    return path ? `http://localhost:5270${path}` : 'assets/default-profile.png';
+  getImagePath(imageFilePath: string | undefined): string {
+    if (!imageFilePath || imageFilePath.trim() === '') {
+      return 'assets/default-profile.png'; // صورة افتراضية
+    }
+
+    // تأكد من أن المسار يبدأ بـ "/" لتجنب الأخطاء
+    if (!imageFilePath.startsWith('/')) {
+      imageFilePath = '/' + imageFilePath;
+    }
+
+    return `http://localhost:5270${imageFilePath}`; // تأكد من ربط الصورة بالسيرفر
   }
 
   hasError(controlName: string, errorName: string): boolean {
@@ -170,33 +178,67 @@ export class EditCourseComponent implements OnInit {
       this.markFormGroupTouched(this.courseForm);
       return;
     }
-
+  
     try {
       this.isSubmitting = true;
       const formValues = this.courseForm.value;
+      console.log('Form Values:', formValues); // للتأكد من القيم
+  
+      // تجهيز البيانات
+      const formData = new FormData();
+      formData.append('id', this.courseId);
+      formData.append('name', formValues.name);
+      formData.append('description', formValues.description);
+      formData.append('teacher', formValues.teacher);
+      formData.append('mainCategory', formValues.mainCategory);
+      formData.append('status', formValues.status ? 'Active' : 'Not Available');
       
-      // تحويل الفئات الفرعية المختارة إلى مصفوفة من الـ IDs
-      const subCategoryIds = formValues.subCategories.map((subCat: SubCategory) => subCat.id);
-
-      const updatedCourse: Course = {
-        ...this.coursesToEdit,
-        name: formValues.name,
-        description: formValues.description,
-        teacher: formValues.teacher,
-        mainCategory: formValues.mainCategory,
-        subCategories: subCategoryIds, // استخدام مصفوفة الـ IDs
-        status: formValues.status,
-        time: formValues.time
-      };
-
-      // ... باقي كود الـ submit
+      // إضافة الفئات الفرعية
+      if (formValues.subCategories && formValues.subCategories.length > 0) {
+        formValues.subCategories.forEach((subCat: any) => {
+          formData.append('subCategories[]', subCat.description);
+        });
+      }
+  
+      // إضافة الصورة إذا تم اختيارها
+      if (this.selectedFile) {
+        formData.append('photo', this.selectedFile);
+      }
+  
+      // طباعة محتويات FormData للتأكد
+      formData.forEach((value, key) => {
+        console.log(`${key}:`, value);
+      });
+  
+      // إرسال الطلب
+      const response = await this.courseService.updateCourseWithImage(this.courseId, formData).toPromise();
+      console.log('Update Response:', response);
+  
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Course updated successfully!'
+      });
+      
+      this.router.navigate(['/admin/courses']);
     } catch (error) {
-      this.handleError('Failed to update course', error);
+      console.error('Error updating course:', error);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Failed to update course'
+      });
     } finally {
       this.isSubmitting = false;
     }
   }
-
+  private logFormData(formData: FormData): void {
+    console.log('Form data contents:');
+    formData.forEach((value, key) => {
+      console.log(`${key}:`, value);
+    });
+  }
+  
   private prepareUpdateData(): Course {
     const formValues = this.courseForm.value;
     return {
@@ -206,8 +248,7 @@ export class EditCourseComponent implements OnInit {
       teacher: formValues.teacher,
       mainCategory: formValues.mainCategory,
       subCategories: formValues.subCategories.map((sub: SubCategory) => sub.id),
-      status: formValues.status,
-      time: formValues.time
+      status: formValues.status
     };
   }
 
@@ -233,15 +274,15 @@ export class EditCourseComponent implements OnInit {
     });
   }
 
-  private handleError(message: string, error: any): void {
-    console.error(message, error);
-    this.errorMessage = message;
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: message
-    });
-  }
+private handleError(message: string, error: any): void {
+  console.error('Error details:', { message, error });
+  this.errorMessage = message;
+  this.messageService.add({
+    severity: 'error',
+    summary: 'Error',
+    detail: error.message || message
+  });
+}
 
   onCancel(): void {
     this.router.navigate(['/admin/courses']);

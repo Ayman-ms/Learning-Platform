@@ -24,7 +24,6 @@ import { UpdateUserComponent } from './user/update-user/update-user.component';
 import { UserSidebarComponent } from './user/sidebar/sidebar.component';
 import { UserInfoComponent } from './user/user-info/user-info.component';
 import { CommonModule } from '@angular/common';
-
 //primeng 
 import { MessageService } from 'primeng/api';
 import { CardModule } from 'primeng/card';

@@ -119,50 +119,80 @@ namespace SkillwaveAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCourse(string id, Course updatedCourse, IFormFile photo)
+public async Task<IActionResult> UpdateCourse(string id, [FromForm] UpdateCourseDto dto)
+{
+    try
+    {
+        var courses = await _jsonFileService.ReadAsync();
+        var courseIndex = courses.FindIndex(c => c.Id == id);
+        
+        if (courseIndex == -1)
         {
-            var courses = await _jsonFileService.ReadAsync();
-            var courseIndex = courses.FindIndex(c => c.Id == id);
-            if (courseIndex == -1)
-            {
-                return NotFound();
-            }
-
-            if (photo != null)
-            {
-                // حذف الصورة القديمة إذا وجدت
-                if (!string.IsNullOrEmpty(courses[courseIndex].PhotoPath))
-                {
-                    var oldPhotoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot",
-                        courses[courseIndex].PhotoPath.TrimStart('/'));
-                    if (System.IO.File.Exists(oldPhotoPath))
-                    {
-                        System.IO.File.Delete(oldPhotoPath);
-                    }
-                }
-
-                // حفظ الصورة الجديدة
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "courses");
-                var fileExtension = Path.GetExtension(photo.FileName);
-                var fileName = $"{id}{fileExtension}";
-                var filePath = Path.Combine(uploadsFolder, fileName);
-
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await photo.CopyToAsync(fileStream);
-                }
-
-                updatedCourse.PhotoPath = $"/courses/{fileName}";
-            }
-            else
-            {
-                updatedCourse.PhotoPath = courses[courseIndex].PhotoPath;
-            }
-
-            courses[courseIndex] = updatedCourse;
-            await _jsonFileService.WriteAsync(courses);
-            return NoContent();
+            return NotFound(new { message = "Course not found" });
         }
+
+        var existingCourse = courses[courseIndex];
+
+        // تحديث البيانات
+        existingCourse.Name = dto.Name;
+        existingCourse.Description = dto.Description;
+        existingCourse.Teacher = dto.Teacher;
+        existingCourse.MainCategory = dto.MainCategory;
+        existingCourse.Status = dto.Status;
+        existingCourse.SubCategories = dto.SubCategories ?? existingCourse.SubCategories;
+
+        // معالجة الصورة
+        if (Request.Form.Files.Count > 0)
+        {
+            var photo = Request.Form.Files[0];
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "courses");
+            Directory.CreateDirectory(uploadsFolder);
+
+            // حذف الصورة القديمة
+            if (!string.IsNullOrEmpty(existingCourse.PhotoPath))
+            {
+                var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingCourse.PhotoPath.TrimStart('/'));
+                if (System.IO.File.Exists(oldPath))
+                {
+                    System.IO.File.Delete(oldPath);
+                }
+            }
+
+            // حفظ الصورة الجديدة
+            var fileExtension = Path.GetExtension(photo.FileName);
+            var fileName = $"{id}{fileExtension}";
+            var filePath = Path.Combine(uploadsFolder, fileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await photo.CopyToAsync(fileStream);
+            }
+
+            existingCourse.PhotoPath = $"/courses/{fileName}";
+        }
+
+        // تحديث الكورس في القائمة
+        courses[courseIndex] = existingCourse;
+        await _jsonFileService.WriteAsync(courses);
+
+        return Ok(existingCourse);
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, new { message = ex.Message });
+    }
+}
+
+public class UpdateCourseDto
+{
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public string Status { get; set; }
+    public string Teacher { get; set; }
+    public string MainCategory { get; set; }
+    public List<string> SubCategories { get; set; }
+}
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(string id)
         {

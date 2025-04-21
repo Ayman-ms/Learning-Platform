@@ -1,10 +1,6 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\068e5c17-8b60-4fb2-8a3a-339e14db89b9.png",
-      "PackagePath": "staticwebassets\\courses\\068e5c17-8b60-4fb2-8a3a-339e14db89b9.png"
-    },
-    {
       "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\314b77ca-9c79-416e-a8cb-e29a4443494f.png",
       "PackagePath": "staticwebassets\\courses\\314b77ca-9c79-416e-a8cb-e29a4443494f.png"
     },
@@ -21,16 +17,16 @@
       "PackagePath": "staticwebassets\\courses\\740119b1-c570-42fa-98cf-d9826b6bedae.png"
     },
     {
-      "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\835049cd-119d-4758-8586-732830224107.png",
-      "PackagePath": "staticwebassets\\courses\\835049cd-119d-4758-8586-732830224107.png"
+      "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\78b279ac-2f77-455a-a9aa-c894feaf0367.png",
+      "PackagePath": "staticwebassets\\courses\\78b279ac-2f77-455a-a9aa-c894feaf0367.png"
+    },
+    {
+      "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\c06a3867-6272-4782-9c3e-6af308ea6972.png",
+      "PackagePath": "staticwebassets\\courses\\c06a3867-6272-4782-9c3e-6af308ea6972.png"
     },
     {
       "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\c5bd40a7-af83-4ba1-b01c-a7b2320b6c57.webp",
       "PackagePath": "staticwebassets\\courses\\c5bd40a7-af83-4ba1-b01c-a7b2320b6c57.webp"
-    },
-    {
-      "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\d8dfd478-3497-48a3-9e24-042754dd856e.png",
-      "PackagePath": "staticwebassets\\courses\\d8dfd478-3497-48a3-9e24-042754dd856e.png"
     },
     {
       "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\e2327d49-1641-405e-9caa-17ba4bb28e82.png",
@@ -39,6 +35,14 @@
     {
       "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\f79f33bf-9d60-4333-aa80-03a73149224e.png",
       "PackagePath": "staticwebassets\\courses\\f79f33bf-9d60-4333-aa80-03a73149224e.png"
+    },
+    {
+      "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\teachers\\Emily_Clark.webp",
+      "PackagePath": "staticwebassets\\teachers\\Emily_Clark.webp"
+    },
+    {
+      "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\teachers\\James_Anderson.png",
+      "PackagePath": "staticwebassets\\teachers\\James_Anderson.png"
     },
     {
       "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\teachers\\Jane_Smith.png",
@@ -51,6 +55,14 @@
     {
       "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\teachers\\John_Doe.png",
       "PackagePath": "staticwebassets\\teachers\\John_Doe.png"
+    },
+    {
+      "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\teachers\\Olivia_Brown.png",
+      "PackagePath": "staticwebassets\\teachers\\Olivia_Brown.png"
+    },
+    {
+      "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\teachers\\William_Davis.png",
+      "PackagePath": "staticwebassets\\teachers\\William_Davis.png"
     },
     {
       "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\teachers\\m_m.png",
