@@ -5,16 +5,18 @@ import { Message, MessageService } from 'primeng/api';
 import { Student } from 'src/app/models/student';
 import { SessionService } from 'src/app/services/session/session.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { UserService } from 'src/app/services/users/user.service';import { PasswordService } from 'src/app/services/password/password.service';
- @Component({
+import { UserService } from 'src/app/services/users/user.service';
+import { PasswordService } from 'src/app/services/password/password.service';
+
+@Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  userToLogin: Student = {} as Student;
+  userToLogin: Student = { id: '', firstName: '', lastName: '', password: '', email: '', phone: '', createdAt: '', profileImage: '' };
   msgs: Message[] = [];
-  email: string = '';
+  // email: string = '';
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -23,7 +25,7 @@ export class LoginComponent implements OnInit {
     private messageService: MessageService,
     private sessionService: SessionService,
     private authService: AuthService,
-  private passwordService: PasswordService
+    private passwordService: PasswordService
   ) { }
 
   ngOnInit(): void {
@@ -31,22 +33,36 @@ export class LoginComponent implements OnInit {
   }
 
   async loginClick() {
-    const userListItems = await this.userService.getUsers();
-    if (userListItems) {
-      const userToLogin = userListItems.find(async user =>
-        user.email === this.userToLogin.email &&
-        user.password === await this.sha256(this.userToLogin.password)
-      );
+    try {
+      const userListItems = await this.userService.getUsers();
+      if (userListItems) {
+        let userToLogin = null;
+        for (const user of userListItems) {
+          if (
+            user.email === this.userToLogin.email &&
+            user.password === await this.sha256(this.userToLogin.password)
+          ) {
+            userToLogin = user;
+            break;
+          }
+        }
 
-      if (userToLogin) {
-        this.sessionService.login(userToLogin);
-        localStorage.setItem('user', JSON.stringify(userToLogin));
-        this.router.navigateByUrl('');
-        console.log('Done')
-        this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Login successful' });
+        if (userToLogin) {
+          this.sessionService.login(userToLogin);
+          localStorage.setItem('user', JSON.stringify(userToLogin));
+          this.router.navigateByUrl('');
+          console.log('Login successful:', userToLogin);
+          this.messageService.add({ severity: 'info', summary: 'Info', detail: 'Login successful' });
+        } else {
+          console.error('Invalid email or password');
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid email or password' });
+        }
       } else {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Invalid email or password' });
+        console.error('No users found');
       }
+    } catch (error) {
+      console.error('Error during login:', error);
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'An error occurred during login' });
     }
   }
 

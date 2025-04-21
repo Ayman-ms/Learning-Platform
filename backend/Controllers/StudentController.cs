@@ -25,7 +25,7 @@ namespace SkillwaveAPI.Controllers
 
             foreach (var student in students)
             {
-                if (string.IsNullOrEmpty(student.PhotoBase64))
+                if (string.IsNullOrEmpty(student.PhotoPath))
                 {
                     Console.WriteLine($"🚨 تحذير: {student.FirstName} لا يحتوي على صورة!");
                 }
@@ -53,25 +53,54 @@ namespace SkillwaveAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<Student>> RegisterStudent([FromBody] Student student)
+        public async Task<ActionResult<Student>> RegisterStudent([FromForm] StudentDTO studentDto)
         {
-            if (student == null)
+            try
             {
-                return BadRequest("Invalid student data.");
+                var student = new Student
+                {
+                    FirstName = studentDto.FirstName,
+                    LastName = studentDto.LastName,
+                    Email = studentDto.Email,
+                    Phone = studentDto.Phone,
+                    Password = BCrypt.Net.BCrypt.HashPassword(studentDto.Password)
+                };
+
+                if (studentDto.Photo != null)
+                {
+                    // إنشاء مجلد للصور إذا لم يكن موجوداً
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "students");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    // تسمية الصورة باستخدام الاسم الأول واسم العائلة
+                    var fileExtension = Path.GetExtension(studentDto.Photo.FileName);
+                    var fileName = $"{student.FirstName}_{student.LastName}{fileExtension}";
+                    var filePath = Path.Combine(uploadsFolder, fileName);
+
+                    // حفظ الصورة كملف فعلي
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await studentDto.Photo.CopyToAsync(fileStream);
+                    }
+
+                    // حفظ مسار الصورة في خاصية PhotoPath
+                    var baseUrl = $"{Request.Scheme}://{Request.Host}";
+                    student.PhotoPath = $"{baseUrl}/students/{fileName}";
+                }
+
+                var students = await _jsonFileService.ReadAsync();
+                students.Add(student);
+                await _jsonFileService.WriteAsync(students);
+
+                return Ok(student); 
             }
-
-            // تعيين Id جديد للطالب
-            student.Id = Guid.NewGuid().ToString();
-            student.CreatedAt = DateTime.UtcNow;
-
-            // تشفير كلمة المرور
-            student.Password = BCrypt.Net.BCrypt.HashPassword(student.Password);
-
-            var students = await _jsonFileService.ReadAsync();
-            students.Add(student);
-            await _jsonFileService.WriteAsync(students);
-
-            return CreatedAtAction(nameof(GetStudent), new { id = student.Id }, student);
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
 
@@ -96,7 +125,7 @@ namespace SkillwaveAPI.Controllers
             student.LastName = updatedStudent.LastName;
             student.Email = updatedStudent.Email;
             student.Phone = updatedStudent.Phone;
-            student.PhotoBase64 = updatedStudent.PhotoBase64;
+            student.PhotoPath = updatedStudent.PhotoPath;
 
             await _jsonFileService.WriteAsync(students);
 

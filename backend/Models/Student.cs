@@ -9,6 +9,6 @@ namespace SkillwaveAPI.Models
         public string? Phone { get; set; }
         public string? Password { get; set; }
         public DateTime CreatedAt { get; set; }
-        public string? PhotoBase64 { get; set; } // قد يكون اختيارياً
+        public string? PhotoPath { get; set; } // قد يكون اختيارياً
     }
 }

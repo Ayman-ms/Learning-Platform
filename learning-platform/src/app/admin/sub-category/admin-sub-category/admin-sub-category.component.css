@@ -1,27 +1,54 @@
-.add-category-container{
+.add-category-container {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
 }
 
-.add-category-container input{
+.add-category-container input {
     width: 70%;
 }
 
-.btn{
+.btn {
     background-color: var(--blue-color);
     color: var(--white-color);
     padding: 5px 10px;
     margin-right: 10px;
 }
-.deleteBtn{
+
+.deleteBtn {
     background-color: var(--red-color);
 }
 
-.cards{
+.cards {
     margin-bottom: 10px;
 }
 
-.cardButton{
+.cardButton {
     margin-top: 10px;
+}
+
+.card-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(1, 1fr);
+    /* الافتراضي: بطاقة واحدة */
+}
+
+@media (min-width: 768px) {
+    .card-grid {
+        grid-template-columns: repeat(3, 1fr);
+        /* 3 بطاقات للشاشات المتوسطة */
+    }
+}
+
+@media (min-width: 1200px) {
+    .card-grid {
+        grid-template-columns: repeat(5, 1fr);
+        /* 5 بطاقات للشاشات الكبيرة */
+    }
+}
+
+.card-item {
+    display: flex;
+    justify-content: center;
 }

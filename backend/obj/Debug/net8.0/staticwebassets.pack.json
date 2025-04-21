@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\2.png",
+      "PackagePath": "staticwebassets\\courses\\2.png"
+    },
+    {
       "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\314b77ca-9c79-416e-a8cb-e29a4443494f.png",
       "PackagePath": "staticwebassets\\courses\\314b77ca-9c79-416e-a8cb-e29a4443494f.png"
     },
@@ -21,8 +25,8 @@
       "PackagePath": "staticwebassets\\courses\\78b279ac-2f77-455a-a9aa-c894feaf0367.png"
     },
     {
-      "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\c06a3867-6272-4782-9c3e-6af308ea6972.webp",
-      "PackagePath": "staticwebassets\\courses\\c06a3867-6272-4782-9c3e-6af308ea6972.webp"
+      "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\c06a3867-6272-4782-9c3e-6af308ea6972.png",
+      "PackagePath": "staticwebassets\\courses\\c06a3867-6272-4782-9c3e-6af308ea6972.png"
     },
     {
       "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\c5bd40a7-af83-4ba1-b01c-a7b2320b6c57.webp",
@@ -35,6 +39,14 @@
     {
       "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\f79f33bf-9d60-4333-aa80-03a73149224e.png",
       "PackagePath": "staticwebassets\\courses\\f79f33bf-9d60-4333-aa80-03a73149224e.png"
+    },
+    {
+      "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\students\\photo_photo.png",
+      "PackagePath": "staticwebassets\\students\\photo_photo.png"
+    },
+    {
+      "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\students\\photoذ_photo.png",
+      "PackagePath": "staticwebassets\\students\\photoذ_photo.png"
     },
     {
       "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\teachers\\Emily_Clark.webp",

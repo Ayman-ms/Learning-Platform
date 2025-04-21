@@ -34,7 +34,7 @@ export class PasswordInputComponent implements ControlValueAccessor {
 
   // Generates a random password
   generateRandomPassword(): void {
-    const length = 10;
+    const length = 12;
     const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const lowercase = "abcdefghijklmnopqrstuvwxyz";
     const numbers = "0123456789";

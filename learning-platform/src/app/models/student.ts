@@ -6,5 +6,5 @@ export interface Student {
   phone: string;
   password: string;
   createdAt: string;
-  profileImage: string; // يمكن أن يكون اختياريًا
+  profileImage: string;
 }

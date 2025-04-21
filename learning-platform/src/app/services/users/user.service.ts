@@ -6,13 +6,14 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  api = "https://localhost:44355/api/User"
+  api = "http://localhost:5270/api/Student"
 
   constructor(private http: HttpClient) { }
 
-  public createUser(user: FormData): Observable<any> {
-    return this.http.post(this.api, user);
+  registerStudent(formData: FormData): Observable<any> {
+    return this.http.post(`${this.api}/register`, formData);
   }
+
   public updateUser(user: Student) {
     return this.http.put<Student>(this.api, user).toPromise();
   }

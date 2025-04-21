@@ -62,7 +62,7 @@ input[type="submit"]:hover {
 }
 button{
   margin-top: 20px;
-  background-color: #ccc;
+  background-color: var(--blue-color);
   color: var(--white-color);
   padding: 10px 20px;
   border: none;
@@ -98,4 +98,20 @@ img{
 
 .profile-img:hover {
   transform: scale(1.1);
+}
+
+/* تنسيق رسائل الخطأ */
+small {
+  color:var(--red-color);
+  font-size: 12px;
+}
+
+/* تنسيق حدود الحقول عند وجود خطأ */
+input.ng-touched.ng-invalid {
+  border: 1px solid var(--red-color);
+}
+
+/* تنسيق الحقول عند عدم وجود خطأ */
+input.ng-touched.ng-valid {
+  border: 1px solid green;
 }

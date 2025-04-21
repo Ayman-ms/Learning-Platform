@@ -1,5 +1,8 @@
 <div class="formContainer">
     <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+      <div *ngIf="registrationForm.invalid && registrationForm.touched" class="error-message">
+        <p>Please correct the errors in the form before submitting.</p>
+      </div>
       <i class="bi bi-book me-2 logo"> Skill Wave</i>
       <!-- الصورة الشخصية -->
       <div class="">
@@ -13,40 +16,49 @@
       </div> 
   
       <div class="input-container">
-        <input type="text" id="firstName" name="firstName" placeholder=" " required formControlName="firstNameControl">
-        <label for="firstName">First Name</label>
-      </div>
-  
-      <div class="input-container">
-        <input type="text" id="lastName" name="lastName" placeholder=" " formControlName="lastNameControl" required>
-        <label for="lastName">Last Name</label>
-      </div>
-  
-      <div class="input-container">
-        <input type="email" id="email" name="email" placeholder=" " formControlName="emailControl" required>
-        <label for="email">E-Mail</label>
-      </div>
-  
-      <div class="input-container">
-        <input type="password" id="password" name="password" placeholder=" " formControlName="passwordControl" required>
-        <label for="password">Password</label>
-      </div>
-  
-      <div class="input-container">
-        <input type="password" id="confirmPassword" name="confirmPassword" placeholder=" "
-          formControlName="confirmPasswordControl" required>
-        <label for="confirmPassword">Confirm Password</label>
-        <div *ngIf="registrationForm.get('confirmPasswordControl')?.errors?.['passwordMismatch']">
-          <small class="error">Passwords do not match</small>
+        <input type="text" id="firstName" name="firstName" placeholder="Firt Name" required formControlName="firstNameControl">
+        <!-- <label for="firstName">First Name</label> -->
+        <div *ngIf="registrationForm.get('firstNameControl')?.touched && registrationForm.get('firstNameControl')?.invalid">
+          <small *ngIf="registrationForm.get('firstNameControl')?.errors?.['required']">First Name is required.</small>
         </div>
       </div>
   
       <div class="input-container">
-        <input type="tel" id="phone" name="phone" formControlName="phoneControl" placeholder=" ">
-        <label for="phone">Phone</label>
+        <input type="text" id="lastName" name="lastName" placeholder="Last Name" formControlName="lastNameControl" required>
+        <!-- <label for="lastName">Last Name</label> -->
+        <div *ngIf="registrationForm.get('lastNameControl')?.touched && registrationForm.get('lastNameControl')?.invalid">
+          <small *ngIf="registrationForm.get('lastNameControl')?.errors?.['required']">Last Name is required.</small>
+        </div>
+      </div>
+  
+      <div class="input-container">
+        <input type="email" id="email" name="email" placeholder="E-Mail" formControlName="emailControl" required>
+        <!-- <label for="email">E-Mail</label> -->
+        <div *ngIf="registrationForm.get('emailControl')?.touched && registrationForm.get('emailControl')?.invalid">
+          <small *ngIf="registrationForm.get('emailControl')?.errors?.['required']">Email is required.</small>
+          <small *ngIf="registrationForm.get('emailControl')?.errors?.['email']">Invalid email format.</small>
+        </div>
+      </div>
+  
+      <div class="input-container">
+        <app-password-input formControlName="password" placeholder="Enter Password" formControlName="passwordControl" required></app-password-input>
+        <div *ngIf="registrationForm.get('passwordControl')?.touched && registrationForm.get('passwordControl')?.invalid">
+          <small *ngIf="registrationForm.get('passwordControl')?.errors?.['required']">Password is required.</small>
+          <small *ngIf="registrationForm.get('passwordControl')?.errors?.['minlength']">Password must be at least 6 characters.</small>
+          <small *ngIf="registrationForm.get('passwordControl')?.errors?.['pattern']">Password must contain at least one letter and one number.</small>
+        </div>
+      </div>
+        
+      <div class="input-container">
+        <input type="tel" id="phone" name="phone" placeholder="Phone" formControlName="phoneControl" required>
+        <!-- <label for="phone">Phone</label> -->
+        <div *ngIf="registrationForm.get('phoneControl')?.touched && registrationForm.get('phoneControl')?.invalid">
+          <small *ngIf="registrationForm.get('phoneControl')?.errors?.['required']">Phone is required.</small>
+          <small *ngIf="registrationForm.get('phoneControl')?.errors?.['pattern']">Invalid phone number.</small>
+        </div>
       </div>
   
       <!-- زر الإرسال -->
-      <button type="submit" [disabled]="registrationForm.invalid">Register</button>
+      <button type="submit">Register</button>
     </form>
   </div>
