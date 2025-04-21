@@ -31,7 +31,7 @@ export class EditCourseComponent implements OnInit {
     id: '',
     name: '',
     description: '',
-    status: '',
+    status: false,
     teacher: '',
     photoPath: '',
     mainCategory: '',
@@ -128,7 +128,7 @@ export class EditCourseComponent implements OnInit {
             teacher: course.teacher,
             mainCategory: course.mainCategory,
             subCategories: selectedSubCategories, // تحديث الحقل مباشرة
-            status: course.status === 'true'
+            status: course.status
           });
         }
 
@@ -178,12 +178,12 @@ export class EditCourseComponent implements OnInit {
       this.markFormGroupTouched(this.courseForm);
       return;
     }
-  
+
     try {
       this.isSubmitting = true;
       const formValues = this.courseForm.value;
       console.log('Form Values:', formValues); // للتأكد من القيم
-  
+
       // تجهيز البيانات
       const formData = new FormData();
       formData.append('id', this.courseId);
@@ -191,35 +191,37 @@ export class EditCourseComponent implements OnInit {
       formData.append('description', formValues.description);
       formData.append('teacher', formValues.teacher);
       formData.append('mainCategory', formValues.mainCategory);
-      formData.append('status', formValues.status ? 'Active' : 'Not Available');
-      
+      formData.append('status', formValues.status.toString());
+      formData.forEach((value, key) => {
+        console.log(`${key}:`, value);
+      });
       // إضافة الفئات الفرعية
       if (formValues.subCategories && formValues.subCategories.length > 0) {
         formValues.subCategories.forEach((subCat: any) => {
           formData.append('subCategories[]', subCat.description);
         });
       }
-  
+
       // إضافة الصورة إذا تم اختيارها
       if (this.selectedFile) {
         formData.append('photo', this.selectedFile);
       }
-  
+
       // طباعة محتويات FormData للتأكد
       formData.forEach((value, key) => {
         console.log(`${key}:`, value);
       });
-  
+
       // إرسال الطلب
       const response = await this.courseService.updateCourseWithImage(this.courseId, formData).toPromise();
       console.log('Update Response:', response);
-  
+
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
         detail: 'Course updated successfully!'
       });
-      
+
       this.router.navigate(['/admin/courses']);
     } catch (error) {
       console.error('Error updating course:', error);
@@ -238,7 +240,7 @@ export class EditCourseComponent implements OnInit {
       console.log(`${key}:`, value);
     });
   }
-  
+
   private prepareUpdateData(): Course {
     const formValues = this.courseForm.value;
     return {
@@ -274,15 +276,15 @@ export class EditCourseComponent implements OnInit {
     });
   }
 
-private handleError(message: string, error: any): void {
-  console.error('Error details:', { message, error });
-  this.errorMessage = message;
-  this.messageService.add({
-    severity: 'error',
-    summary: 'Error',
-    detail: error.message || message
-  });
-}
+  private handleError(message: string, error: any): void {
+    console.error('Error details:', { message, error });
+    this.errorMessage = message;
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: error.message || message
+    });
+  }
 
   onCancel(): void {
     this.router.navigate(['/admin/courses']);

@@ -2,7 +2,7 @@ export interface Course {
   id: string;
   name: string;
   description: string;
-  status: string;
+  status: boolean;
   teacher: string;
   photoPath?: string;
   mainCategory?: string;

@@ -116,14 +116,13 @@
             <div class="mb-3">
               <label for="status" class="form-label">Course Available</label>
               <select class="form-control" id="status" formControlName="status">
-                <option [value]="true">Available</option>
-                <option [value]="false">Not Available</option>
+                <option [ngValue]="true">Available</option>
+                <option [ngValue]="false">Not Available</option>
               </select>
             </div>
 
           </div>
         </div>
-
         <div class="d-flex justify-content-end mt-3">
           <button type="button" class="btn btn-secondary me-2" (click)="onCancel()" [disabled]="isSubmitting">
             Cancel

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "bRECxRU0fZkTZNqir+z1p6AyxXWtC8UNk/l+3c0YKr4=",
+  "Hash": "3AIAPMyfE9pjaLPPvNZ7RtAMxdH4MlemPAXLzf9fvPI=",
   "Source": "SkillwaveAPI",
   "BasePath": "_content/SkillwaveAPI",
   "Mode": "Default",
@@ -112,12 +112,12 @@
       "OriginalItemSpec": "wwwroot\\courses\\78b279ac-2f77-455a-a9aa-c894feaf0367.png"
     },
     {
-      "Identity": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\c06a3867-6272-4782-9c3e-6af308ea6972.png",
+      "Identity": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\c06a3867-6272-4782-9c3e-6af308ea6972.webp",
       "SourceId": "SkillwaveAPI",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\",
       "BasePath": "_content/SkillwaveAPI",
-      "RelativePath": "courses/c06a3867-6272-4782-9c3e-6af308ea6972.png",
+      "RelativePath": "courses/c06a3867-6272-4782-9c3e-6af308ea6972.webp",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -128,7 +128,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\courses\\c06a3867-6272-4782-9c3e-6af308ea6972.png"
+      "OriginalItemSpec": "wwwroot\\courses\\c06a3867-6272-4782-9c3e-6af308ea6972.webp"
     },
     {
       "Identity": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\c5bd40a7-af83-4ba1-b01c-a7b2320b6c57.webp",
