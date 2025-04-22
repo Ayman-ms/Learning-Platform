@@ -1,11 +1,21 @@
 .navbar {
-  background-color: var(--logo-bg-color);
+  background-color: #343a40;
   color: #fff;
   justify-content: space-between;
 }
+
+.navbar .nav-link {
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+.navbar .nav-link:hover {
+  color: #007bff;
+}
+
 @media (max-width: 480px) {
-  .navbar{
-      width: 100%;
+  .navbar {
+    width: 100%;
   }
 }
 
@@ -17,7 +27,13 @@ form {
 }
 
 form input {
-  border-radius: 0;
+  border-radius: 0.25rem;
+  border: 1px solid #ced4da;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 form i {
@@ -41,9 +57,41 @@ form i:hover {
 .navbar-toggler {
   background-color: #fff;
 }
-.open{
+
+.open {
   display: block;
 }
-.dropdown-menu{
-  width: fit-content;
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 0.5rem;
+  border-radius: 0.25rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.dropdown-menu .dropdown-item {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #f8f9fa;
+  color: #007bff;
+}
+
+.nav-link.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-link.dropdown-toggle img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
 }

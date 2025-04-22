@@ -59,6 +59,7 @@ namespace SkillwaveAPI.Controllers
             {
                 var student = new Student
                 {
+                    Id = Guid.NewGuid().ToString(),
                     FirstName = studentDto.FirstName,
                     LastName = studentDto.LastName,
                     Email = studentDto.Email,
@@ -95,7 +96,7 @@ namespace SkillwaveAPI.Controllers
                 students.Add(student);
                 await _jsonFileService.WriteAsync(students);
 
-                return Ok(student); 
+                return Ok(student);
             }
             catch (Exception ex)
             {
@@ -144,6 +145,41 @@ namespace SkillwaveAPI.Controllers
             students.RemoveAt(studentIndex);
             await _jsonFileService.WriteAsync(students);
             return NoContent();
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<Student>> Login([FromBody] LoginDTO loginDto)
+        {
+            try
+            {
+                var students = await _jsonFileService.ReadAsync();
+                var student = students.FirstOrDefault(s => s.Email == loginDto.Email);
+
+                if (student == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, student.Password))
+                {
+                    return Unauthorized(new { message = "Invalid email or password" });
+                }
+
+                // يمكنك إضافة JWT token هنا إذا أردت
+                return Ok(new
+                {
+                    id = student.Id,
+                    email = student.Email,
+                    firstName = student.FirstName,
+                    lastName = student.LastName,
+                    photoPath = student.PhotoPath
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        public class LoginDTO
+        {
+            public string Email { get; set; }
+            public string Password { get; set; }
         }
 
     }

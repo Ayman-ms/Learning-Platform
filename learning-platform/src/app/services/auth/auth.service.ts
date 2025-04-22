@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
+  private apiUrl = 'http://localhost:5270/api/Student';
 
   constructor(private http: HttpClient) { }
 
@@ -18,4 +19,21 @@ export class AuthService {
   sendResetPasswordEmail(email: string): Observable<any> {
     return this.http.post('/api/send-reset-password-email', { email });
   }
+  login(credentials: { email: string; password: string }) {
+    return this.http.post<any>(`${this.apiUrl}/login`, credentials);
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('user');
+  }
+
+  logout(): void {
+    localStorage.removeItem('user');
+  }
+
+  getUser(): any {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  }
+
 }

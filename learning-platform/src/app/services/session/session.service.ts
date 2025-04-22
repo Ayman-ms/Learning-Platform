@@ -11,6 +11,7 @@ import { UserService } from '../users/user.service';
 export class SessionService {
   private userSubject: BehaviorSubject<Student>;
   public user: Observable<Student>;
+  private currentUserSubject = new BehaviorSubject<Student | null>(null);
 
   constructor(
     private router: Router,
@@ -18,10 +19,27 @@ export class SessionService {
     private userService: UserService) {
     this.userSubject = new BehaviorSubject<Student>(JSON.parse(localStorage.getItem('user') as any));
     this.user = this.userSubject.asObservable();
+
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      this.currentUserSubject.next(JSON.parse(storedUser));
+    }
   }
 
   public get userValue(): Student {
     return this.userSubject.value;
+  }
+
+  get currentUser() {
+    return this.currentUserSubject.asObservable();
+  }
+
+  setCurrentUser(user: Student) {
+    if (!user.profileImage) {
+      user.profileImage = '/assets/default-profile.png'; // صورة افتراضية إذا لم تكن الصورة موجودة
+    }
+    this.currentUserSubject.next(user);
+    localStorage.setItem('user', JSON.stringify(user));
   }
 
   login(user: Student) {
@@ -33,6 +51,7 @@ export class SessionService {
   }
 
   logout() {
+    this.currentUserSubject.next(null);
     localStorage.removeItem('user');
     const u: Student = {
       firstName: 'anonymos',

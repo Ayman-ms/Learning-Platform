@@ -55,6 +55,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
+
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -123,8 +125,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     InputSwitchModule,
     ProgressSpinnerModule,
     MessagesModule,
-    MessageModule
-
+    MessageModule,
+    ToastModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]

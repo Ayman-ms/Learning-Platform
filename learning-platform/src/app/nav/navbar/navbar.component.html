@@ -30,20 +30,20 @@
         <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
       </form>
       <!-- <li>Login</li> -->
-      <div class="btn-group dropstart">
-        
-        <a class="dropdown-item" routerLink="login">Login</a>
-        <button  class="nav-link  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          User
+      <div *ngIf="currentUser" class="btn-group dropstart">
+
+        <a class="dropdown-item" *ngIf!="currentUser" routerLink="login">Login</a>
+        <button class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          Welcome, {{ currentUser.firstName }}!
         </button>
         <ul class="dropdown-menu mt-4">
-          <li><a class="dropdown-item" routerLink="update">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Dashboard</a></li>
-            <li><a class="dropdown-item" href="#">Notifications</a></li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li><a class="dropdown-item" href="#">Logout</a></li>
+          <li> <a class="dropdown-item" routerLink="update">Profile</a></li>
+          <li><a class="dropdown-item" href="#">Dashboard</a></li>
+          <li><a class="dropdown-item" href="#">Notifications</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" routerLink="''" (click)="logout()">Logout</a></li>
         </ul>
       </div>
     </div>
