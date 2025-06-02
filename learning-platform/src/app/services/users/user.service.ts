@@ -20,9 +20,31 @@ export class UserService {
   public deleteUser(id: number) {
     return this.http.delete<number>(this.api, { params: { id: id } }).toPromise();
   }
-  public getUser(user: Student) {
+  
+
+  getUser(user: Student) {
     return this.http.get<Array<Student>>(this.api).toPromise();
   }
+
+  getStudentById(id: string): Observable<Student> {
+    return this.http.get<Student>(`${this.api}/${id}`);
+  }
+  
+
+  // updateStudent(id: string, studentData: Partial<Student>): Observable<Student> {
+  //   return this.http.put<Student>(`${this.api}/${id}`, studentData);
+  // }
+  updateStudent(id: string, formData: FormData) {
+    return this.http.put<Student>(`${this.api}/${id}`, formData);
+  }
+
+  uploadImage(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.api}/upload`, formData);
+  }
+
+
   // all user
   public getUsers() {
     return this.http.get<Student[]>(this.api).toPromise();

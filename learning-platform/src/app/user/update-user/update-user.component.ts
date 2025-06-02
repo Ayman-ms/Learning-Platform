@@ -15,7 +15,7 @@ import { UserService } from 'src/app/services/users/user.service';
 export class UpdateUserComponent {
   userToEdit: Student = {
     id: '', firstName: '', lastName: '', password: '', email: '', phone: '',
-    profileImage: '',
+    photoPath: '',
     createdAt: ''
   };
   userIsAdmin = false;
@@ -52,7 +52,7 @@ export class UpdateUserComponent {
 
 
   ngOnInit(): void {
-    this.httpClient.get<Array<Student>>('https://localhost:44355/User').subscribe((userListItems) => {
+    this.httpClient.get<Array<Student>>('http://localhost:5270/api/Student').subscribe((userListItems) => {
       this.route.queryParams
         .subscribe(params => {
           console.log(params['id']);

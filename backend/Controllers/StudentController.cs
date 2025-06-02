@@ -106,32 +106,69 @@ namespace SkillwaveAPI.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateStudent(string id, [FromBody] Student updatedStudent)
+        public async Task<IActionResult> UpdateStudent(string id, [FromForm] StudentDTO studentDto)
         {
-            if (updatedStudent == null || id != updatedStudent.Id)
+            try
             {
-                return BadRequest("Invalid student data.");
+                var students = await _jsonFileService.ReadAsync();
+                var existingStudent = students.FirstOrDefault(s => s.Id == id);
+                if (existingStudent == null)
+                {
+                    return NotFound("Student not found");
+                }
+
+                // تحديث البيانات
+                existingStudent.FirstName = studentDto.FirstName;
+                existingStudent.LastName = studentDto.LastName;
+                existingStudent.Email = studentDto.Email;
+                existingStudent.Phone = studentDto.Phone;
+
+                // تشفير كلمة المرور الجديدة إن وُجدت
+                if (!string.IsNullOrWhiteSpace(studentDto.Password))
+                {
+                    existingStudent.Password = BCrypt.Net.BCrypt.HashPassword(studentDto.Password);
+                }
+
+                // تحديث الصورة إن وُجدت
+                if (studentDto.Photo != null)
+                {
+                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "students");
+
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    // نفس اسم الصورة السابقة (first_last.extension)
+                    var fileExtension = Path.GetExtension(studentDto.Photo.FileName);
+                    var fileName = $"{existingStudent.FirstName}_{existingStudent.LastName}{fileExtension}";
+                    var filePath = Path.Combine(uploadsFolder, fileName);
+
+                    // حذف الصورة القديمة إن وُجدت
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await studentDto.Photo.CopyToAsync(stream);
+                    }
+
+                    var baseUrl = $"{Request.Scheme}://{Request.Host}";
+                    existingStudent.PhotoPath = $"{baseUrl}/students/{fileName}";
+                }
+
+                await _jsonFileService.WriteAsync(students);
+                return Ok(existingStudent);
             }
-
-            var students = await _jsonFileService.ReadAsync();
-            var student = students.FirstOrDefault(s => s.Id == id);
-
-            if (student == null)
+            catch (Exception ex)
             {
-                return NotFound("Student not found.");
+                return BadRequest(new { message = ex.Message });
             }
-
-            // تحديث بيانات الطالب
-            student.FirstName = updatedStudent.FirstName;
-            student.LastName = updatedStudent.LastName;
-            student.Email = updatedStudent.Email;
-            student.Phone = updatedStudent.Phone;
-            student.PhotoPath = updatedStudent.PhotoPath;
-
-            await _jsonFileService.WriteAsync(students);
-
-            return Ok(student);  // ✅ يجب إرجاع الطالب لتجنب `undefined`
         }
+
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(string id)

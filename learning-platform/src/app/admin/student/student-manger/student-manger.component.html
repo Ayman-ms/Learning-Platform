@@ -1,35 +1,35 @@
 <div class="input-group mb-3">
-    <app-search-bar placeholder="Search by First Name, Last Name, or Email" (searchTextChanged)="updateSearch($event)"></app-search-bar>
+  <app-search-bar placeholder="Search by First Name, Last Name, or Email" (searchTextChanged)="updateSearch($event)"></app-search-bar>
 </div>
 
-<!-- Students Count -->
 <p>Total Students: {{filteredStudents.length}}</p>
 
 <div class="container">
-  <div class="card" *ngFor="let student of filteredStudents">
+<div class="card" *ngFor="let student of displayedStudents">
+  <div class="card-body">
+    <img [src]="getImagePath(student.photoPath)" 
+         [alt]="student.firstName + '\'s profile picture'"
+         class="student-img"
+         (error)="handleImageError($event)"/>
+    <p><strong>First Name:</strong> {{ student.firstName }}</p>
+    <p><strong>Last Name:</strong> {{ student.lastName }}</p>
+    <p class="email"><strong>Email:</strong> {{ student.email }}</p>
+    <p><strong>Phone Nr.:</strong> {{ student.phone }}</p>
 
-    <div class="card-body">
-      <img [src]="getImagePath(student.profileImage)" alt="Profile Picture" class="student-img"/>
-      <p><strong>First Name:</strong> {{ student.firstName }}</p>
-      <p><strong>Last Name:</strong> {{ student.lastName }}</p>
-      <p class="email"><strong>Email:</strong> {{ student.email }}</p>
-      <p><strong>Phone Nr.:</strong> {{ student.phone }}</p>
-
-      <div class="cardButton">
-        <button class="btn editBtn" [routerLink]="'/admin/editstudent'" [queryParams]="{ id: student.id }">
-          <i class="bi bi-pencil-square"></i> Edit
-        </button>
-        <button class="btn deleteBtn">
-          <i class="bi bi-trash3"></i> Delete
-        </button>
-      </div>
+    <div class="cardButton">
+      <button class="btn editBtn" [routerLink]="'/admin/editstudent'" [queryParams]="{ id: student.id }">
+        <i class="bi bi-pencil-square"></i> Edit
+      </button>
+      <button class="btn deleteBtn" (click)="deleteStudent(student.id)">
+        <i class="bi bi-trash3"></i> Delete
+      </button>
     </div>
   </div>
 </div>
+</div>
 
-<!-- pagination controls -->
 <app-pagination-control 
-  [items]="filteredStudents"
-  [itemsPerPage]="9"
-  (paginatedItems)="onPaginatedData($event)">
+[items]="filteredStudents"
+[itemsPerPage]="12"
+(paginatedItems)="onPaginatedData($event)">
 </app-pagination-control>

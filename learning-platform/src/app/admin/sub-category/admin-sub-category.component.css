@@ -1,0 +1,46 @@
+@import '../main-category/admin-main-category/admin-main-category.component.css';
+
+.add-category-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    background-color: var(--logo-bg-color);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.add-category-container input {
+    width: 70%;
+}
+
+.btn {
+    background-color: var(--blue-color);
+    color: var(--white-color);
+    padding: 5px 10px;
+    margin-right: 10px;
+}
+
+.deleteBtn {
+    background-color: var(--red-color);
+}
+
+.cards {
+    margin-bottom: 10px;
+}
+
+.cardButton {
+    margin-top: 10px;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.card-item {
+    background-color: var(--card-bg-color);
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}

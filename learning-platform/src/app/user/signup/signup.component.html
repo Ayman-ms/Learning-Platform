@@ -6,11 +6,7 @@
       <i class="bi bi-book me-2 logo"> Skill Wave</i>
       <!-- الصورة الشخصية -->
       <div class="">
-        <!-- الصورة الشخصية القابلة للنقر -->
-        <!-- <i class="bi bi-person"></i> -->
         <img [src]="selectedImage || './assets/person.svg'" alt="Profile Picture" class="profile-img" (click)="triggerFileInput()">
-  
-        <!-- حقل اختيار الصورة (مخفي) -->
         <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" hidden>
   
       </div> 

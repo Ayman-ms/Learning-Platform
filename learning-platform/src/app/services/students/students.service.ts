@@ -24,8 +24,10 @@ export class StudentsService {
 
   public async updateStudent(student: Student): Promise<boolean> {
     try {
+      console.log('Sending student data:', student); // للتأكد من البيانات المرسلة
       const response = await this.http.put<Student>(`${this.api}${student.id}`, student).toPromise();
-      return response ? true : false;
+      console.log('Server response:', response); // للتأكد من استجابة الخادم
+      return !!response;
     } catch (error) {
       console.error("Error updating student:", error);
       return false;

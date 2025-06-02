@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Student } from 'src/app/models/student';
 import { SessionService } from 'src/app/services/session/session.service';
+import { SidebarService } from 'src/app/services/sidebar/sidebar.service';
 import { UserService } from 'src/app/services/users/user.service';
 
 @Component({
@@ -13,13 +14,33 @@ import { UserService } from 'src/app/services/users/user.service';
 export class UserSidebarComponent {
   userToEdit: Student = {
     id: '', firstName: '', lastName: '', password: '', email: '', phone: '',
-    profileImage: '',
+    photoPath: '',
     createdAt: ''
   };
 
-  constructor(public accountService: SessionService) {
+  constructor(public accountService: SessionService,private sidebarService: SidebarService,
+    private router: Router) {
     accountService.user.subscribe((u) => {
       this.userToEdit = u;
     });
   }
+
+    isOpen$ = this.sidebarService.isSidebarOpen$;
+    
+
+  
+    toggleNav() {
+      this.sidebarService.toggleSidebar();
+    }
+  
+    closeNav() {
+      this.sidebarService.closeSidebar();
+    }
+  
+    // إغلاق Sidebar عند النقر على أي رابط
+    onLinkClick() {
+      if (window.innerWidth <= 768) {
+        this.sidebarService.closeSidebar();
+      }
+    }
 }

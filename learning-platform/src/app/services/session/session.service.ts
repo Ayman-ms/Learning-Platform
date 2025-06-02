@@ -34,21 +34,40 @@ export class SessionService {
     return this.currentUserSubject.asObservable();
   }
 
-  setCurrentUser(user: Student) {
-    if (!user.profileImage) {
-      user.profileImage = '/assets/default-profile.png'; // صورة افتراضية إذا لم تكن الصورة موجودة
-    }
-    this.currentUserSubject.next(user);
-    localStorage.setItem('user', JSON.stringify(user));
-  }
+
 
   login(user: Student) {
     this.userSubject.next(user);
   }
 
-  getUser() {
-    return JSON.parse(localStorage.getItem('user') as any)
+  getUser(): Student | null {
+    try {
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        const user = JSON.parse(userData);
+        console.log('Retrieved user data:', user);
+        return user;
+      }
+      return null;
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+      return null;
+    }
   }
+  
+  setCurrentUser(user: Student) {
+    try {
+      if (!user.photoPath) {
+        user.photoPath = '/assets/images/default-avatar.png';
+      }
+      localStorage.setItem('user', JSON.stringify(user));
+      this.currentUserSubject.next(user);
+      console.log('User data saved:', user);
+    } catch (error) {
+      console.error('Error saving user data:', error);
+    }
+  }
+  
 
   logout() {
     this.currentUserSubject.next(null);
@@ -60,7 +79,7 @@ export class SessionService {
       password: '',
       email: '',
       phone: '',
-      profileImage: '',
+      photoPath: '',
       createdAt: ''
     };
     this.userSubject.next(u);
@@ -69,7 +88,7 @@ export class SessionService {
 
    // new user
    register(user: Student) {
-    return this.http.post<Student>('https://localhost:44355/User', user).toPromise();
+    return this.http.post<Student>('http://localhost:5270/api/Student', user).toPromise();
   }
 
   // all user

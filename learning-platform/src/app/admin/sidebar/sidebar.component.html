@@ -1,47 +1,41 @@
-<div class="layout-container">
-    <button class="menu-toggle" (click)="toggleNav()">
-      <i class="bi bi-list"></i>
+<nav class="sidebar" [class.active]="isOpen$ | async">
+  <div class="sidebar-header">
+    <h3>Admin Panel</h3>
+    <button class="close-btn" (click)="closeNav()">
+      <i class="bi bi-x-lg"></i>
     </button>
-  
-    <nav class="sidebar" [class.active]="showSidebar">
-      <div class="sidebar-header">
-        <h3>Admin Panel</h3>
-        <button class="close-btn" (click)="closeNav()">
-          <i class="bi bi-x-lg"></i>
-        </button>
-      </div>
-  
-      <ul class="nav-menu">
-        <li class="nav-item">
-          <a routerLink="students" routerLinkActive="active">
-            <i class="bi bi-people"></i>
-            <span>Students</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="teachers" routerLinkActive="active">
-            <i class="bi bi-person-video3"></i>
-            <span>Teachers</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="courses" routerLinkActive="active">
-            <i class="bi bi-book"></i>
-            <span>Courses</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="maincategory" routerLinkActive="active">
-            <i class="bi bi-grid"></i>
-            <span>Main Category</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a routerLink="subcategory" routerLinkActive="active">
-            <i class="bi bi-diagram-3"></i>
-            <span>Sub Category</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
   </div>
+
+  <ul class="nav-menu">
+    <li class="nav-item">
+      <a routerLink="teachers" routerLinkActive="active" (click)="onLinkClick()">
+        <i class="bi bi-people"></i>
+        <span>Teachers</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a [routerLink]="['/admin/students']" routerLinkActive="active" (click)="onLinkClick()">
+        <i class="bi bi-people"></i>
+        <span>Students</span>
+      </a>
+    </li>
+      <li class="nav-item">
+        <a routerLink="courses" routerLinkActive="active" (click)="onLinkClick()">
+          <i class="bi bi-book"></i>
+          <span>Courses</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="maincategory" routerLinkActive="active" (click)="onLinkClick()">
+          <i class="bi bi-grid"></i>
+          <span>Main Category</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="subcategory" routerLinkActive="active" (click)="onLinkClick()">
+          <i class="bi bi-diagram-3"></i>
+          <span>Sub Category</span>
+        </a>
+      </li>
+    </ul>
+  </nav>

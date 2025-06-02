@@ -7,6 +7,16 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  display: block;
+  margin: 10px auto;
+}
+
 .itemLine {
     display: flex;
     gap: 10px;
@@ -56,12 +66,3 @@ span {
 
 
 /* ///////////// */
-.student-img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 2px solid #ddd;
-    display: block;
-    margin: 10px auto;
-}

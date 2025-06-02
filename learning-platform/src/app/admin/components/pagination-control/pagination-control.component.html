@@ -1,9 +1,20 @@
-<div *ngIf="items.length > itemsPerPage" class="pagination-controls">
-  <button (click)="previousPage()" [disabled]="currentPage === 1">
-    <i class="bi bi-arrow-left"></i>
+<div class="pagination-controls" *ngIf="totalPages > 1">
+  <button class="pagination-btn" 
+          (click)="previousPage()" 
+          [disabled]="currentPage === 1">
+    Previous
   </button>
-  <span>Page {{currentPage}} / {{totalPages}}</span>
-  <button (click)="nextPage()" [disabled]="currentPage === totalPages">
-    <i class="bi bi-arrow-right"></i>
+
+  <button class="pagination-btn" 
+          *ngFor="let page of pages" 
+          (click)="goToPage(page)"
+          [class.active]="currentPage === page">
+    {{page}}
+  </button>
+
+  <button class="pagination-btn" 
+          (click)="nextPage()" 
+          [disabled]="currentPage === totalPages">
+    Next
   </button>
 </div>

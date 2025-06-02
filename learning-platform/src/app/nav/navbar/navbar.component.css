@@ -1,21 +1,11 @@
 .navbar {
-  background-color: #343a40;
+  background-color: var(--logo-bg-color);
   color: #fff;
   justify-content: space-between;
 }
-
-.navbar .nav-link {
-  color: #fff;
-  transition: color 0.3s ease;
-}
-
-.navbar .nav-link:hover {
-  color: #007bff;
-}
-
 @media (max-width: 480px) {
-  .navbar {
-    width: 100%;
+  .navbar{
+      width: 100%;
   }
 }
 
@@ -27,13 +17,7 @@ form {
 }
 
 form input {
-  border-radius: 0.25rem;
-  border: 1px solid #ced4da;
-}
-
-.form-control:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  border-radius: 0;
 }
 
 form i {
@@ -94,4 +78,91 @@ form i:hover {
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #fff;
+}
+
+
+
+.sidebar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .sidebar-toggle {
+    display: block;
+  }
+}
+
+.navbar {
+  background-color: var(--logo-bg-color);
+  color: #fff;
+  justify-content: space-between;
+  height: 60px; /* تحديد ارتفاع ثابت */
+  z-index: 1030; /* تأكد من أن Navbar يظهر فوق Sidebar */
+}
+
+.sidebar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-toggle.active {
+  transform: rotate(90deg);
+}
+
+@media (max-width: 768px) {
+  .sidebar-toggle {
+    display: block;
+    margin-right: 1rem;
+  }
+}
+.sidebar-toggle i {
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-toggle.active i {
+  transform: rotate(90deg);
+}
+.sidebar-toggle {
+  background-color: transparent;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.sidebar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+  .sidebar-toggle {
+    display: block;
+  }
 }

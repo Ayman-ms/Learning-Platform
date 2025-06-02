@@ -6,32 +6,39 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
   styleUrls: ['./pagination-control.component.css']
 })
 export class PaginationControlComponent implements OnChanges {
-  @Input() items: any[] = [];  // البيانات القادمة من المكون الأب
-  @Input() itemsPerPage: number = 9; // عدد العناصر في كل صفحة (يمكن تغييره)
-  @Output() paginatedItems = new EventEmitter<any[]>(); // لإرسال البيانات بعد التصفية
-  @Output() pageChanged = new EventEmitter<number>(); // للإبلاغ عن تغيير الصفحة
+  @Input() items: any[] = [];
+  @Input() itemsPerPage: number = 12;
+  @Output() paginatedItems = new EventEmitter<any[]>();
 
   currentPage: number = 1;
   totalPages: number = 1;
+  pages: number[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['items']) {
-      this.currentPage = 1;  // إعادة الصفحة الأولى عند تغيير البيانات
+      this.currentPage = 1;
+      this.calculateTotalPages();
       this.updatePagination();
     }
   }
 
-  updatePagination(): void {
-    if (!this.items) return;
-    
+  calculateTotalPages(): void {
     this.totalPages = Math.ceil(this.items.length / this.itemsPerPage);
-    
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    const paginatedData = this.items.slice(startIndex, endIndex);
+    this.pages = Array.from({length: this.totalPages}, (_, i) => i + 1);
+  }
 
-    this.paginatedItems.emit(paginatedData); // إرسال البيانات المصنفة للمكون الأب
-    this.pageChanged.emit(this.currentPage); // إرسال الصفحة الحالية
+  updatePagination(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = Math.min(startIndex + this.itemsPerPage, this.items.length);
+    const paginatedData = this.items.slice(startIndex, endIndex);
+    this.paginatedItems.emit(paginatedData);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagination();
+    }
   }
 
   nextPage(): void {

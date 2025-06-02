@@ -2,10 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TeacherService } from 'src/app/services/teacher/teacher.service';
-import { Teacher } from 'src/app/models/teacher';
-import { catchError, finalize, of } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { PasswordInputComponent } from '../../components/password-input/password-input.component';
 import { PasswordService } from 'src/app/services/password/password.service';
 
 @Component({
@@ -140,7 +137,6 @@ export class TeacherEditComponent implements OnInit, OnDestroy {
         this.photoBase64 = compressedBase64.split(',')[1];
         this.teacherForm.patchValue({ photoBase64: this.photoBase64 });
 
-        // تحديث الصورة المعروضة
         this.imagePreview = this.sanitizer.bypassSecurityTrustUrl(compressedBase64);
       };
 

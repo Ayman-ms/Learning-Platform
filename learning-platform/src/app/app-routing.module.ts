@@ -19,90 +19,66 @@ import { AdminMainCategoryComponent } from './admin/main-category/admin-main-cat
 import { AdminSubCategoryComponent } from './admin/sub-category/admin-sub-category/admin-sub-category.component';
 import { EditCourseComponent } from './admin/Courses/edit-course/edit-course.component';
 import { AddCourseComponent } from './admin/Courses/add-course/add-course.component';
+import { AllCoursesComponent } from './courses/all-courses/all-courses.component';
 
 const routes: Routes = [
-    {
-      path: '',
-      component: HomeComponent,
-      pathMatch:'full'
-    },
-    {
-      path: 'register',
-      component: SignupComponent
-    },
-    {
-      path: 'login',
-      component: LoginComponent
-    },
-    {
-      path: 'sidebar',
-      component: SidebarComponent
-    },
-    {
-      path:'update',
-      component:UpdateUserComponent,
-      children:[
-        {
-          path:'info',
-          component:UserInfoComponent
-        }
-      ]
-    },
-    {
-      path:'admin',
-      component:AdminControllComponent,
-      children:[
-        {
-          path:'students',
-          component:StudentMangerComponent
-        },
-        {
-          path:'editstudent',
-          component:EditStudentComponent
-        },
-        {
-          path:'teachers',
-          component: AdminTeacherComponent
-        },
-        {
-          path:'courses',
-          component: AdminCoursesComponent
-        },
-        {
-          path:'courses/new-courses',
-          component: AddCourseComponent
-        },
-        {
-          path:'editcourse/:id',
-          component:EditCourseComponent
-        },
-        {
-          path:'editteacher/:id',
-          component:TeacherEditComponent
-        },
-        {
-          path:'addteacher',
-          component:AddTeacherComponent
-        },
-        {
-          path:'maincategory',
-          component:AdminMainCategoryComponent
-        },
-        {
-          path:'subcategory',
-          component:AdminSubCategoryComponent
-        },
-      ]
-    },
-    {
-      path:'forgot-password',
-      component:ForgotPasswordComponent
-    },
-    {
-      path:'renew-password',
-      component:SetPasswordComponent
-    }
-    
+  {
+    path: '',
+    component: HomeComponent,
+    pathMatch: 'full'
+  },
+  {
+    path: 'register',
+    component: SignupComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'sidebar',
+    component: SidebarComponent
+  },
+  {
+    path: 'update',
+    component: UpdateUserComponent,
+    children: [
+      {
+        path: 'info',
+        component: UserInfoComponent
+      }
+    ]
+  },
+  {
+    path: 'admin',
+    component: AdminControllComponent,
+    children: [
+      { path: 'students', component: StudentMangerComponent },
+      { path: 'editstudent', component: EditStudentComponent },
+      { path: 'teachers', component: AdminTeacherComponent },
+      { path: 'courses', component: AdminCoursesComponent },
+      { path: 'courses/new-courses', component: AddCourseComponent },
+      { path: 'editcourse/:id', component: EditCourseComponent },
+      { path: 'editteacher/:id', component: TeacherEditComponent },
+      { path: 'addteacher', component: AddTeacherComponent },
+      { path: 'maincategory', component: AdminMainCategoryComponent },
+      { path: 'subcategory', component: AdminSubCategoryComponent },
+      { path: '', redirectTo: 'students', pathMatch: 'full' }
+    ]
+  },
+  {
+    path: 'all-courses',
+    component: AllCoursesComponent
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent
+  },
+  {
+    path: 'renew-password',
+    component: SetPasswordComponent
+  }
+
 ];
 
 @NgModule({

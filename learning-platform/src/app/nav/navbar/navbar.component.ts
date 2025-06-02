@@ -2,7 +2,9 @@ import { AfterViewInit, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { SessionService } from 'src/app/services/session/session.service';
 import { Student } from 'src/app/models/student';
-
+import { SidebarService } from 'src/app/services/sidebar/sidebar.service';
+import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -11,23 +13,25 @@ import { Student } from 'src/app/models/student';
 export class NavbarComponent implements AfterViewInit {
   userLoggedIn = false;
   currentUser: Student | null = null;
+  isSidebarOpen$: Observable<boolean>;
 
-  constructor(public sessionService: SessionService, private router: Router) {
+  constructor(
+    public sessionService: SessionService,
+    private router: Router,
+    public sidebarService: SidebarService
+  ) {
     this.sessionService.currentUser.subscribe(user => {
       this.currentUser = user;
       this.userLoggedIn = !!user;
     });
+
+    this.isSidebarOpen$ = this.sidebarService.isSidebarOpen$;
   }
 
-  ngAfterViewInit() {}
-
-  toggel() {
-    if (document.getElementById("")?.classList.contains("open")) {
-      document.getElementById("")?.classList.remove("open");
-    } else {
-      document.getElementById("")?.classList.add("open");
-    }
+  toggleSidebar() {
+    this.sidebarService.toggleSidebar();
   }
+  ngAfterViewInit()  {}
 
   logout() {
     this.sessionService.logout();

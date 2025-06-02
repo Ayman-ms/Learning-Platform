@@ -1,0 +1,44 @@
+<p>all-courses works!</p>
+<!-- تصنيفات رئيسية -->
+<div class="category-container">
+    <h2>اختر تصنيفاً رئيسياً</h2>
+    <div class="card-grid">
+      <div
+        class="category-card"
+        *ngFor="let main of mainCategoryList"
+        [class.active]="selectedMainCategory?.id === main.id"
+        (click)="selectMainCategory(main)"
+      >
+        <h3>{{ main.description }}</h3>
+      </div>
+    </div>
+  </div>
+  
+  <!-- تصنيفات فرعية -->
+  <div class="category-container" *ngIf="filteredSubCategories.length > 0">
+    <h2>اختر تصنيفاً فرعياً</h2>
+    <div class="card-grid">
+      <div
+        class="category-card"
+        *ngFor="let sub of filteredSubCategories"
+        [class.active]="selectedSubCategory?.id === sub.id"
+        (click)="selectSubCategory(sub)"
+      >
+        <img [src]="sub.imageUrl" alt="{{ sub.description }}" />
+        <h3>{{ sub.description }}</h3>
+        <span class="course-count">
+          {{ countCoursesBySubCategory(sub.id) }} كورس
+        </span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- الكورسات -->
+  <div class="courses-container" *ngIf="filteredCourses.length > 0">
+    <h2>الكورسات المتاحة:</h2>
+    <div class="course-card" *ngFor="let course of filteredCourses">
+      <h3>{{ course.title }}</h3>
+      <p>{{ course.description }}</p>
+    </div>
+  </div>
+  

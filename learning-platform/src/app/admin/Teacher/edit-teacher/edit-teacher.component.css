@@ -13,28 +13,28 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.itemLine {
+/* .itemLine {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 10px 0;
     width: 100%;
-}
+} */
 
-.itemLine label {
+/* .itemLine label {
     flex: 1;
     font-weight: bold;
-}
+} */
 
-.itemLine input {
+/* .itemLine input {
     flex: 2;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-left: 10px;
-}
+} */
 
-.itemLine span {
+/* .itemLine span {
     margin-left: 10px;
     cursor: pointer;
     color: var(--blue-color);
@@ -42,7 +42,7 @@
 
 .itemLine span:hover {
     text-decoration: underline;
-}
+} */
 
 .saveBtn,
 .cancelBtn {
@@ -88,7 +88,7 @@ img:hover {
     .infoContainer {
         padding: 15px;
     }
-
+/* 
     .itemLine {
         flex-direction: column;
         align-items: flex-start;
@@ -109,5 +109,5 @@ img:hover {
     
     .itemLine span {
         margin-left: 0;
-    }
+    } */
 }

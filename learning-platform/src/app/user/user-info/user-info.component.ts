@@ -5,81 +5,138 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Message, MessageService } from 'primeng/api';
 import { SessionService } from 'src/app/services/session/session.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-user-info',
   templateUrl: './user-info.component.html',
   styleUrls: ['./user-info.component.css']
 })
 export class UserInfoComponent implements OnInit {
-  userToEdit: Student = {
-    id: '', firstName: '', password: '', email: '', phone: '',
-    lastName: '',
-    profileImage: '',
-    createdAt: ''
-  };
-  userIsAdmin = false;
-  userLoggedIn = false;
-  userForm = new FormGroup({
-    firstName: new FormControl(this.userToEdit.firstName, Validators.required),
-    lastName: new FormControl(this.userToEdit.lastName, Validators.required),
-    password: new FormControl(this.userToEdit.password, [
-      Validators.minLength(6),
-      Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$"),
-      Validators.required
-    ]),
-    email: new FormControl(this.userToEdit.email, [Validators.required, Validators.email]),
-    // level: new FormControl(this.userToEdit.level)
-  });
-
+  studentForm: FormGroup;
+  isLoading = false;
+  isSubmitting = false;
+  errorMessage = '';
+  imagePreview: string | null = null;
+  currentStudent: Student | null = null;
+  selectedFile: File | null = null; 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private httpClient: HttpClient,
+    private fb: FormBuilder,
     private userService: UserService,
-    public accountService: SessionService,
-    private messageService: MessageService
+    private sessionService: SessionService,
+    private router: Router
   ) {
-    accountService.user.subscribe((u) => {
-      this.userToEdit = u;
-      // this.userIsAdmin = u && u.level !== 'user';
-      this.userLoggedIn = u && u.firstName !== 'anonymos';
+    this.studentForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', Validators.required],
+      password: [''], // optional
+      photoPath: ['']
     });
   }
 
-  userList?: Array<Student>;
+  ngOnInit() {
+    this.loadStudentData();
+  }
 
-  ngOnInit(): void {
-    this.httpClient.get<Array<Student>>('https://localhost:44355/User').subscribe((userListItems) => {
-      this.route.queryParams.subscribe(params => {
-        console.log(params['id']);
-        for (let user of userListItems) {
-          if (user.id == params['id']) {
-            this.userToEdit = user;
-            this.userForm.patchValue(user);
-            break;
-          }
+  loadStudentData() {
+    this.isLoading = true;
+    const currentUser = this.sessionService.getUser();
+    console.log('Current User:', currentUser);
+  
+    if (!currentUser || !currentUser.id) {
+      this.isLoading = false;
+      this.errorMessage = 'User data not found';
+      this.router.navigate(['/login']);
+      return;
+    }
+  
+    this.userService.getStudentById(currentUser.id).subscribe({
+      next: (student: Student) => {
+        this.currentStudent = student;
+        this.studentForm.patchValue({
+          firstName: student.firstName,
+          lastName: student.lastName,
+          email: student.email,
+          phone: student.phone,
+          photoPath: student.photoPath || '/assets/images/default-avatar.png'
+        });
+        this.imagePreview = student.photoPath || '/assets/images/default-avatar.png';
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error loading student data:', err);
+        this.errorMessage = 'Failed to load student data';
+        this.isLoading = false;
+      }
+    });
+  }
+  
+  onFileSelected(event: Event) {
+    const element = event.target as HTMLInputElement;
+    const file = element.files?.[0];
+  
+    if (file) {
+      this.selectedFile = file;
+  
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.imagePreview = e.target?.result as string;
+        this.studentForm.patchValue({ photoPath: this.imagePreview });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
+
+  onSubmit() {
+    if (this.studentForm.valid && this.currentStudent?.id) {
+      this.isSubmitting = true;
+  
+      const formData = new FormData();
+      formData.append('firstName', this.studentForm.get('firstName')?.value);
+      formData.append('lastName', this.studentForm.get('lastName')?.value);
+      formData.append('email', this.studentForm.get('email')?.value);
+      formData.append('phone', this.studentForm.get('phone')?.value);
+  
+      const password = this.studentForm.get('password')?.value;
+      if (password) {
+        formData.append('password', password);
+      }
+  
+      if (this.selectedFile) {
+        formData.append('Photo', this.selectedFile, this.selectedFile.name);
+      }
+  
+      this.userService.updateStudent(this.currentStudent.id, formData).subscribe({
+        next: (response) => {
+          this.sessionService.setCurrentUser(response);
+          this.router.navigate(['update/info']);
+        },
+        error: (error) => {
+          console.error('Error updating profile:', error);
+          this.errorMessage = 'فشل في تحديث الملف الشخصي';
+        },
+        complete: () => {
+          this.isSubmitting = false;
         }
       });
-    });
-  }
-
-  async updateClick() {
-    let result = await this.userService.updateUser(this.userToEdit);
-    if (result) {
-      this.messageService.add({ severity: 'success', summary: 'Success..', detail: 'User edited' });
-      this.router.navigateByUrl('editUser');
-      this.router.navigateByUrl('');
     } else {
-      console.log('Edit not successful');
-      alert("Edit not successful");
+      this.studentForm.markAllAsTouched();
+      this.errorMessage = 'يرجى ملء الحقول المطلوبة بشكل صحيح';
     }
   }
 
-  msgs = new Array<Message>();
 
-  clickMessage() {
-    this.messageService.add({ severity: 'info', summary: 'Info', detail: 'User edited' });
+  hasError(field: string, error: string): boolean {
+    const control = this.studentForm.get(field);
+    return control?.touched && control?.hasError(error) || false;
+  }
+
+
+
+  onCancel() {
+    this.router.navigate(['/profile']);
   }
 }

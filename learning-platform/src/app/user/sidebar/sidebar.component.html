@@ -1,53 +1,35 @@
-<div class="userSidebar">
-    <h3>Welcome {{userToEdit.lastName}}</h3>
-    <hr>
-    <ul class="nav nav-pills flex-column mb-auto">
+<nav class="sidebar" [class.active]="isOpen$ | async">
+    <div class="sidebar-header">
+      <h3>Welcome {{userToEdit.lastName}}</h3>
+      <button class="close-btn" (click)="closeNav()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+  
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <a [routerLink]="['/update/info']" routerLinkActive="active" (click)="onLinkClick()">
+          <i class="bi bi-people"></i>
+          <span>Your Info</span>
+        </a>
+      </li>
         <li class="nav-item">
-            <a routerLink="info" class="nav-link " aria-current="page">
-                Your Info
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link " aria-current="page">
-                Home
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link " aria-current="page">
-                Home
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link " aria-current="page">
-                Home
-            </a>
+          <a routerLinkActive="active" (click)="onLinkClick()">
+            <i class="bi bi-book"></i>
+            <span>Courses</span>
+          </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link " aria-current="page">
-                Home
-            </a>
+          <a routerLinkActive="active" (click)="onLinkClick()">
+            <i class="bi bi-grid"></i>
+            <span>Main Category</span>
+          </a>
         </li>
-        <li>
-            <a href="#" class="nav-link">
-                Dashboard
-            </a>
+        <li class="nav-item">
+          <a  routerLinkActive="active" (click)="onLinkClick()">
+            <i class="bi bi-diagram-3"></i>
+            <span>Sub Category</span>
+          </a>
         </li>
-        <li>
-            <a href="#" class="nav-link">
-                Orders
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link">
-                Products
-            </a>
-        </li>
-        <li>
-            <a href="#" class="nav-link">
-                Customers
-            </a>
-        </li>
-    </ul>
-    <hr>
-</div>
-<div class="mangeSide col-8"></div>
+      </ul>
+    </nav>

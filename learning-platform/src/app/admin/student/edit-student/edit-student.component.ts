@@ -6,6 +6,7 @@ import { MessageService, Message } from 'primeng/api';
 import { Student } from 'src/app/models/student';
 import { SessionService } from 'src/app/services/session/session.service';
 import { StudentsService } from 'src/app/services/students/students.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-edit-user',
@@ -16,7 +17,7 @@ export class EditStudentComponent implements OnInit {
   studentToEdit: Student = {
     id: '', firstName: '', password: '', email: '', phone: '',
     lastName: '',
-    profileImage: '',
+    photoPath: '',
     createdAt: ''
   };
 
@@ -26,19 +27,25 @@ export class EditStudentComponent implements OnInit {
   isPasswordDisabled = true;
   isEmailDisabled = true;
   isPhoneDisabled = true;
+  isLoading = false;
+  errorMessage = '';
+  imagePreview: SafeUrl | null = null;
+  isSubmitting = false;
+  selectedFile: File | null = null;
 
   // user
   studentLoggedIn = false;
   studentForm = new FormGroup({
     firstName: new FormControl(this.studentToEdit.firstName, Validators.required),
     lastName: new FormControl(this.studentToEdit.lastName, Validators.required),
+    phone: new FormControl(this.studentToEdit.phone, Validators.required),
     password: new FormControl(this.studentToEdit.password, [
       Validators.minLength(6),
       Validators.pattern("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$"),
       Validators.required
     ]),
     email: new FormControl(this.studentToEdit.email, [Validators.required, Validators.email]),
-    // level: new FormControl(this.studentToEdit.level)
+    photoBase64: new FormControl('')
   });
 
   constructor(
@@ -47,7 +54,9 @@ export class EditStudentComponent implements OnInit {
     private httpClient: HttpClient,
     private studentsService: StudentsService,
     public accountService: SessionService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private sanitizer: DomSanitizer,
+
   ) {
     accountService.user.subscribe((u) => {
       this.studentLoggedIn = u && u.firstName !== 'anonymos';
@@ -70,16 +79,125 @@ export class EditStudentComponent implements OnInit {
     });
   }
 
-  async updateClick() {
-    let result = await this.studentsService.updateStudent(this.studentToEdit);
+  async compressImage(base64: string): Promise<string> {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = base64;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d')!;
+        
+        const maxWidth = 800;
+        const maxHeight = 800;
+        let width = img.width;
+        let height = img.height;
+        
+        if (width > height) {
+          if (width > maxWidth) {
+            height *= maxWidth / width;
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width *= maxHeight / height;
+            height = maxHeight;
+          }
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.7)); // Compress with 70% quality
+      };
+    });
+  }
 
-    if (result === true) { 
-      this.messageService.add({ severity: 'success', summary: 'Success..', detail: 'User edited' });
-      this.router.navigateByUrl('admin/students');
-    } else {
-      alert("Edit not successful");
+  selectedImage: string | ArrayBuffer | null = null;
+  photoBase64: string = '';
+
+  onSubmit() {
+    if (this.studentForm.invalid) {
+      return;
+    }
+  
+    this.isSubmitting = true;
+    const formValues = this.studentForm.value;
+    
+    console.log('New Photo Base64:', this.photoBase64);
+    console.log('Current Photo Path:', this.studentToEdit.photoPath);
+  
+    const studentToUpdate: Student = {
+      id: this.studentToEdit.id,
+      firstName: formValues.firstName || '',
+      lastName: formValues.lastName || '',
+      email: formValues.email || '',
+      phone: formValues.phone || '',
+      password: formValues.password || this.studentToEdit.password,
+      createdAt: this.studentToEdit.createdAt,
+      photoPath: this.selectedImage ? (this.selectedImage as string) : this.studentToEdit.photoPath
+    };
+  
+    console.log('Student To Update:', studentToUpdate);
+  
+    this.studentsService.updateStudent(studentToUpdate)
+      .then((success) => {
+        if (success) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Student updated successfully'
+          });
+          this.router.navigate(['/admin/students']);
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to update student'
+          });
+        }
+        this.isSubmitting = false;
+      })
+      .catch(error => {
+        console.error('Update Error:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'An error occurred while updating the student'
+        });
+        this.isSubmitting = false;
+      });
+  }
+  
+  // Updated file selection logic
+  async onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+  
+      reader.onload = async (e) => {
+        if (e.target?.result) {
+          const base64String = e.target.result as string;
+          this.selectedImage = base64String;
+          this.photoBase64 = base64String.split(',')[1]; // Save data without header
+          
+          // Update the displayed image directly
+          this.imagePreview = this.sanitizer.bypassSecurityTrustUrl(base64String);
+          
+          // Update form value
+          this.studentForm.patchValue({
+            photoBase64: this.photoBase64
+          });
+  
+          console.log('Image loaded successfully');
+        }
+      };
+  
+      reader.readAsDataURL(file);
     }
   }
+
   generateRandomPassword(): void {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
     let password = '';
@@ -88,22 +206,7 @@ export class EditStudentComponent implements OnInit {
     }
     this.studentForm.patchValue({ password });
   }
-  // toggle input status
-  toggleFirstNameEdit() {
-    this.isFirstNameDisabled = !this.isFirstNameDisabled;
-  }
-  toggleLastNameEdit() {
-    this.isLastNameDisabled = !this.isLastNameDisabled;
-  }
-  togglePasswordEdit() {
-    this.isPasswordDisabled = !this.isPasswordDisabled;
-  }
-  toggleEmailEdit() {
-    this.isEmailDisabled = !this.isEmailDisabled;
-  }
-  togglePhoneEdit() {
-    this.isPhoneDisabled = !this.isPhoneDisabled;
-  }
+
   msgs = new Array<Message>();
 
   clickMessage() {
@@ -111,14 +214,14 @@ export class EditStudentComponent implements OnInit {
   }
   getImageSource(photoBase64: string | undefined): string {
     if (!photoBase64 || photoBase64.trim() === '' || photoBase64 === 'undefined' || photoBase64 === 'null') {
-      console.warn("❌ PhotoBase64 غير موجودة!");
-      return 'assets/default-profile.png'; // صورة افتراضية
+      console.warn("❌ PhotoBase64 is missing!");
+      return 'assets/default-profile.png'; // Default image
     }
 
-    // التحقق من نوع الصورة
-    let imageFormat = "jpeg"; // الافتراضي
+    // Determine image format
+    let imageFormat = "jpeg"; // Default
     if (photoBase64.startsWith("iVBORw0KGgo")) {
-      imageFormat = "png"; // صورة بصيغة PNG
+      imageFormat = "png"; // PNG format
     }
 
     return `data:image/${imageFormat};base64,${photoBase64.trim()}`;
@@ -134,5 +237,13 @@ export class EditStudentComponent implements OnInit {
       return 'assets/default-profile.png';
     }
     return `${imageFileName}`;
+  }
+  hasError(controlName: string, errorName: string): boolean {
+    const control = this.studentForm.get(controlName);
+    return !!control && control.hasError(errorName) && (control.touched || control.dirty);
+  }
+
+  onCancel() {
+    this.router.navigateByUrl('admin/students');
   }
 }
