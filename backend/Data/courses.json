@@ -1,1 +1,74 @@
-[{"Id":"2","Name":"Advanced Mathematics","Description":"Advanced Mathematics","Status":true,"Teacher":"Advanced Mathematics","MainCategory":"Science","SubCategories":["Physics"],"PhotoPath":"/courses/2.png"},{"Id":"740119b1-c570-42fa-98cf-d9826b6bedae","Name":"123","Description":"123","Status":true,"Teacher":"John Doe","MainCategory":"Science","SubCategories":["Physics"],"PhotoPath":"/courses/740119b1-c570-42fa-98cf-d9826b6bedae.png"},{"Id":"c06a3867-6272-4782-9c3e-6af308ea6972","Name":"2\u064A","Description":"asasdasdasdasdasasd","Status":false,"Teacher":"William Davis","MainCategory":"Development","SubCategories":["Entrepreneurship"],"PhotoPath":"/courses/c06a3867-6272-4782-9c3e-6af308ea6972.png"}]
+[
+    {
+        "Id": "2",
+        "Name": "Advanced Mathematics",
+        "Description": "Advanced Mathematics",
+        "Status": true,
+        "Teacher": "Advanced Mathematics",
+        "MainCategory": "Science",
+        "SubCategories": [
+            "Physics"
+        ],
+        "PhotoPath": "/courses/2.png"
+    },
+    {
+        "Id": "740119b1-c570-42fa-98cf-d9826b6bedae",
+        "Name": "123",
+        "Description": "123",
+        "Status": true,
+        "Teacher": "John Doe",
+        "MainCategory": "Science",
+        "SubCategories": [
+            "Physics","Physics","Physics","Physics"
+        ],
+        "PhotoPath": "/courses/740119b1-c570-42fa-98cf-d9826b6bedae.png"
+    },
+    {
+        "Id": "c06a3867-6272-4782-9c3e-6af308ea6972",
+        "Name": "2\u064A",
+        "Description": "asasdasdasdasdasasd",
+        "Status": false,
+        "Teacher": "William Davis",
+        "MainCategory": "Development",
+        "SubCategories": [
+            "Entrepreneurship"
+        ],
+        "PhotoPath": "/courses/c06a3867-6272-4782-9c3e-6af308ea6972.png"
+    },
+    {
+        "Id": "2d",
+        "Name": "Advanced Mathematics",
+        "Description": "Advanced Mathematics",
+        "Status": true,
+        "Teacher": "Advanced Mathematics",
+        "MainCategory": "Science",
+        "SubCategories": [
+            "Physics"
+        ],
+        "PhotoPath": "/courses/2.png"
+    },
+    {
+        "Id": "74d0119b1-c570-42fa-98cf-d9826b6bedae",
+        "Name": "123",
+        "Description": "123",
+        "Status": true,
+        "Teacher": "John Doe",
+        "MainCategory": "Science",
+        "SubCategories": [
+            "Physics","Physics","Physics","Physics"
+        ],
+        "PhotoPath": "/courses/740119b1-c570-42fa-98cf-d9826b6bedae.png"
+    },
+    {
+        "Id": "c06a3d867-6272-4782-9c3e-6af308ea6972",
+        "Name": "2\u064A",
+        "Description": "asasdasdasdasdasasd",
+        "Status": false,
+        "Teacher": "William Davis",
+        "MainCategory": "Development",
+        "SubCategories": [
+            "Entrepreneurship"
+        ],
+        "PhotoPath": "/courses/c06a3867-6272-4782-9c3e-6af308ea6972.png"
+    }
+]

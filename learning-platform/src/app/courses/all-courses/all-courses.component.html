@@ -1,44 +1,71 @@
-<p>all-courses works!</p>
-<!-- تصنيفات رئيسية -->
-<div class="category-container">
-    <h2>اختر تصنيفاً رئيسياً</h2>
-    <div class="card-grid">
-      <div
-        class="category-card"
-        *ngFor="let main of mainCategoryList"
-        [class.active]="selectedMainCategory?.id === main.id"
-        (click)="selectMainCategory(main)"
-      >
-        <h3>{{ main.description }}</h3>
-      </div>
+<div class="container">
+    <!-- Main Category -->
+    <div class="category-container">
+        <p>Main Category</p>
+        <div class="card-grid">
+            <div class="category-card" *ngFor="let main of mainCategoryList"
+                [class.active]="selectedMainCategory?.id === main.id">
+                <p>{{ main.description }}</p>
+            </div>
+        </div>
     </div>
-  </div>
-  
-  <!-- تصنيفات فرعية -->
-  <div class="category-container" *ngIf="filteredSubCategories.length > 0">
-    <h2>اختر تصنيفاً فرعياً</h2>
-    <div class="card-grid">
-      <div
-        class="category-card"
-        *ngFor="let sub of filteredSubCategories"
-        [class.active]="selectedSubCategory?.id === sub.id"
-        (click)="selectSubCategory(sub)"
-      >
-        <img [src]="sub.imageUrl" alt="{{ sub.description }}" />
-        <h3>{{ sub.description }}</h3>
-        <span class="course-count">
-          {{ countCoursesBySubCategory(sub.id) }} كورس
-        </span>
-      </div>
+
+    <!-- Sub Category -->
+    <div class="category-container" *ngIf="filteredSubCategories.length > 0">
+        <p>Sub Category</p>
+        <div class="card-grid">
+            <div class="category-card" *ngFor="let sub of subCategoryList"
+                [class.active]="selectedSubCategory?.id === sub.id">
+                <p>{{ sub.description }}</p>
+            </div>
+        </div>
     </div>
-  </div>
-  
-  <!-- الكورسات -->
-  <div class="courses-container" *ngIf="filteredCourses.length > 0">
-    <h2>الكورسات المتاحة:</h2>
-    <div class="course-card" *ngFor="let course of filteredCourses">
-      <h3>{{ course.title }}</h3>
-      <p>{{ course.description }}</p>
+
+    <!-- Cources -->
+    <div class="courses-container">
+        <h2>Our Courses:</h2>
+
+        <div class="courses-grid">
+            <div class="course-card" *ngFor="let course of coursesList">
+                <div class="course-body">
+                    <img [src]="getImagePath(course.photoPath)" alt="Course Image" class="course-img">
+                    <div class="course-content">
+                        <h3 class="course-title">{{ course.name }}</h3>
+
+                        <div class="info-row">
+                            <span class="label">Teacher:</span>
+                            <span class="value">{{ course.teacher }}</span>
+                        </div>
+
+                        <div class="info-row">
+                            <span class="label">About it:</span>
+                            <p class="value description">{{ course.description }}</p>
+                        </div>
+
+                        <div class="info-row">
+                            <span class="label">Main Category: </span>
+                            <span class="value">{{ course.mainCategory }}</span>
+                        </div>
+
+                        <div class="info-row">
+                            <span class="label">Sub Categories: </span>
+                            <div class="sub-categories">
+                                <span class="sub-category-tag" *ngFor="let subCat of course.subCategories">
+                                    {{ subCat }}
+                                </span>
+                                <span *ngIf="!course.subCategories?.length" class="no-categories">
+                                    No sub categories
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="details">
+                    <a class="btn detailsBtn" [routerLink]="['/course', course.id]">More Details</a>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  
+
+
+</div>

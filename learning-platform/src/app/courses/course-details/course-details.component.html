@@ -1,0 +1,67 @@
+<!-- لا تعرض تفاصيل الكورس إلا إذا كانت البيانات جاهزة -->
+<div *ngIf="course" class="course-details-container">
+  <div class="course-image">
+    <img [src]="imagePreview" alt="Course Image" />
+  </div>
+
+  <div class="course-info">
+    <h1 class="course-title">{{ course.name }}</h1>
+    <p class="course-description">{{ course.description }}</p>
+
+    <div class="course-meta">
+      <p><strong>Teacher:</strong> {{ course.teacher }}</p>
+      <p *ngIf="course.mainCategory"><strong>Main Category:</strong> {{ course.mainCategory }}</p>
+    </div>
+
+    <div class="sub-categories" *ngIf="course.subCategories.length">
+      <span class="sub-category-tag" *ngFor="let subCat of course.subCategories">
+        {{ subCat }}
+      </span>
+    </div>
+
+    <button class="enroll-btn">🚀 Enroll Now</button>
+  </div>
+</div>
+
+
+<!--   
+  <div class="course-details-container">
+    <div class="course-image">
+      <img [src]="getImagePath(course.photoPath)" alt="Course Image">
+    </div>
+  
+    <div class="course-info">
+      <h1 class="course-title">{{ course.name }}</h1>
+  
+
+      <div class="course-rating" *ngIf="course.rating">
+        <span *ngFor="let star of [1,2,3,4,5]">
+          <i class="star" [class.filled]="star <= course.rating">★</i>
+        </span>
+        <span class="rating-number">({{ course.rating }}/5)</span>
+      </div>
+  
+      <p class="course-description">{{ course.description }}</p>
+  
+      <div class="course-meta">
+        <p><strong>Teacher:</strong> {{ course.teacher }}</p>
+        <p *ngIf="course.mainCategory"><strong>Main Category:</strong> {{ course.mainCategory }}</p>
+        <p *ngIf="course.startDate"><strong>Start Date:</strong> {{ course.startDate | date:'longDate' }}</p>
+        <p *ngIf="course.duration"><strong>Duration:</strong> {{ course.duration }}</p>
+      </div>
+  
+      <div class="sub-categories" *ngIf="course.subCategories.length">
+        <span class="sub-category-tag" *ngFor="let subCat of course.subCategories">{{ subCat }}</span>
+      </div>
+  
+      <div class="learning-outcomes" *ngIf="course.learningOutcomes?.length">
+        <h3>What You Will Learn:</h3>
+        <ul>
+          <li *ngFor="let point of course.learningOutcomes">✔️ {{ point }}</li>
+        </ul>
+      </div>
+  
+      <button class="enroll-btn">🚀 Enroll Now</button>
+    </div>
+  </div>
+   -->

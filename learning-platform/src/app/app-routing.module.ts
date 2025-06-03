@@ -20,6 +20,7 @@ import { AdminSubCategoryComponent } from './admin/sub-category/admin-sub-catego
 import { EditCourseComponent } from './admin/Courses/edit-course/edit-course.component';
 import { AddCourseComponent } from './admin/Courses/add-course/add-course.component';
 import { AllCoursesComponent } from './courses/all-courses/all-courses.component';
+import { CourseDetailsComponent } from './courses/course-details/course-details.component';
 
 const routes: Routes = [
   {
@@ -69,6 +70,10 @@ const routes: Routes = [
   {
     path: 'all-courses',
     component: AllCoursesComponent
+  },
+  {
+    path: 'course/:id',
+    component: CourseDetailsComponent
   },
   {
     path: 'forgot-password',

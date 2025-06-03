@@ -23,8 +23,6 @@ export class TeacherEditComponent implements OnInit, OnDestroy {
   selectedImage: string | ArrayBuffer | null = null;
   photoBase64: string = '';
 
-  private apiUrl = 'http://localhost:5270/api'; // تأكد من تحديث هذا حسب إعدادات API الخاص بك
-
   constructor(
     private fb: FormBuilder,
     private teacherService: TeacherService,
@@ -72,10 +70,9 @@ export class TeacherEditComponent implements OnInit, OnDestroy {
           });
 
           if (teacher.profileImage) {
-            // تأكد من أن المسار هو URL كامل
             this.imagePreview = this.sanitizer.bypassSecurityTrustUrl(teacher.profileImage);
           } else {
-            this.imagePreview = 'assets/default-profile.png'; // صورة افتراضية
+            this.imagePreview = 'assets/default-profile.png';
           }
         }
       },
@@ -155,13 +152,11 @@ export class TeacherEditComponent implements OnInit, OnDestroy {
     if (!imageData) {
       return 'assets/default-profile.png';
     }
-    
-    // التحقق مما إذا كانت الصورة بتنسيق Base64
+
     if (imageData.startsWith('data:image')) {
       return imageData;
     }
     
-    // التحقق مما إذا كانت الصورة بتنسيق Base64 بدون prefix
     if (this.isBase64(imageData)) {
       return `data:image/jpeg;base64,${imageData}`;
     }
