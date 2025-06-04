@@ -5,6 +5,8 @@ import { Course } from 'src/app/models/courses';
 import { CoursesService } from 'src/app/services/courses/courses.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { TeacherService } from 'src/app/services/teacher/teacher.service';
+import { Teacher } from 'src/app/models/teacher';
 
 @Component({
   selector: 'app-course-details',
@@ -19,12 +21,15 @@ export class CourseDetailsComponent implements OnInit {
   courseForm!: FormGroup;
   imagePreview: SafeUrl | null = null;
   errorMessage = '';
-
+  teachersList: Teacher[] = [];
+  selectedTeacher: any = null;
+  
   constructor(
     private fb: FormBuilder,
     private coursesService: CoursesService,
     private sanitizer: DomSanitizer,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private teachersService: TeacherService
   ) {
   }
 
@@ -52,9 +57,33 @@ export class CourseDetailsComponent implements OnInit {
     } else {
       console.error('Course ID is undefined!');
     }
+    this.teachersService.getTeachers().subscribe(teachers => {
+      this.teachersList = teachers || [];
+    });
+  
+    this.courseId = this.route.snapshot.paramMap.get('id') || '';
+    if (this.courseId) this.loadCourseDetails();
+    
   }
   
-
+  getTeacherByName(teacherName: string) {
+    if (!this.teachersList) return null;
+  
+    return this.teachersList.find(teacher => {
+      const fullName = `${teacher.firstName} ${teacher.lastName}`.toLowerCase();
+      return fullName === teacherName.trim().toLowerCase();
+    }) || null;
+  }
+  
+  getTeacherImage(teacherName: string): string {
+    const teacher = this.getTeacherByName(teacherName);
+    if (teacher?.profileImage) {
+      return `${teacher.profileImage}`;
+    }
+    return 'assets/default-profile.png';
+  }
+  
+  
   loadCourseDetails() {
     this.coursesService.getCourseById(this.courseId).subscribe(
       (course) => {
@@ -72,8 +101,7 @@ export class CourseDetailsComponent implements OnInit {
 
           this.imagePreview = this.sanitizer.bypassSecurityTrustUrl(
             this.getImagePath(course.photoPath)
-          );
-          
+          );          
         }
       },
       (error) => {
@@ -85,10 +113,12 @@ export class CourseDetailsComponent implements OnInit {
       }
     );
   }
+
   getImagePath(imageFilePath: string | undefined): string {
     if (!imageFilePath || imageFilePath.trim() === '') {
       return 'assets/default-profile.png';
     }
     return `http://localhost:5270${imageFilePath}`;
   }
+  
 }

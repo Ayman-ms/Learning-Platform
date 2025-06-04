@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CoursesService } from 'src/app/services/courses/courses.service';
 import { MainCategoryService } from 'src/app/services/mainCategory/mainCategory.service';
-import { SubCategoryService } from 'src/app/services/subCategory/sub-category.service';
 import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-all-courses',
@@ -14,56 +13,41 @@ import { RouterModule } from '@angular/router';
 export class AllCoursesComponent implements OnInit {
   coursesList: any[] = [];
   filteredCourses: any[] = [];
-
   mainCategoryList: any[] = [];
-  subCategoryList: any[] = [];
-  filteredSubCategories: any[] = [];
-
   selectedMainCategory: any = null;
-  selectedSubCategory: any = null;
 
   constructor(
     private coursesService: CoursesService,
-    private mainCategoryService: MainCategoryService,
-    private subCategoryService: SubCategoryService
+    private mainCategoryService: MainCategoryService
   ) {}
 
   async ngOnInit() {
     this.coursesService.getCourses().subscribe((courses) => {
       this.coursesList = courses || [];
+      this.filteredCourses = [...this.coursesList];
     });
 
     this.mainCategoryList = (await this.mainCategoryService.getMainCategories()) ?? [];
-    this.subCategoryList = (await this.subCategoryService.getSubCategories()) ?? [];
-    console.log('Main Categories:', this.mainCategoryList);
-    console.log('Sub Categories:', this.subCategoryList); 
-  }
-
-  countCoursesBySubCategory(subCategoryId: number): number {
-    return this.coursesList.filter(course => course.subCategoryId === subCategoryId).length;
   }
 
   getImagePath(imageFilePath: string | undefined): string {
     if (!imageFilePath || imageFilePath.trim() === '') {
-      return 'assets/default-profile.png'; // صورة افتراضية
+      return 'assets/default-profile.png';
     }
-    return `http://localhost:5270${imageFilePath}`; // تأكد من ربط الصورة بالسيرفر
+    return `http://localhost:5270${imageFilePath}`; 
   }
 
-  // selectMainCategory(main: any) {
-  //   this.selectedMainCategory = main;
-  //   this.filteredSubCategories = this.subCategoryList.filter(
-  //     (sub) => sub.mainCategoryId === main.id
-  //   );
-  //   console.log('Filtered Sub Categories:', main);
-  //   this.selectedSubCategory = null;
-  //   this.filteredCourses = [];
-  // }
+  selectMainCategory(main: any) {
+    this.selectedMainCategory = main;
 
-  // selectSubCategory(sub: any) {
-  //   this.selectedSubCategory = sub;
-  //   this.filteredCourses = this.coursesList.filter(
-  //     (course) => course.subCategoryId === sub.id
-  //   );
-  // }
+    //  filter courses by main category
+    this.filteredCourses = this.coursesList.filter(
+      (course) => course.mainCategory === main.description
+    );
+  }
+  
+  clearFilter() {
+    this.selectedMainCategory = null;
+    this.filteredCourses = [...this.coursesList]; // retern to original list
+  }
 }

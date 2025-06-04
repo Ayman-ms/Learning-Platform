@@ -1,32 +1,22 @@
 <div class="container">
     <!-- Main Category -->
     <div class="category-container">
-        <p>Main Category</p>
         <div class="card-grid">
+            <button class="clear-filter-btn" (click)="clearFilter()" class="clear-filter-btn">All</button>
             <div class="category-card" *ngFor="let main of mainCategoryList"
-                [class.active]="selectedMainCategory?.id === main.id">
+            [class.active]="selectedMainCategory?.id === main.id"
+            (click)="selectMainCategory(main)">
                 <p>{{ main.description }}</p>
             </div>
         </div>
     </div>
-
-    <!-- Sub Category -->
-    <div class="category-container" *ngIf="filteredSubCategories.length > 0">
-        <p>Sub Category</p>
-        <div class="card-grid">
-            <div class="category-card" *ngFor="let sub of subCategoryList"
-                [class.active]="selectedSubCategory?.id === sub.id">
-                <p>{{ sub.description }}</p>
-            </div>
-        </div>
-    </div>
-
+    <!-- Main Category End -->
     <!-- Cources -->
     <div class="courses-container">
         <h2>Our Courses:</h2>
 
         <div class="courses-grid">
-            <div class="course-card" *ngFor="let course of coursesList">
+            <div class="course-card" *ngFor="let course of filteredCourses">
                 <div class="course-body">
                     <img [src]="getImagePath(course.photoPath)" alt="Course Image" class="course-img">
                     <div class="course-content">
@@ -66,6 +56,5 @@
             </div>
         </div>
     </div>
-
-
 </div>
+

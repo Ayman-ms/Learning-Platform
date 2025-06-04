@@ -9,10 +9,18 @@
     <p class="course-description">{{ course.description }}</p>
 
     <div class="course-meta">
-      <p><strong>Teacher:</strong> {{ course.teacher }}</p>
-      <p *ngIf="course.mainCategory"><strong>Main Category:</strong> {{ course.mainCategory }}</p>
+     <p *ngIf="course.mainCategory"><strong>Main Category:</strong> {{ course.mainCategory }}</p>
     </div>
-
+    <div class="teacher-info" *ngIf="course.teacher">
+      <img 
+        [src]="getTeacherImage(course.teacher)" 
+        alt="Teacher Image" 
+        width="40" 
+        height="40" 
+        style="border-radius: 50%; margin-right: 8px;"
+      />
+      <span><strong>Teacher:</strong> {{ course.teacher }}</span>
+    </div>
     <div class="sub-categories" *ngIf="course.subCategories.length">
       <span class="sub-category-tag" *ngFor="let subCat of course.subCategories">
         {{ subCat }}
