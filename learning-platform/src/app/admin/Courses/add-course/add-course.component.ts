@@ -59,7 +59,10 @@ export class AddCourseComponent implements OnInit {
       status: [false],
       teacher: ['', Validators.required],
       mainCategory: ['', Validators.required],
-      subCategories: [[], Validators.required]
+      subCategories: [[], Validators.required],
+      startDate: [[], Validators.required],
+      duration: [[], Validators.required],
+      rating: ['5']
     });
   }
 
@@ -141,7 +144,10 @@ export class AddCourseComponent implements OnInit {
 
 
     formData.append('subCategories', JSON.stringify(subCategoriesArray));
-
+    formData.append('startDate', this.courseForm.value.startDate);
+    formData.append('duration', this.courseForm.value.duration);
+    const rating = this.courseForm.get('rating')?.value || 0;
+formData.append('rating', rating.toString());
 
     if (this.selectedFile) {
       formData.append("photo", this.selectedFile, this.selectedFile.name);

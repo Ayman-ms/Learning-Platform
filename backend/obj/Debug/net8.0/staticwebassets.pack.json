@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\0940d2d9-c25b-482d-8096-2aea2ca3eb82.png",
+      "PackagePath": "staticwebassets\\courses\\0940d2d9-c25b-482d-8096-2aea2ca3eb82.png"
+    },
+    {
       "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\courses\\2.png",
       "PackagePath": "staticwebassets\\courses\\2.png"
     },
@@ -63,6 +67,10 @@
     {
       "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\students\\photoذ_photo.png",
       "PackagePath": "staticwebassets\\students\\photoذ_photo.png"
+    },
+    {
+      "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\students\\sam2_sam.png",
+      "PackagePath": "staticwebassets\\students\\sam2_sam.png"
     },
     {
       "Id": "C:\\Users\\amslmani\\OneDrive - Meta-Level Software AG\\Desktop\\Angular\\Learning-Platform\\backend\\wwwroot\\students\\sam_sam.png",

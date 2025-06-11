@@ -18,22 +18,9 @@ namespace SkillwaveAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Student>>> GetCourses()
+        public async Task<ActionResult<List<Course>>> GetCourses()
         {
             var courses = await _jsonFileService.ReadAsync();
-
-            foreach (var course in courses)
-            {
-                if (string.IsNullOrEmpty(course.PhotoPath))
-                {
-                    Console.WriteLine($"🚨 تحذير: {course.Name} لا يحتوي على صورة!");
-                }
-                else
-                {
-                    Console.WriteLine($"✅ {course.Name} لديه صورة");
-                }
-            }
-
             return Ok(courses);
         }
 
@@ -44,7 +31,7 @@ namespace SkillwaveAPI.Controllers
             var course = courses.FirstOrDefault(c => c.Id == id);
             if (course == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Course not found" });
             }
             return Ok(course);
         }
@@ -56,18 +43,23 @@ namespace SkillwaveAPI.Controllers
             [FromForm] string status,
             [FromForm] string teacher,
             [FromForm] string mainCategory,
-            [FromForm] string subCategories, // يتم إرسال القيم هنا كـ JSON
-            IFormFile? photo)
+            [FromForm] string subCategories,
+            [FromForm] string startDate,
+            [FromForm] string duration,
+            IFormFile? photo,
+             [FromForm] int rating = 0)
         {
             var courses = await _jsonFileService.ReadAsync();
             var courseId = Guid.NewGuid().ToString();
+
+            // معالجة الحقل SubCategories
             List<string> subCategoriesList = new List<string>();
             if (!string.IsNullOrEmpty(subCategories))
             {
                 try
                 {
                     subCategoriesList = JsonConvert.DeserializeObject<List<string>>(subCategories)?
-                        .Where(s => !string.IsNullOrEmpty(s)) // إزالة القيم الفارغة أو null
+                        .Where(s => !string.IsNullOrEmpty(s))
                         .ToList() ?? new List<string>();
                 }
                 catch (JsonException)
@@ -84,7 +76,10 @@ namespace SkillwaveAPI.Controllers
                 Status = bool.TryParse(status, out var parsedStatus) && parsedStatus,
                 Teacher = teacher,
                 MainCategory = mainCategory,
-                SubCategories = subCategoriesList
+                SubCategories = subCategoriesList,
+                StartDate = startDate,
+                Rating = rating,
+                Duration = duration
             };
 
             if (photo != null)
@@ -132,12 +127,15 @@ namespace SkillwaveAPI.Controllers
                 var existingCourse = courses[courseIndex];
 
                 // تحديث البيانات
-                existingCourse.Name = dto.Name;
-                existingCourse.Description = dto.Description;
-                existingCourse.Teacher = dto.Teacher;
-                existingCourse.MainCategory = dto.MainCategory;
+                existingCourse.Name = dto.Name ?? existingCourse.Name;
+                existingCourse.Description = dto.Description ?? existingCourse.Description;
+                existingCourse.Teacher = dto.Teacher ?? existingCourse.Teacher;
+                existingCourse.MainCategory = dto.MainCategory ?? existingCourse.MainCategory;
                 existingCourse.Status = dto.Status;
                 existingCourse.SubCategories = dto.SubCategories ?? existingCourse.SubCategories;
+                existingCourse.StartDate = dto.StartDate ?? existingCourse.StartDate;
+                existingCourse.Rating = dto.Rating != 0 ? dto.Rating : existingCourse.Rating;
+                existingCourse.Duration = dto.Duration ?? existingCourse.Duration;
 
                 // معالجة الصورة
                 if (Request.Form.Files.Count > 0)
@@ -181,16 +179,6 @@ namespace SkillwaveAPI.Controllers
             }
         }
 
-        public class UpdateCourseDto
-        {
-            public string Name { get; set; }
-            public string Description { get; set; }
-            public bool Status { get; set; }
-            public string Teacher { get; set; }
-            public string MainCategory { get; set; }
-            public List<string> SubCategories { get; set; }
-        }
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCourse(string id)
         {
@@ -198,12 +186,36 @@ namespace SkillwaveAPI.Controllers
             var courseIndex = courses.FindIndex(c => c.Id == id);
             if (courseIndex == -1)
             {
-                return NotFound();
+                return NotFound(new { message = "Course not found" });
             }
+
+            // حذف الصورة المرتبطة بالكورس
+            var existingCourse = courses[courseIndex];
+            if (!string.IsNullOrEmpty(existingCourse.PhotoPath))
+            {
+                var oldPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingCourse.PhotoPath.TrimStart('/'));
+                if (System.IO.File.Exists(oldPath))
+                {
+                    System.IO.File.Delete(oldPath);
+                }
+            }
+
             courses.RemoveAt(courseIndex);
             await _jsonFileService.WriteAsync(courses);
             return NoContent();
         }
+
+        public class UpdateCourseDto
+        {
+            public string Name { get; set; }
+            public string Description { get; set; }
+            public bool Status { get; set; }
+            public string Teacher { get; set; }
+            public string MainCategory { get; set; }
+            public string StartDate { get; set; }
+            public List<string> SubCategories { get; set; }
+            public int Rating { get; set; }
+            public string Duration { get; set; }
+        }
     }
 }
-

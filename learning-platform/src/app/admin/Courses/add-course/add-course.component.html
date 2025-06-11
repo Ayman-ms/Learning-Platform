@@ -86,7 +86,22 @@
                         formControlName="subCategories">
                     </ng-multiselect-dropdown>
                 </div>
+                
+                <div class="form-group full-width">
+                    <label>Start Date</label>
+                    <input type="text" formControlName="startDate" placeholder="Enter start date">
+                    <small class="error-message" *ngIf="getFieldError('startDate')">
+                        {{ getFieldError('startDate') }}
+                    </small>
+                </div>
 
+                <div class="form-group full-width">
+                    <label>Duration</label>
+                    <input type="text" formControlName="duration" placeholder="Enter Duration">
+                    <small class="error-message" *ngIf="getFieldError('duration')">
+                        {{ getFieldError('duration') }}
+                    </small>
+                </div>
                 <!-- Status Toggle -->
                 <div class="form-group full-width">
                     <div class="status-toggle">

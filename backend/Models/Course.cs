@@ -8,4 +8,7 @@ public class Course
     public string MainCategory { get; set; }
     public List<string> SubCategories { get; set; }
     public string PhotoPath { get; set; }
+    public string StartDate { get; set; }
+    public int Rating { get; set; } = 0;
+    public string Duration { get; set; }
 }

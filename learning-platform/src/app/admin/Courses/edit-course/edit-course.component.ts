@@ -35,7 +35,10 @@ export class EditCourseComponent implements OnInit {
     teacher: '',
     photoPath: '',
     mainCategory: '',
-    subCategories: []
+    subCategories: [],
+    rating: 5,
+    startDate: '',
+    duration: ''
   };
 
   // Lists for dropdowns
