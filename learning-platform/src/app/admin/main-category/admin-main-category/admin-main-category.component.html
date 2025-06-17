@@ -2,7 +2,12 @@
 <div class="add-category-container">
   <input type="text" [(ngModel)]="newCategory.description" placeholder="Enter new category">
   <div class="addCategoryBtn">
-    <button class="btn" (click)="addNewCategory()">Add Item</button>
+    <button 
+  class="btn" 
+  (click)="addNewCategory()" 
+  [disabled]="!newCategory.description || newCategory.description.trim() === ''">
+  Add Item
+</button>
     <button class="btn" (click)="switchView()">Switch</button>
   </div>
 </div>

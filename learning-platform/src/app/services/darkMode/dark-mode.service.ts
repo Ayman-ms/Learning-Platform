@@ -4,28 +4,37 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class DarkModeService {
-  private darkMode: boolean = false;
+  private readonly storageKey = 'darkMode';
 
   constructor() {
-    this.darkMode = !!localStorage.getItem('dark-mode');
-    this.updateBodyClass();
-  }
-
-  isDarkMode(): boolean {
-    return this.darkMode;
+    const savedMode = localStorage.getItem(this.storageKey);
+    if (savedMode === 'true') {
+      this.enableDarkMode();
+    } else {
+      this.disableDarkMode();
+    }
   }
 
   toggleDarkMode(): void {
-    this.darkMode = !this.darkMode;
-    localStorage.setItem('dark-mode', this.darkMode ? 'enabled' : '');
-    this.updateBodyClass();
+    const isDark = this.isDarkMode();
+    if (isDark) {
+      this.disableDarkMode();
+    } else {
+      this.enableDarkMode();
+    }
   }
 
-  private updateBodyClass(): void {
-    if (this.darkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
+  isDarkMode(): boolean {
+    return document.body.classList.contains('dark-mode');
+  }
+
+  private enableDarkMode(): void {
+    document.body.classList.add('dark-mode');
+    localStorage.setItem(this.storageKey, 'true');
+  }
+
+  private disableDarkMode(): void {
+    document.body.classList.remove('dark-mode');
+    localStorage.setItem(this.storageKey, 'false');
   }
 }

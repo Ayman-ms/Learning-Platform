@@ -8,4 +8,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'learning-platform';
+  toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+  }
 }

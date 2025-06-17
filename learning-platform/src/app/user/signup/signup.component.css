@@ -4,7 +4,7 @@
 }
 form {
   text-align:center ;
-  background-color: white;
+  background-color: var(--card-color);
   padding: 20px;
   max-width: 550px;
   margin: auto;
@@ -33,7 +33,7 @@ form i{
   position: absolute;
   left: 10px;
   top: 13px;
-  background-color: white;
+  background-color: var(--white-color);
   padding: 0 5px;
   font-size: 14px;
   color: #999;

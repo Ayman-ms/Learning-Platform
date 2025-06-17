@@ -3,14 +3,55 @@
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 
+/* متغيرات الوضع الافتراضي */
 :root {
   --navbar-height: 60px;
   --logo-bg-color: #2c3e50;
+  --sidebar-width: 250px;
+  --sidebar-min-height: 500px;
+
   --blue-color: #2D9CDB;
-  --white-color: #fff;
+  --white-color: #ffffff;
+  --red-color: #d11a2a;
+  
+  --card-bg-color: #ffffff;
+  --card-text-color:#4b5563;
+  --main-text-color: #000000;
+  --secondary-text-color: #6c757d;
+  --border-color: #dee2e6;
+  --hover-bg-color: #f8f9fa;
+  --tag-bg-color: #e9ecef;
+  --sub-tag-bg-color: #f8f9fa;
+  --sub-tag-text-color: #495057;
+
+}
+
+/* الوضع الليلي: إعادة تعريف المتغيرات */
+body.dark-mode {
   --logo-bg-color: #001c27;
   --drawer-bg-color: #141A2F;
-  --red-color: #d11a2a;
+ --card-color:#4b5563;
+ --card-text-color: #f3f4f6;
+   --card-bg-color: #1e1e1e;
+  --main-text-color: #e0e0e0;
+  --secondary-text-color: #aaaaaa;
+  --border-color: #333333;
+  --hover-bg-color: #2c2c2c;
+  --tag-bg-color: #2a2a2a;
+  --sub-tag-bg-color: #2f2f2f;
+  --sub-tag-text-color: #cccccc;
+  --white-color: #ffffff;
+}
+
+/* القواعد العامة */
+html,
+body {
+  height: auto;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: var(--card-bg-color);
+  color: var(--main-text-color);
 }
 
 .logo {
@@ -18,43 +59,18 @@
   font-size: larger;
   cursor: pointer;
 }
-
 .logo:hover {
-  color: var(--blue-color)
+  color: var(--blue-color);
 }
 
 .sectionTitle {
   color: var(--blue-color);
 }
-
 .sectionText {
   font-size: 20px;
   font-weight: 400;
   line-height: 29px;
 }
-
-html,
-body {
-  /* min-height: 100vh; */
-  height: auto;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-}
-
-body {
-  background-color: white;
-  color: black;
-  /* min-height: 100vh; */
-}
-
-/* الوضع الداكن (Dark Mode) */
-body.dark-mode {
-  background-color: black;
-  /* min-height: 100vh; */
-  color: white;
-}
-
 
 app-search-bar {
   width: 100%;
@@ -63,9 +79,7 @@ app-search-bar {
 .main-layout {
   min-height: 100vh;
   display: flex;
-  /* flex-direction: column; */
 }
-
 .content-wrapper {
   flex: 1;
   display: flex;
@@ -75,41 +89,32 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
-@media (max-width: 768px) {
-  body.sidebar-open {
-    overflow: hidden;
-  }
-}
-
+/* الشبكة */
 .cards-grid {
   display: grid;
   gap: var(--card-gap);
   padding: var(--card-gap);
 }
-
-/* شاشات كبيرة: 3 بطاقات أو أكثر في الصف */
 @media (min-width: 1200px) {
   .cards-grid {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 }
-
-/* شاشات متوسطة: بطاقتين في الصف */
 @media (min-width: 768px) and (max-width: 1199px) {
   .cards-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
-/* شاشات صغيرة: بطاقة واحدة في الصف */
 @media (max-width: 767px) {
   .cards-grid {
     grid-template-columns: 1fr;
   }
 }
 
+/* البطاقات */
 .card {
-  background: white;
+  color: var(--main-text-color);
+  background: var(--card-color);
   border-radius: var(--card-radius);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
@@ -118,25 +123,19 @@ button {
 .card:hover {
   transform: translateY(-5px);
 }
-:root {
-  --navbar-height: 60px;
-  --logo-bg-color: #2c3e50;
-  --sidebar-width: 250px;
-  --sidebar-min-height: 500px;
-}
 
-/* تحسين التمرير العام */
+
+small{
+  color: var(--main-text-color);
+}
+/* تحسينات */
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.1);
 }
-
-/* منع التمرير عند فتح Sidebar في الموبايل */
 body.sidebar-open {
   overflow: hidden;
 }
-
-/* تحسين أداء الانتقالات */
 @media (prefers-reduced-motion: reduce) {
   * {
     transition-duration: 0.01ms !important;

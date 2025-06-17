@@ -2,7 +2,7 @@
 .featuresSection {
     /* display: -ms-flexbox; */
     display: flex;
-    background: #FFF;
+    background: var(--card-bg-color);
     padding-left: 100px;
 }
 

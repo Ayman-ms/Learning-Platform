@@ -41,6 +41,7 @@
   }
   
   .form-label {
+    color: var(--main-text-color);
     font-weight: 500;
   }
   

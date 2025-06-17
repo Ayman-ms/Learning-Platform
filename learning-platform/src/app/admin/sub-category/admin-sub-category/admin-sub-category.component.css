@@ -47,8 +47,3 @@
         /* 5 بطاقات للشاشات الكبيرة */
     }
 }
-
-.card-item {
-    display: flex;
-    justify-content: center;
-}

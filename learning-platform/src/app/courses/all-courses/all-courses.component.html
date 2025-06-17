@@ -23,12 +23,12 @@
                         <h3 class="course-title">{{ course.name }}</h3>
 
                         <div class="info-row">
-                            <span class="label">Teacher:</span>
+                            <span class="label">Teacher: </span>
                             <span class="value">{{ course.teacher }}</span>
                         </div>
 
                         <div class="info-row">
-                            <span class="label">About it:</span>
+                            <span class="label">About it: </span>
                             <p class="value description">{{ course.description }}</p>
                         </div>
 
@@ -48,6 +48,33 @@
                                 </span>
                             </div>
                         </div>
+
+                        <div class="star-row">
+                            <span class="label">Rating: </span>
+                            <div class="stars">
+                                <ng-container *ngFor="let star of [1,2,3,4,5]">
+                                    <i 
+                                      class="bi" 
+                                      [ngClass]="{
+                                        'bi-star-fill gold-star': star <= course.rating,
+                                        'bi-star silver-star': star > course.rating
+                                      }">
+                                    </i>
+                                </ng-container>
+                                <span class="rating-value">({{ course.rating }}/5)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-row" *ngIf="course.duration">
+                            <span class="label">Duration: </span>
+                            <span class="value">{{ course.duration }}</span>
+                        </div>
+                        
+                        <div class="info-row" *ngIf="course.startDate">
+                            <span class="label">Start Date: </span>
+                            <span class="value">{{ course.startDate | date: 'longDate' }}</span>
+                        </div>
+                        
                     </div>
                 </div>
                 <div class="details">

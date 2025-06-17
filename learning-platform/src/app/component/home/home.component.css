@@ -1,0 +1,10 @@
+:host-context(body.dark-mode) {
+    background-color: var(--darkmode-bg);
+    color: var(--darkmode-main-text-color);
+  }
+  
+  :host-context(body.dark-mode) .card {
+    background-color: var(--darkmode-card-bg);
+    color: var(--darkmode-main-text-color);
+  }
+  

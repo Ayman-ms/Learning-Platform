@@ -1,26 +1,69 @@
-.logo {
-    font-weight: 500;
-    font-size: larger;
-    cursor: pointer;
-  }
-  
-  .logo:hover {
-    color: var(--blue-color)
-  }
-  a{
-    text-decoration: none;
-  }
-  .darkModeBtn{
-    background: none;
-    background-color: transparent;    
-  }
-  footer {
-    position: relative; /* تأكد أن الفوتر لا يكون ثابتًا */
-    z-index: 1; /* أقل من `sidebar` */
-    background-color: #f8f9fa;
-    text-align: center;
-    padding: 20px;
-    bottom: 0;
-    width: 100%;
-  }
-  
+:host {
+  display: block;
+  padding: 24px 16px;
+  background-color: var(--white-color);
+  color: black;
+  border-top: 1px solid #e0e0e0;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.footer-links {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-link {
+  color: #2c3e50;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: var(--blue-color);
+}
+
+.footer-icons {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.footer-icon {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.footer-icon:hover {
+  color: var(--blue-color);
+}
+
+/* الوضع الليلي */
+:host-context(body.dark-mode) {
+  background-color: var(--darkmode-bg);
+  color: var(--darkmode-main-text-color);
+  border-top: 1px solid var(--darkmode-border-color);
+}
+
+:host-context(body.dark-mode) .footer-link {
+  color: var(--darkmode-main-text-color);
+}
+
+:host-context(body.dark-mode) .footer-link:hover {
+  color: var(--blue-color);
+}
+
+:host-context(body.dark-mode) .footer-icon {
+  color: var(--darkmode-main-text-color);
+}
+
+:host-context(body.dark-mode) .footer-icon:hover {
+  color: var(--blue-color);
+}

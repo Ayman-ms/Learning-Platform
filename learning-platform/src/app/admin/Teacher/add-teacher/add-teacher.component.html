@@ -13,7 +13,7 @@
     <div class="text-center mb-4">
       <img [src]="selectedImage || './assets/person.svg'" alt="Profile Picture" class="profile-img" (click)="triggerFileInput()">
       <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" hidden>
-      <small class="text-muted d-block mt-2">Click on the image to upload a profile picture.</small>
+      <small class="d-block mt-2">Click on the image to upload a profile picture.</small>
     </div> 
 
     <div class="input-container">

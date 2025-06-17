@@ -1,130 +1,170 @@
 .contentContainer {
-    max-width: 100%;
-}
-
-.sectionText {
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 29px;
+  max-width: 100%;
 }
 
 .courses {
-    display: flex;
-    padding: 35px 0;
-    justify-content: center;
+  display: flex;
+  padding: 35px 0;
+  justify-content: center;
 }
 
 @media (max-width: 480px) {
-    .contentContainer {}
+  .courses {
+    display: grid;
+  }
 
-    .courses {
-        display: grid;
-
-    }
-
-    .courses .courseCard {
-        margin-bottom: 20px;
-    }
+  .courses .courseCard {
+    margin-bottom: 20px;
+  }
 }
 
 .sectionPaddingY {
-    padding: 70px 0;
+  padding: 70px 0;
 }
 
 .courses a {
-    justify-content: space-between;
-    flex-direction: row;
+  justify-content: space-between;
+  flex-direction: row;
+  display: flex;
+  text-decoration: none;
 }
 
 .coursesCategories {
-    padding: 20px 0;
+  padding: 20px 0;
 }
 
 .coursesCategories span {
-    padding: 10px 20px;
-    margin-right: 10px;
-    border-color: var(--blue-color);
-    color: var(--blue-color);
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: 1px solid var(--blue-color);
+  border-radius: 5px;
+  color: var(--card-text-color);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .coursesCategories span:hover {
-    background-color: var(--blue-color);
-    color: var(--white-color);
+  background-color: var(--blue-color);
+  color: var(--white-color);
 }
 
 .courseCard {
-    display: inline-flex;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    background-color: #FFF;
-    border-radius: 12px;
-    overflow: hidden;
-    width: 267px;
-    min-width: 211px;
-    height: 290px;
-    margin: 0 15px;
-    box-shadow: 0 10px 30px 0 rgba(164, 192, 210, .22);
-    cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
+  background-color: var(--card-color);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  width: 267px;
+  min-width: 211px;
+  height: 290px;
+  margin: 0 15px;
+  box-shadow: 0 10px 30px rgba(164, 192, 210, 0.22);
+  cursor: pointer;
+  color: var(--card-text-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.courseCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(164, 192, 210, 0.35);
+}
+
+.courseImg {
+  width: 100%;
+  height: 115px;
+  object-fit: cover;
+}
+
+.linkComponent {
+  display: contents;
+  text-decoration: none !important;
+  color: inherit;
+}
+
+.courseCard .courseContent {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex: 1;
 }
 
 h4,
 .textLabel {
-    text-decoration: none;
-}
-
-.courseImg {
-    width: 100%;
-    height: 115px;
-    object-fit: cover;
-}
-
-.linkComponent {
-    display: contents;
-    text-decoration: none !important;
-}
-
-.courseCard .courseContent {
-    padding: 20px;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -ms-flex-align: start;
-    align-items: flex-start;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    -ms-flex: 1;
-    flex: 1;
+  text-decoration: none;
+  margin: 0;
+  color: var(--card-text-color);
 }
 
 .textCard {
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -ms-flex-align: center;
-    align-items: center;
-    background-color: var(--blue-color);
-    border-radius: 12px;
-    width: 267px;
-    min-width: 211px;
-    height: 290px;
-    margin: 0 15px;
-    padding: 40px;
-    box-shadow: 0 10px 30px 0 rgba(164, 192, 210, .22);
-    cursor: pointer;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--text-color);
+  /* الخلفية هنا عكس النص */
+  color: var(--white-color);
+  border-radius: var(--card-radius);
+  width: 267px;
+  min-width: 211px;
+  height: 290px;
+  margin: 0 15px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(164, 192, 210, 0.22);
+  cursor: pointer;
+  text-align: center;
 }
 
 .textCard .icon {
-    width: 70px;
-    height: 70px;
+  width: 70px;
+  height: 70px;
 }
 
 .textCard .text {
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 21px;
-    color: var(--white-color);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 21px;
+  color: var(--bg);
+}
+
+/* تحسينات */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.1);
+}
+
+body.sidebar-open {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* الوضع العادي */
+.coursesCategories .btn {
+  /* color: var(--white-color); */
+  border: 1px solid var(--blue-color);
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+/* الوضع الليلي */
+body.dark-mode .coursesCategories .btn {
+  color: var(--blue-color);
+  border: 1px solid var(--white-color);
+  background-color: transparent;
+}
+
+/* Hover في الوضع الليلي */
+body.dark-mode .coursesCategories .btn:hover {
+  background-color: var(--white-color);
+  color: var(--blue-color);
+}
+body.dark-mode .courseCard {
+  background-color: #4b5563 !important;
 }

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SkillwaveAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3b3b821ac74e40b725b6f787e5874b1d830ef726")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fd108bc40582d86162708f250e0f0d1db1ce2bda")]
 [assembly: System.Reflection.AssemblyProductAttribute("SkillwaveAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SkillwaveAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

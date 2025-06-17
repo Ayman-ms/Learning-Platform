@@ -4,11 +4,6 @@
   gap: 20px;
 }
 
-.cards {
-  /* display: flex; */
-  justify-content: center;
-}
-
 .card {
   width: 100%;
   border: 1px solid #ddd;

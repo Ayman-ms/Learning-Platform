@@ -8,12 +8,13 @@
   border-radius: 10px;
   text-align: center;
   cursor: pointer;
-  background-color: #fdfdfd;
+  background-color: var(--card-color);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   cursor: pointer;
   border: none;
+  color: var(--main-text-color);
 }
 
 .card-grid {
@@ -27,13 +28,14 @@
   border-radius: 10px;
   text-align: center;
   cursor: pointer;
-  background-color: #fdfdfd;
+  background-color: var(--card-color);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
 }
 
-.category-card:hover, .clear-filter-btn:hover {
+.category-card:hover,
+.clear-filter-btn:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 20px rgba(0, 123, 255, 0.2);
 }
@@ -42,7 +44,8 @@
   border: 2px solid var(--blue-color);
   background-color: #e9f3ff;
 }
- .category-card p {
+
+.category-card p {
   margin: 0;
 }
 
@@ -78,7 +81,7 @@ body {
 
 h2 {
   margin-bottom: 30px;
-  color: #333;
+  color: var(--main-text-color);
 }
 
 .courses-grid {
@@ -88,12 +91,13 @@ h2 {
 }
 
 .course-card {
-  background-color: #fff;
+  background-color: var(--card-color);
   border-radius: 16px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   padding: 20px;
   transition: transform 0.2s ease;
+  color: var(--main-text-color);
 }
 
 .course-card:hover {
@@ -122,20 +126,16 @@ h2 {
 .course-title {
   font-size: 1.2rem;
   margin-bottom: 10px;
-  color: #222;
-}
-
-.info-row {
-  margin-bottom: 6px;
+  color: var(--main-text-color);
 }
 
 .label {
   font-weight: 600;
-  color: #555;
+  color: var(--card-text-color);
 }
 
 .value {
-  color: #666;
+  color: var(--card-text-color);
 }
 
 .description {
@@ -162,6 +162,46 @@ h2 {
   color: #aaa;
   font-style: italic;
 }
+
+.star-row {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.star-row .label {
+  font-weight: bold;
+  margin-right: 6px;
+}
+
+.star-roww .value {
+  flex: 1;
+}
+
+.stars {
+  display: flex;
+  align-items: center;
+}
+
+.stars i {
+  font-size: 1.2rem;
+  margin-right: 4px;
+}
+
+.gold-star {
+  color: gold;
+}
+
+.silver-star {
+  color: silver;
+}
+
+.rating-value {
+  margin-left: 8px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
 
 .details {
   display: flex;
@@ -195,3 +235,4 @@ h2 {
     padding: 0;
   }
 }
+

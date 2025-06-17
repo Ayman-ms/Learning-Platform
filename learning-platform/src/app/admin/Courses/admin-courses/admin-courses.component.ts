@@ -99,7 +99,9 @@ export class AdminCoursesComponent {
       reader.readAsDataURL(file);
     }
   }
-
+  toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+  }
   getImagePath(imageFilePath: string | undefined): string {
     if (!imageFilePath || imageFilePath.trim() === '') {
       return 'assets/default-profile.png'; // صورة افتراضية

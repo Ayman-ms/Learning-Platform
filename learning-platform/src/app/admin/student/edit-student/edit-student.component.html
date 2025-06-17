@@ -1,47 +1,3 @@
-<!-- <div class="infoContainer">
-    <div [formGroup]="studentForm" ngForm="studentForm">
-        <div class="">
-            <div class="itemLine">
-                <label for="">{{studentToEdit.firstName }} Profile</label>
-                <img [src]="getImagePath(studentToEdit.profileImage)" alt="Profile Picture" class="student-img"/>
-
-            </div>
-            <div class="itemLine">
-                <label>First Name:</label>
-                <input [(ngModel)]="studentToEdit.firstName" [disabled]="isFirstNameDisabled"
-                    [ngModelOptions]="{standalone: true}" placeholder="{{studentToEdit.firstName}}" class="inputTool"
-                    required>
-                <span (click)="toggleFirstNameEdit()">Edit</span>
-            </div>
-            <div class="itemLine">
-                <label>Last Name: </label>
-                <input [(ngModel)]="studentToEdit.lastName" [disabled]="isLastNameDisabled"
-                    [ngModelOptions]="{standalone: true}" placeholder="Last Name" class="inputTool" required>
-                <span (click)="toggleLastNameEdit()">Edit</span>
-            </div>
-         
-            <div class="itemLine">
-                <label>Email: </label>
-                <input [(ngModel)]="studentToEdit.email" [disabled]="isEmailDisabled"
-                    [ngModelOptions]="{standalone: true}" placeholder="E-Mail" class="inputTool" required type="text">
-                <span (click)="toggleEmailEdit()">Edit</span>
-            </div>
-            <div class="itemLine">
-                <label>Phone: </label>
-                <input [(ngModel)]="studentToEdit.phone" [disabled]="isPhoneDisabled"
-                    [ngModelOptions]="{standalone: true}" placeholder="phone" class="inputTool" required type="text">
-                <span (click)="togglePhoneEdit()">Edit</span>
-            </div>
-
-            <div class="itemLine">
-                <button class="saveBtn" type="submit" (click)="updateClick()">Save</button>
-                <button class="deleteBtn" type="submit" (click)="deleteStudent(studentToEdit.id)">Delete</button>
-                <button class="cancelBtn" type="submit" routerLink="/admin/students">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div> -->
-
 <div class="container mt-4">
     <div class="card">
       <div class="card-header">
@@ -78,7 +34,7 @@
                        id="profileImage"
                        accept="image/*"
                        (change)="onFileSelected($event)">
-                <small class="form-text text-muted">Optional: Leave blank to keep current image.</small>
+                <small class="form-text">Optional: Leave blank to keep current image.</small>
               </div>
             </div>
   
