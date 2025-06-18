@@ -77,4 +77,42 @@
   .enroll-btn:hover {
     background-color: #e64a19;
   }
+  .star-row {
+    display: flex;
+    align-items: center;
+    margin: 8px 0;
+  }
+  
+  .star-row .label {
+    font-weight: bold;
+    margin-right: 6px;
+  }
+  
+  .star-roww .value {
+    flex: 1;
+  }
+  
+  .stars {
+    display: flex;
+    align-items: center;
+  }
+  
+  .stars i {
+    font-size: 1.2rem;
+    margin-right: 4px;
+  }
+  
+  .gold-star {
+    color: gold;
+  }
+  
+  .silver-star {
+    color: silver;
+  }
+  
+  .rating-value {
+    margin-left: 8px;
+    font-size: 0.9rem;
+    color: #555;
+  }
   

@@ -1,0 +1,22 @@
+.about-section {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: var(--card-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--main-text-color);
+}
+
+.about-section h2 {
+    font-size: 2rem;
+    margin-bottom: 16px;
+    color: var(--blue-color);
+}
+
+.about-section p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}

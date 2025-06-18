@@ -21,6 +21,9 @@ import { EditCourseComponent } from './admin/Courses/edit-course/edit-course.com
 import { AddCourseComponent } from './admin/Courses/add-course/add-course.component';
 import { AllCoursesComponent } from './courses/all-courses/all-courses.component';
 import { CourseDetailsComponent } from './courses/course-details/course-details.component';
+import { AboutComponent } from './component/about/about.component';
+import { ContactComponent } from './component/contact/contact.component';
+import { MyCoursesComponent } from './user/my-courses/my-courses.component';
 
 const routes: Routes = [
   {
@@ -37,6 +40,14 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
+    path: 'about',
+    component: AboutComponent
+  },
+  {
+    path: 'contact',
+    component: ContactComponent
+  },
+  {
     path: 'sidebar',
     component: SidebarComponent
   },
@@ -47,6 +58,10 @@ const routes: Routes = [
       {
         path: 'info',
         component: UserInfoComponent
+      },
+      {
+        path: 'my-cources',
+        component: MyCoursesComponent
       }
     ]
   },

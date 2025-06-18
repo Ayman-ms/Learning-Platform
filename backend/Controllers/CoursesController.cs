@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using SkillwaveAPI.Services;
-using SkillwaveAPI.Models;
-using System.IO;
 using Newtonsoft.Json;
 
 namespace SkillwaveAPI.Controllers

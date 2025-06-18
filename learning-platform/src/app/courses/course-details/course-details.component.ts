@@ -7,7 +7,8 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TeacherService } from 'src/app/services/teacher/teacher.service';
 import { Teacher } from 'src/app/models/teacher';
-
+import { EnrollmentService } from 'src/app/services/enrollment/enrollment.service';
+import { SessionService } from 'src/app/services/session/session.service';
 @Component({
   selector: 'app-course-details',
   standalone: true,
@@ -29,11 +30,11 @@ export class CourseDetailsComponent implements OnInit {
     private coursesService: CoursesService,
     private sanitizer: DomSanitizer,
     private route: ActivatedRoute,
-    private teachersService: TeacherService
+    private teachersService: TeacherService,
+    private enrollmentService: EnrollmentService,
+    private sessionService: SessionService
   ) {
   }
-
-
   
   private initForm(): void {
     this.courseForm = this.fb.group({
@@ -120,5 +121,28 @@ export class CourseDetailsComponent implements OnInit {
     }
     return `http://localhost:5270${imageFilePath}`;
   }
+
+  enrollInCourse() {
+    const currentStudent = this.sessionService.getUser();
   
+    if (!currentStudent || !currentStudent.id) {
+      alert('You must be logged in to enroll in a course.');
+      return;
+    }
+  
+    this.enrollmentService.enroll(currentStudent.id, this.courseId).subscribe({
+      next: () => {
+        alert('✅ Successfully enrolled in the course!');
+      },
+      error: (error) => {
+        if (error.status === 409) {
+          alert('You are already enrolled in this course.');
+        } else {
+          console.error('Enrollment failed:', error);
+          alert('An error occurred during enrollment.');
+        }
+      }
+    });
+  }
+    
 }
