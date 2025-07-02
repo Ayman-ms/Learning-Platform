@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./search-bar.component.css']
 })
 export class SearchBarComponent {
-  @Input() placeholder: string = 'Search...'; // يمكن تخصيص نص البحث
+  @Input() placeholder: string = 'Search...'; 
   @Output() searchTextChanged = new EventEmitter<string>();
 
   searchText: string = '';

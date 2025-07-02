@@ -24,7 +24,7 @@ import { CourseDetailsComponent } from './courses/course-details/course-details.
 import { AboutComponent } from './component/about/about.component';
 import { ContactComponent } from './component/contact/contact.component';
 import { MyCoursesComponent } from './user/my-courses/my-courses.component';
-
+import { AdminGuard } from './authenticate-guard';
 const routes: Routes = [
   {
     path: '',
@@ -68,6 +68,7 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminControllComponent,
+    canActivate: [AdminGuard],
     children: [
       { path: 'students', component: StudentMangerComponent },
       { path: 'editstudent', component: EditStudentComponent },

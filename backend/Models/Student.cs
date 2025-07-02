@@ -10,5 +10,7 @@ namespace SkillwaveAPI.Models
         public string? Password { get; set; }
         public DateTime CreatedAt { get; set; }
         public string? PhotoPath { get; set; } // قد يكون اختيارياً
+        public string Roll { get; set; }
+
     }
 }

@@ -70,22 +70,22 @@
   flex-direction: column;
   background: var(--logo-bg-color);
   color: white;
-  height: 100%; /* يأخذ كامل ارتفاع الحاوية */
-  min-height: inherit; /* يرث الحد الأدنى من الحاوية */
+  height: 100%; 
+  min-height: inherit; 
 }
 
 .sidebar-header {
   padding: 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  flex-shrink: 0; /* لا ينكمش */
+  flex-shrink: 0; 
 }
 
 .nav-menu {
   list-style: none;
   padding: 0;
   margin: 0;
-  flex: 1; /* يأخذ المساحة المتبقية */
-  overflow-y: auto; /* شريط تمرير عند الحاجة */
+  flex: 1; 
+  overflow-y: auto;
 }
 
 .nav-item a {

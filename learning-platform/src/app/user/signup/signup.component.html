@@ -1,60 +1,66 @@
 <div class="formContainer">
-    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
-      <div *ngIf="registrationForm.invalid && registrationForm.touched" class="error-message">
-        <p>Please correct the errors in the form before submitting.</p>
+  <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+
+    <!-- Display error message if form is invalid -->
+    <div *ngIf="registrationForm.invalid && registrationForm.touched" class="error-message">
+      <p>Please correct the errors in the form before submitting.</p>
+    </div>
+
+    <!-- Logo -->
+    <i class="bi bi-book me-2 logo"> Skill Wave</i>
+
+    <!-- Profile Picture -->
+    <div class="profile-container">
+      <img [src]="selectedImage || './assets/person.svg'" alt="Profile Picture" class="profile-img" (click)="triggerFileInput()">
+      <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" hidden>
+    </div>
+
+    <!-- First Name -->
+    <div class="input-container">
+      <input type="text" id="firstName" name="firstName" placeholder="First Name" required formControlName="firstNameControl">
+      <div *ngIf="registrationForm.get('firstNameControl')?.touched && registrationForm.get('firstNameControl')?.invalid">
+        <small *ngIf="registrationForm.get('firstNameControl')?.errors?.['required']">First Name is required.</small>
       </div>
-      <i class="bi bi-book me-2 logo"> Skill Wave</i>
-      <!-- الصورة الشخصية -->
-      <div class="">
-        <img [src]="selectedImage || './assets/person.svg'" alt="Profile Picture" class="profile-img" (click)="triggerFileInput()">
-        <input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" hidden>
-  
-      </div> 
-  
-      <div class="input-container">
-        <input type="text" id="firstName" name="firstName" placeholder="Firt Name" required formControlName="firstNameControl">
-        <!-- <label for="firstName">First Name</label> -->
-        <div *ngIf="registrationForm.get('firstNameControl')?.touched && registrationForm.get('firstNameControl')?.invalid">
-          <small *ngIf="registrationForm.get('firstNameControl')?.errors?.['required']">First Name is required.</small>
-        </div>
+    </div>
+
+    <!-- Last Name -->
+    <div class="input-container">
+      <input type="text" id="lastName" name="lastName" placeholder="Last Name" required formControlName="lastNameControl">
+      <div *ngIf="registrationForm.get('lastNameControl')?.touched && registrationForm.get('lastNameControl')?.invalid">
+        <small *ngIf="registrationForm.get('lastNameControl')?.errors?.['required']">Last Name is required.</small>
       </div>
-  
-      <div class="input-container">
-        <input type="text" id="lastName" name="lastName" placeholder="Last Name" formControlName="lastNameControl" required>
-        <!-- <label for="lastName">Last Name</label> -->
-        <div *ngIf="registrationForm.get('lastNameControl')?.touched && registrationForm.get('lastNameControl')?.invalid">
-          <small *ngIf="registrationForm.get('lastNameControl')?.errors?.['required']">Last Name is required.</small>
-        </div>
+    </div>
+
+    <!-- Email -->
+    <div class="input-container">
+      <input type="email" id="email" name="email" placeholder="E-Mail" required formControlName="emailControl">
+      <div *ngIf="registrationForm.get('emailControl')?.touched && registrationForm.get('emailControl')?.invalid">
+        <small *ngIf="registrationForm.get('emailControl')?.errors?.['required']">Email is required.</small>
+        <small *ngIf="registrationForm.get('emailControl')?.errors?.['email']">Invalid email format.</small>
       </div>
-  
-      <div class="input-container">
-        <input type="email" id="email" name="email" placeholder="E-Mail" formControlName="emailControl" required>
-        <!-- <label for="email">E-Mail</label> -->
-        <div *ngIf="registrationForm.get('emailControl')?.touched && registrationForm.get('emailControl')?.invalid">
-          <small *ngIf="registrationForm.get('emailControl')?.errors?.['required']">Email is required.</small>
-          <small *ngIf="registrationForm.get('emailControl')?.errors?.['email']">Invalid email format.</small>
-        </div>
+    </div>
+
+    <!-- Password -->
+    <div class="input-container">
+      <app-password-input class="passwordInput" placeholder="Enter Password" formControlName="passwordControl" required></app-password-input>
+      <div *ngIf="registrationForm.get('passwordControl')?.touched && registrationForm.get('passwordControl')?.invalid">
+        <small *ngIf="registrationForm.get('passwordControl')?.errors?.['required']">Password is required.</small>
+        <small *ngIf="registrationForm.get('passwordControl')?.errors?.['minlength']">Password must be at least 6 characters.</small>
+        <small *ngIf="registrationForm.get('passwordControl')?.errors?.['pattern']">Password must contain at least one letter and one number.</small>
       </div>
-  
-      <div class="input-container">
-        <app-password-input formControlName="password" placeholder="Enter Password" formControlName="passwordControl" required></app-password-input>
-        <div *ngIf="registrationForm.get('passwordControl')?.touched && registrationForm.get('passwordControl')?.invalid">
-          <small *ngIf="registrationForm.get('passwordControl')?.errors?.['required']">Password is required.</small>
-          <small *ngIf="registrationForm.get('passwordControl')?.errors?.['minlength']">Password must be at least 6 characters.</small>
-          <small *ngIf="registrationForm.get('passwordControl')?.errors?.['pattern']">Password must contain at least one letter and one number.</small>
-        </div>
+    </div>
+
+    <!-- Phone -->
+    <div class="input-container">
+      <input type="tel" id="phone" name="phone" placeholder="Phone" required formControlName="phoneControl">
+      <div *ngIf="registrationForm.get('phoneControl')?.touched && registrationForm.get('phoneControl')?.invalid">
+        <small *ngIf="registrationForm.get('phoneControl')?.errors?.['required']">Phone is required.</small>
+        <small *ngIf="registrationForm.get('phoneControl')?.errors?.['pattern']">Invalid phone number.</small>
       </div>
-        
-      <div class="input-container">
-        <input type="tel" id="phone" name="phone" placeholder="Phone" formControlName="phoneControl" required>
-        <!-- <label for="phone">Phone</label> -->
-        <div *ngIf="registrationForm.get('phoneControl')?.touched && registrationForm.get('phoneControl')?.invalid">
-          <small *ngIf="registrationForm.get('phoneControl')?.errors?.['required']">Phone is required.</small>
-          <small *ngIf="registrationForm.get('phoneControl')?.errors?.['pattern']">Invalid phone number.</small>
-        </div>
-      </div>
-  
-      <!-- زر الإرسال -->
-      <button type="submit">Register</button>
-    </form>
-  </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit">Register</button>
+    
+  </form>
+</div>

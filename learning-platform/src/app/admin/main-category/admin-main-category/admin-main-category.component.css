@@ -23,7 +23,6 @@
     margin-bottom: 10px;
 }
 .card-item {
-    /* display: flex; */
     justify-content: center;
 }
 .cardButton {
@@ -34,20 +33,17 @@
     display: grid;
     gap: 20px;
     grid-template-columns: repeat(1, 1fr);
-    /* الافتراضي: بطاقة واحدة */
 }
 
 @media (min-width: 768px) {
     .card-grid {
         grid-template-columns: repeat(3, 1fr);
-        /* 3 بطاقات للشاشات المتوسطة */
     }
 }
 
 @media (min-width: 1200px) {
     .card-grid {
         grid-template-columns: repeat(5, 1fr);
-        /* 5 بطاقات للشاشات الكبيرة */
     }
 }
 

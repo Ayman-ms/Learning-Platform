@@ -7,4 +7,6 @@ export interface Student {
   password: string;
   createdAt: string;
   photoPath: string;
+  roll: string;
 }
+

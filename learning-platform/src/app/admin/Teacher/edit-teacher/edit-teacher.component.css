@@ -53,31 +53,10 @@ img:hover {
 small{
     color: var(--main-text-color);
 }
-/* تطبيق تغييرات للشاشات التي حجمها أقل من 768 بكسل */
+
 @media (max-width: 768px) {
     .infoContainer {
         padding: 15px;
     }
-/* 
-    .itemLine {
-        flex-direction: column;
-        align-items: flex-start;
-    }
 
-    .itemLine label,
-    .itemLine input {
-        width: 100%;
-        margin-bottom: 5px;
-        margin-left: 0;
-    }
-
-    .saveBtn,
-    .cancelBtn {
-        width: 100%;
-        margin: 5px 0;
-    }
-    
-    .itemLine span {
-        margin-left: 0;
-    } */
 }

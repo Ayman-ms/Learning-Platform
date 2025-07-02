@@ -21,18 +21,42 @@ export class StudentsService {
     return this.http.post(`${this.api}register`, formData, { headers: headers });
   }
 
-
-  public async updateStudent(student: Student): Promise<boolean> {
+  private dataURLtoBlob(dataurl: string): Blob {
+    const arr = dataurl.split(',');
+    const mime = arr[0].match(/:(.*?);/)![1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+  
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+  
+    return new Blob([u8arr], { type: mime });
+  }
+  
+  public async updateStudent(student: Student, file?: File): Promise<boolean> {
     try {
-      console.log('Sending student data:', student); // للتأكد من البيانات المرسلة
-      const response = await this.http.put<Student>(`${this.api}${student.id}`, student).toPromise();
-      console.log('Server response:', response); // للتأكد من استجابة الخادم
+      const formData = new FormData();
+      formData.append('FirstName', student.firstName);
+      formData.append('LastName', student.lastName);
+      formData.append('Email', student.email);
+      formData.append('Phone', student.phone);
+      formData.append('Password', student.password);
+  
+      if (file) {
+        formData.append('Photo', file);
+      }
+  
+      const response = await this.http.put(`${this.api}${student.id}`, formData).toPromise();
       return !!response;
     } catch (error) {
-      console.error("Error updating student:", error);
+      console.error('Update error:', error);
       return false;
     }
   }
+  
+  
 
   public async deleteStudent(id: string) {
     let result = await this.http.delete(`${this.api}${id}`)
@@ -56,7 +80,5 @@ export class StudentsService {
   public getStudents() {
     return this.http.get<Student[]>(this.api).toPromise();
   }
-
-
 
 }

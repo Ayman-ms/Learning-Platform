@@ -1,49 +1,156 @@
 .add-category-container {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background:  var(--card-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 25px;
 }
 
 .add-category-container input {
-    width: 70%;
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    font-size: 16px;
 }
 
-.btn {
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.primary-btn, .secondary-btn, .danger-btn, .icon-btn {
+    padding: 8px 14px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 14px;
+    transition: background var(--transition-speed), transform var(--transition-speed);
+    border: none;
+}
+
+.primary-btn {
     background-color: var(--blue-color);
-    color: var(--white-color);
-    padding: 5px 10px;
-    margin-right: 10px;
+    color: #fff;
 }
 
-.deleteBtn {
-    background-color: var(--red-color);
+.primary-btn:hover {
+    background-color: #155fa0;
+    transform: translateY(-2px);
 }
 
-.cards {
-    margin-bottom: 10px;
+.secondary-btn {
+    background-color: #e0e0e0;
+    color: #333;
 }
 
-.cardButton {
-    margin-top: 10px;
+.secondary-btn:hover {
+    background-color: #d5d5d5;
+    transform: translateY(-2px);
+}
+
+.danger-btn {
+    background: none;
+    color: 
+    var(--red-color);
+
+}
+
+.danger-btn:hover {
+    transform: translateY(-2px);
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    color: var(--blue-color);
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.icon-btn:hover {
+    color: #0d47a1;
+    transform: translateY(-2px);
 }
 
 .card-grid {
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
-    grid-template-columns: repeat(1, 1fr);
-    /* الافتراضي: بطاقة واحدة */
 }
 
-@media (min-width: 768px) {
-    .card-grid {
-        grid-template-columns: repeat(3, 1fr);
-        /* 3 بطاقات للشاشات المتوسطة */
-    }
+.category-card {
+    background-color: var(--card-color);
+    color: var(--main-text-color);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
 }
 
-@media (min-width: 1200px) {
-    .card-grid {
-        grid-template-columns: repeat(5, 1fr);
-        /* 5 بطاقات للشاشات الكبيرة */
-    }
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.category-title {
+    font-size: 14px;
+    color: var(--main-text-color);
+
+}
+
+.category-description {
+    font-size: 16px;
+    color: var(--main-text-color);
+
+}
+
+.edit-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+/* Table Styling */
+.modern-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: var(--card-color);
+    border-radius: var(--border-radius);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.modern-table th, .modern-table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.modern-table th {
+    background-color: var(--card-color);
+    color: var(--main-text-color);
+
+    font-weight: 600;
+}
+
+.modern-table tr:hover {
+    background-color: #f9f9f9;
 }

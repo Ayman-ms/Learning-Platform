@@ -47,9 +47,7 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('onSubmit called');
     if (this.registrationForm.invalid) {
-      console.log('Form is invalid');
       this.registrationForm.markAllAsTouched();
       alert("Please fill all required fields correctly.");
       return;
@@ -66,15 +64,9 @@ export class SignupComponent implements OnInit {
       formData.append('Photo', this.selectedFile, this.selectedFile.name);
     }
 
-    console.log('Form Data:', formData);
-
     this.studentService.registerStudent(formData).subscribe(
       response => {
-        console.log('User registered successfully!', response);
         this.router.navigate(['']);
-      },
-      error => {
-        console.error('Error registering user:', error);
       }
     );
   }

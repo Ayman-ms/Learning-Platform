@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Course } from 'src/app/models/courses';
 import { CoursesService } from 'src/app/services/courses/courses.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
-
+import { ImageService } from 'src/app/services/image/image.service';
 @Component({
   selector: 'app-admin-courses',
   templateUrl: './admin-courses.component.html',
@@ -24,6 +24,7 @@ export class AdminCoursesComponent {
   paginatedRows: Array<Array<Course>> = [];
 
   constructor(private fb: FormBuilder, private coursesService: CoursesService, 
+    public imageService: ImageService,
     private messageService: MessageService) {
     this.courseForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
@@ -37,11 +38,9 @@ export class AdminCoursesComponent {
     this.coursesService.getCourses().subscribe({
       next: (courses) => {
         this.coursessList = courses.map(course => {
-          // تصفية القيم null من subCategories
           course.subCategories = course.subCategories?.filter(subCat => subCat !== null) || [];
           return course;
         });
-        console.log('Courses loaded:', this.coursessList); // تأكد من أن Sub Categories موجودة
         this.filteredCourses = [...this.coursessList];
         this.updateSearch();
       },
@@ -51,12 +50,10 @@ export class AdminCoursesComponent {
     });
   }
 
-  // دالة مساعدة للتحقق من وجود تصنيفات فرعية
   hasSubCategories(course: Course): boolean {
     return Array.isArray(course.subCategories) && course.subCategories.length > 0;
   }
 
-  // دالة مساعدة للحصول على نص التصنيفات الفرعية
   getSubCategoriesText(course: Course): string {
     if (this.hasSubCategories(course)) {
       return course.subCategories.join(', ');
@@ -90,8 +87,6 @@ export class AdminCoursesComponent {
     const file = event.target.files[0];
     if (file) {
       this.selectedImage = file;
-
-      // العرض المسبق للصورة
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.previewImage = e.target.result;
@@ -101,12 +96,6 @@ export class AdminCoursesComponent {
   }
   toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
-  }
-  getImagePath(imageFilePath: string | undefined): string {
-    if (!imageFilePath || imageFilePath.trim() === '') {
-      return 'assets/default-profile.png'; // صورة افتراضية
-    }
-    return `http://localhost:5270${imageFilePath}`; // تأكد من ربط الصورة بالسيرفر
   }
 
   async onSubmit() {
@@ -127,14 +116,12 @@ export class AdminCoursesComponent {
       this.courseForm.reset();
       this.previewImage = null;
     } catch (error) {
-      console.error(error);
       alert('Error while adding the course.');
     }
   }
 
   async deleteUserClick(id: string | undefined) {
     if (!id) {
-      console.error("❌ Course ID is undefined, cannot delete.");
       return;
     }  
     let result = await this.coursesService.deleteCourse(id);

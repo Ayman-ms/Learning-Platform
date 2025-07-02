@@ -45,7 +45,6 @@
   color: var(--blue-color);
 }
 
-/* الوضع الليلي */
 :host-context(body.dark-mode) {
   background-color: var(--darkmode-bg);
   color: var(--darkmode-main-text-color);

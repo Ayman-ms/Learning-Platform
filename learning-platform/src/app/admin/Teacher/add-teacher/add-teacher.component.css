@@ -94,7 +94,6 @@
       margin: 10px auto;
     }
     
-    /* تطبيق تغييرات للشاشات التي حجمها بين 769 بكسل و 1024 بكسل (أجهزة لوحية) */
     @media (min-width: 769px) and (max-width: 1024px) {
     
       .container {
@@ -102,41 +101,26 @@
       }
     }
     
-    /* تطبيق تغييرات للشاشات التي حجمها أقل من 768 بكسل (أجهزة محمولة) */
     @media (max-width: 768px) {
       .container {
         grid-template-columns: repeat(1, 1fr);
-        /* ثلاثة أعمدة متساوية العرض */
     
       }
     }
   
-   
-    /* الخلفية الشفافة عند ظهور الفورم */
   .overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* لون شفاف */
+    background: rgba(0, 0, 0, 0.5); 
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
   }
   
-  /* تصميم النافذة المنبثقة */
-  /* .popup {
-    background: red;
-    padding: 20px;
-    border-radius: 10px;
-    width: 400px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    text-align: center;
-  } */
-  
-  /* تنسيق أزرار النافذة */
   .popup-buttons {
     margin-top: 15px;
     display: flex;

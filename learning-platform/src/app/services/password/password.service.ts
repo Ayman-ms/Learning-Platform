@@ -7,20 +7,22 @@ import { Observable } from 'rxjs';
 })
 export class PasswordService {
 
-  private baseUrl = 'https://localhost:44355/Password'; //API URL 
+  private apiUrl = 'https://localhost:44355/Password'; //API URL 
 
   constructor(private http: HttpClient) { }
 
   // Function to send password recovery email
-  sendPasswordForget(email: string): Observable<boolean> {
-    const params = new HttpParams().set('email', email);
-    return this.http.get<boolean>(`${this.baseUrl}/SendPasswordForget`, { params });
+  sendPasswordForget(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/SendPasswordForget`, email, { responseType: 'text' });
   }
 
   // Function to reset password
-  resetPassword(email: string, password: string, passwordConf: string): Observable<boolean> {
-    const body = { email, password, passwordConf };
-    return this.http.post<boolean>(`${this.baseUrl}/ResetPassword`, body);
+  resetPassword(token: string, password: string, passwordConf: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/ResetPassword`, {
+      token,
+      password,
+      passwordConf
+    }, { responseType: 'text' });
   }
 
   generateRandomPassword(): string {
@@ -38,7 +40,7 @@ export class PasswordService {
     password += numbers[Math.floor(Math.random() * numbers.length)];
     password += specialChars[Math.floor(Math.random() * specialChars.length)];
 
-    for (let i = 4; i < length; i++) {
+    for (let i =6; i < length; i++) {
       password += allChars[Math.floor(Math.random() * allChars.length)];
     }
 

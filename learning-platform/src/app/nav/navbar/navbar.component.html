@@ -4,12 +4,12 @@
     class="sidebar-toggle d-lg-none"
     (click)="toggleSidebar()"
     [class.active]="isSidebarOpen$ | async">
-    <i class="bi" [ngClass]="(isSidebarOpen$ | async) ? 'bi-x' : 'bi-list'"></i>
+    <i class="bi" [ngClass]="(isSidebarOpen$ | async) ? 'bi-x' : 'bi-list'" *ngIf="!userLoggedIn"></i>
   </button>
   
 
     <i class="bi bi-book me-2 logo" routerLink=""> Skill Wave</i>
-    <!-- <a class="navbar-brand" href="#"> </a> -->
+    
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -35,7 +35,6 @@
       <form class="d-flex me-2" role="search">
         <input class="form-control" type="search" placeholder="Search" aria-label="Search">
         <i class="bi bi-search"></i>
-        <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
       </form>
       <a class="nav-link" *ngIf="!currentUser" routerLink="login">Login</a>
 

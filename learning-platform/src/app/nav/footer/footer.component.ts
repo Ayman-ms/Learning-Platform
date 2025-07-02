@@ -40,15 +40,5 @@ export class FooterComponent implements OnInit {
     }
   }
 
-  switchLanguage(event: Event) {
-    const target = event.target as HTMLSelectElement;
-    const language = target?.value;
-  
-    if (language) {
-      this.translate.use(language);
-    }
-  }
-  
-
 }
 

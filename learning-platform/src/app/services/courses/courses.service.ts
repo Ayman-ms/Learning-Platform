@@ -11,16 +11,13 @@ export class CoursesService {
   private apiUrl = 'http://localhost:5270/api/Courses';
   constructor(private http: HttpClient) { }
 
-  // جلب جميع الكورسات
   getCourses(): Observable<Course[]> {
     return this.http.get<Course[]>(`${this.apiUrl}`)
       .pipe(
         tap(courses => {
-          // تصفية القيم null من subCategories
           courses.forEach(course => {
             course.subCategories = course.subCategories?.filter(subCat => subCat !== null) || [];
           });
-          console.log('Fetched courses:', courses);
         }),
         catchError(this.handleError)
       );
@@ -29,7 +26,6 @@ export class CoursesService {
   addCourse(formData: FormData): Observable<Course> {
     return this.http.post<Course>(this.apiUrl, formData);
   }
-
 
   // src/app/services/course.service.ts
   createCourse(course: Course, photo: File): Observable<Course> {
@@ -50,30 +46,24 @@ export class CoursesService {
   }
 
   updateCourseWithImage(id: string, formData: FormData): Observable<any> {
-    console.log('Sending update request for course:', id);
     return this.http.put(`${this.apiUrl}/${id}`, formData)
       .pipe(
         tap(response => console.log('Update response:', response)),
         catchError(error => {
-          console.error('Update error:', error);
           return throwError(() => error);
         })
       );
   }
   
-
-  // حذف كورس
   deleteCourse(id: string): Promise<boolean> {
     return this.http.delete(`${this.apiUrl}/${id}`).toPromise().then(() => true).catch(() => false);;
   }
 
-  // الحصول على كورس واحد
   getCourseById(id: string): Observable<Course> {
     return this.http.get<Course>(`${this.apiUrl}/${id}`);
   }
 
   private handleError(error: any): Observable<never> {
-    console.error('An error occurred:', error);
     throw error;
   }
 }

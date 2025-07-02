@@ -1,20 +1,23 @@
-import { Injectable } from "@angular/core";
-import { CanActivate } from "@angular/router";
-import { SessionService } from "./services/session/session.service";
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
+import { SessionService } from './services/session/session.service';
 
-@Injectable()
-export class AuthenticateGuard implements CanActivate {
-  constructor(private sessionService: SessionService) {
+@Injectable({
+  providedIn: 'root'
+})
+export class AdminGuard implements CanActivate {
+  constructor(private router: Router,
+              private sessionService: SessionService
+  ) {}
 
-  }
-  canActivate() {
+  canActivate(): boolean {
     const user = this.sessionService.getUser();
-    if (user && user.userName != 'anonymos') {
+
+    if (user && user.roll === 'admin') {
       return true;
-    }
-    else {
+    } else {
+      this.router.navigate(['/login']);
       return false;
     }
   }
-
 }

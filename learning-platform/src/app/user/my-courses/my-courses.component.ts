@@ -34,9 +34,6 @@ export class MyCoursesComponent implements OnInit{
         this.coursesService.getCourses().subscribe(courses => {
           this.enrolledCourses = courses.filter(c => courseIds.includes(c.id));
         });
-      },
-      error: (error) => {
-        console.error('Error loading enrollments:', error);
       }
     });
   }

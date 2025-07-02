@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { finalize } from 'rxjs/operators';
-
+import { SafeUrl } from '@angular/platform-browser';
 import { Course } from 'src/app/models/courses';
 import { MainCategory } from 'src/app/models/mainCategory';
 import { SubCategory } from 'src/app/models/subCategory';
@@ -12,7 +10,7 @@ import { CoursesService } from 'src/app/services/courses/courses.service';
 import { TeacherService } from 'src/app/services/teacher/teacher.service';
 import { MainCategoryService } from 'src/app/services/mainCategory/mainCategory.service';
 import { SubCategoryService } from 'src/app/services/subCategory/sub-category.service';
-
+import { ImageService } from 'src/app/services/image/image.service';
 @Component({
   selector: 'app-edit-course',
   templateUrl: './edit-course.component.html',
@@ -41,13 +39,11 @@ export class EditCourseComponent implements OnInit {
     duration: ''
   };
 
-  // Lists for dropdowns
   teachers: any[] = [];
   mainCategories: MainCategory[] = [];
   availableSubCategories: SubCategory[] = [];
   selectedSubCategories: SubCategory[] = [];
 
-  // Image handling
   selectedFile: File | null = null;
   imagePreview: SafeUrl | null = null;
 
@@ -56,15 +52,14 @@ export class EditCourseComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private messageService: MessageService,
-    private sanitizer: DomSanitizer,
     private courseService: CoursesService,
     private teacherService: TeacherService,
     private mainCategoryService: MainCategoryService,
-    private subCategoryService: SubCategoryService
+    private subCategoryService: SubCategoryService,
+    private imageService: ImageService
   ) { }
 
   ngOnInit(): void {
-    console.log("Component loaded - isLoading:", this.isLoading);
     this.initForm();
     this.loadInitialData();
   }
@@ -77,15 +72,15 @@ export class EditCourseComponent implements OnInit {
       mainCategory: ['', Validators.required],
       subCategories: [[], Validators.required],
       status: ['', Validators.required],
-      time: [0]
+      time: [0],
+      startDate: [''],
+      duration: ['']
     });
   }
 
   private async loadInitialData(): Promise<void> {
     try {
       this.isLoading = true;
-
-      // Load all required data in parallel
       const [teachers, mainCategories, subCategories] = await Promise.all([
         this.teacherService.getTeachers().toPromise(),
         this.mainCategoryService.getMainCategories(),
@@ -106,17 +101,12 @@ export class EditCourseComponent implements OnInit {
       this.handleError('Failed to load initial data', error);
     } finally {
       this.isLoading = false;
-      console.log("Done loading - isLoading:", this.isLoading);
-
     }
   }
 
   private async loadCourseData(): Promise<void> {
     try {
-      console.log('Loading course data...');
       const course = await this.courseService.getCourseById(this.courseId).toPromise();
-      console.log('Loaded course:', course);
-
       if (course) {
         this.coursesToEdit = course;
 
@@ -130,12 +120,14 @@ export class EditCourseComponent implements OnInit {
             description: course.description,
             teacher: course.teacher,
             mainCategory: course.mainCategory,
-            subCategories: selectedSubCategories, // تحديث الحقل مباشرة
-            status: course.status
+            subCategories: selectedSubCategories,
+            status: course.status,
+            startDate: course.startDate ?? '',
+            duration: course.duration ?? ''
           });
         }
 
-        this.imagePreview = this.getImagePath(course.photoPath); // تحديث الصورة
+        this.imagePreview = this.imageService.getImagePath(course.photoPath, 'assets/courseImage.svg');
       }
     } catch (error) {
       this.handleError('Failed to load course data', error);
@@ -158,19 +150,6 @@ export class EditCourseComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  getImagePath(imageFilePath: string | undefined): string {
-    if (!imageFilePath || imageFilePath.trim() === '') {
-      return 'assets/default-profile.png'; // صورة افتراضية
-    }
-
-    // تأكد من أن المسار يبدأ بـ "/" لتجنب الأخطاء
-    if (!imageFilePath.startsWith('/')) {
-      imageFilePath = '/' + imageFilePath;
-    }
-
-    return `http://localhost:5270${imageFilePath}`; // تأكد من ربط الصورة بالسيرفر
-  }
-
   hasError(controlName: string, errorName: string): boolean {
     const control = this.courseForm.get(controlName);
     return !!control && control.hasError(errorName) && (control.touched || control.dirty);
@@ -185,9 +164,6 @@ export class EditCourseComponent implements OnInit {
     try {
       this.isSubmitting = true;
       const formValues = this.courseForm.value;
-      console.log('Form Values:', formValues); // للتأكد من القيم
-
-      // تجهيز البيانات
       const formData = new FormData();
       formData.append('id', this.courseId);
       formData.append('name', formValues.name);
@@ -195,30 +171,19 @@ export class EditCourseComponent implements OnInit {
       formData.append('teacher', formValues.teacher);
       formData.append('mainCategory', formValues.mainCategory);
       formData.append('status', formValues.status.toString());
-      formData.forEach((value, key) => {
-        console.log(`${key}:`, value);
-      });
-      // إضافة الفئات الفرعية
+      formData.append('startDate', formValues.startDate || '');
+      formData.append('duration', formValues.duration || '');
+
       if (formValues.subCategories && formValues.subCategories.length > 0) {
         formValues.subCategories.forEach((subCat: any) => {
           formData.append('subCategories[]', subCat.description);
         });
       }
 
-      // إضافة الصورة إذا تم اختيارها
       if (this.selectedFile) {
         formData.append('photo', this.selectedFile);
       }
-
-      // طباعة محتويات FormData للتأكد
-      formData.forEach((value, key) => {
-        console.log(`${key}:`, value);
-      });
-
-      // إرسال الطلب
       const response = await this.courseService.updateCourseWithImage(this.courseId, formData).toPromise();
-      console.log('Update Response:', response);
-
       this.messageService.add({
         severity: 'success',
         summary: 'Success',
@@ -227,7 +192,6 @@ export class EditCourseComponent implements OnInit {
 
       this.router.navigate(['/admin/courses']);
     } catch (error) {
-      console.error('Error updating course:', error);
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
@@ -236,38 +200,6 @@ export class EditCourseComponent implements OnInit {
     } finally {
       this.isSubmitting = false;
     }
-  }
-  private logFormData(formData: FormData): void {
-    console.log('Form data contents:');
-    formData.forEach((value, key) => {
-      console.log(`${key}:`, value);
-    });
-  }
-
-  private prepareUpdateData(): Course {
-    const formValues = this.courseForm.value;
-    return {
-      ...this.coursesToEdit,
-      name: formValues.name,
-      description: formValues.description,
-      teacher: formValues.teacher,
-      mainCategory: formValues.mainCategory,
-      subCategories: formValues.subCategories.map((sub: SubCategory) => sub.id),
-      status: formValues.status
-    };
-  }
-
-  private async updateCourseWithImage(course: Course): Promise<void> {
-    const formData = new FormData();
-    formData.append('imageFile', this.selectedFile!);
-    Object.entries(course).forEach(([key, value]) => {
-      formData.append(key, value as string);
-    });
-    await this.courseService.updateCourseWithImage(course.id, formData).toPromise();
-  }
-
-  private async updateCourseWithoutImage(course: Course): Promise<void> {
-    await this.courseService.updateCourse(course.id, course).toPromise();
   }
 
   private markFormGroupTouched(formGroup: FormGroup): void {
@@ -280,7 +212,6 @@ export class EditCourseComponent implements OnInit {
   }
 
   private handleError(message: string, error: any): void {
-    console.error('Error details:', { message, error });
     this.errorMessage = message;
     this.messageService.add({
       severity: 'error',

@@ -1,13 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Message, MessageService } from 'primeng/api';
 import { Student } from 'src/app/models/student';
-import { AuthService } from 'src/app/services/auth/auth.service';
 import { PasswordService } from 'src/app/services/password/password.service';
-import { SessionService } from 'src/app/services/session/session.service';
-import { UserService } from 'src/app/services/users/user.service';
-
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
@@ -17,22 +11,16 @@ export class ForgotPasswordComponent implements OnInit {
   userToLogin: Student = {} as Student;
   msgs: Message[] = [];
   email: string = '';
+
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private httpClient: HttpClient,
-    private userService: UserService,
     private messageService: MessageService,
-    private sessionService: SessionService,
-    private authService: AuthService,
   private passwordService: PasswordService
   ) { }
 
   ngOnInit(): void {
     
   }
-
-
+  
   //FORGET PASSWORD FUNCTION
   sendPasswordForget() {
     if (!this.email) {
@@ -41,12 +29,8 @@ export class ForgotPasswordComponent implements OnInit {
     }
 
     this.passwordService.sendPasswordForget(this.email).subscribe(
-      (success) => {
-        if (success) {
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Reset link sent to your email' });
-        } else {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Email not found' });
-        }
+      (response: any) => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Reset link sent to your email' });
       },
       (error) => {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to send reset link' });

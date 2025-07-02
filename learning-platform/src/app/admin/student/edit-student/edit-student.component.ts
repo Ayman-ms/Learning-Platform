@@ -18,7 +18,8 @@ export class EditStudentComponent implements OnInit {
     id: '', firstName: '', password: '', email: '', phone: '',
     lastName: '',
     photoPath: '',
-    createdAt: ''
+    createdAt: '',
+    roll: ''
   };
 
   // input status
@@ -67,7 +68,6 @@ export class EditStudentComponent implements OnInit {
   ngOnInit(): void {
     this.httpClient.get<Array<Student>>('http://localhost:5270/api/Student').subscribe((userListItems) => {
       this.route.queryParams.subscribe(params => {
-        console.log(params['id']);
         for (let user of userListItems) {
           if (user.id == params['id']) {
             this.studentToEdit = user;
@@ -123,24 +123,20 @@ export class EditStudentComponent implements OnInit {
   
     this.isSubmitting = true;
     const formValues = this.studentForm.value;
-    
-    console.log('New Photo Base64:', this.photoBase64);
-    console.log('Current Photo Path:', this.studentToEdit.photoPath);
   
     const studentToUpdate: Student = {
       id: this.studentToEdit.id,
-      firstName: formValues.firstName || '',
-      lastName: formValues.lastName || '',
-      email: formValues.email || '',
-      phone: formValues.phone || '',
+      firstName: formValues.firstName ?? '',
+      lastName: formValues.lastName ?? '',
+      email: formValues.email ?? '',
+      phone: formValues.phone ?? '',
       password: formValues.password || this.studentToEdit.password,
       createdAt: this.studentToEdit.createdAt,
-      photoPath: this.selectedImage ? (this.selectedImage as string) : this.studentToEdit.photoPath
+      photoPath: this.studentToEdit.photoPath,
+      roll: this.studentToEdit.roll
     };
   
-    console.log('Student To Update:', studentToUpdate);
-  
-    this.studentsService.updateStudent(studentToUpdate)
+    this.studentsService.updateStudent(studentToUpdate, this.selectedFile?? undefined)
       .then((success) => {
         if (success) {
           this.messageService.add({
@@ -159,7 +155,6 @@ export class EditStudentComponent implements OnInit {
         this.isSubmitting = false;
       })
       .catch(error => {
-        console.error('Update Error:', error);
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
@@ -169,34 +164,26 @@ export class EditStudentComponent implements OnInit {
       });
   }
   
+  
   // Updated file selection logic
-  async onFileSelected(event: Event) {
+  onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      const file = input.files[0];
+      this.selectedFile = input.files[0];
       const reader = new FileReader();
   
-      reader.onload = async (e) => {
-        if (e.target?.result) {
-          const base64String = e.target.result as string;
-          this.selectedImage = base64String;
-          this.photoBase64 = base64String.split(',')[1]; // Save data without header
-          
-          // Update the displayed image directly
-          this.imagePreview = this.sanitizer.bypassSecurityTrustUrl(base64String);
-          
-          // Update form value
-          this.studentForm.patchValue({
-            photoBase64: this.photoBase64
-          });
-  
-          console.log('Image loaded successfully');
+      reader.onload = (e) => {
+        const result = e.target?.result;
+        if (result) {
+          this.selectedImage = result;
+          this.imagePreview = this.sanitizer.bypassSecurityTrustUrl(result as string);
         }
       };
   
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(this.selectedFile);
     }
   }
+  
 
   generateRandomPassword(): void {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
@@ -214,7 +201,6 @@ export class EditStudentComponent implements OnInit {
   }
   getImageSource(photoBase64: string | undefined): string {
     if (!photoBase64 || photoBase64.trim() === '' || photoBase64 === 'undefined' || photoBase64 === 'null') {
-      console.warn("❌ PhotoBase64 is missing!");
       return 'assets/default-profile.png'; // Default image
     }
 
@@ -236,6 +222,7 @@ export class EditStudentComponent implements OnInit {
     if (!imageFileName || imageFileName.trim() === '') {
       return 'assets/default-profile.png';
     }
+    const unique = new Date().getTime(); 
     return `${imageFileName}`;
   }
   hasError(controlName: string, errorName: string): boolean {

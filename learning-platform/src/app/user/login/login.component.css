@@ -1,29 +1,25 @@
 .formContainer {
-  margin-top: 40px;
-  margin-bottom: 40px;
-  min-height: 55vh;
-  background-color: var(--white-color);
-  padding: 0;
-  margin: 0;
   display: flex;
-  margin: 30px 0;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 20px;
 }
 
 form {
   text-align: center;
-  background-color: var(--white-color);
+  background-color: var(--card-color);
   padding: 20px;
-  min-width: 550px;
-  margin: auto;
+  width: 100%;
+  max-width: 500px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  /* margin-top: 20px; */
 }
 
 form i {
   display: block;
-  margin-bottom: 10px;
-  font-size: xx-large;
+  margin-bottom: 20px;
+  font-size: 2rem;
 }
 
 .input-container {
@@ -33,63 +29,103 @@ form i {
 
 .input-container input {
   width: 100%;
-  padding: 10px;
+  padding: 14px 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 14px;
-  height: 50px;
-
+  font-size: 1rem;
 }
 
 .input-container label {
   position: absolute;
-  left: 10px;
-  top: 13px;
-  background-color: white;
+  left: 12px;
+  top: 14px;
   padding: 0 5px;
-  font-size: 14px;
+  font-size: 1rem;
   color: #999;
-  transition: 0.2s;
+  transition: 0.2s ease;
+  pointer-events: none;
 }
 
-.input-container input:focus+label,
-.input-container input:not(:placeholder-shown)+label {
+.input-container input:focus + label,
+.input-container input:not(:placeholder-shown) + label {
   top: -10px;
-  left: 5px;
-  font-size: 12px;
-  color: var(--blue-color);
-  height: 20px;
-}
-
-button[type="submit"] {
-  background-color: var(--blue-color);
-  color: var(--white-color);
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  width: 75%;
-}
-
-button {
-  margin-top: 20px;
-  background-color: #ccc;
-  text-decoration: none;
-  color: var(--white-color);
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  width: 75%;
-}
-
-button[type="submit"]:hover {
-  background-color: var(--blue-color);
+  left: 8px;
+  font-size: 0.85rem;
+  background-color: var(--card-color);
+  color: var(--main-text-color);
+  border-radius: 5%;
 }
 
 .input-container input:focus {
   border-color: var(--blue-color);
   outline: none;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  text-align: left;
+}
+
+.btn-submit {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-submit button {
+  background-color: #ccc;
+  color: var(--white-color);
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit button[type="submit"] {
+  background-color: var(--blue-color);
+}
+
+.btn-submit button[type="submit"]:hover {
+  background-color: #2d9bdbdb;
+}
+
+.btn-submit button:hover {
+  background-color: #b3b3b3;
+}
+
+.text-center {
+  margin-top: 15px;
+  font-size: 0.95rem;
+}
+
+.text-center .txt {
+  color: var(--blue-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.text-center .txt:hover {
+  text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  form {
+    padding: 15px;
+    max-width: 90%;
+  }
+
+  form i {
+    font-size: 1.5rem;
+  }
+
+  .btn-submit button {
+    font-size: 0.95rem;
+  }
 }

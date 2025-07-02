@@ -53,7 +53,7 @@ export class AdminTeacherComponent implements OnInit {
         )
       : [...this.teachersList];
 
-    this.paginatedTeachers = [...this.filteredTeachers]; // إعادة ضبط البيانات للـ pagination
+    this.paginatedTeachers = [...this.filteredTeachers];
   }
 
   onPaginatedData(event: Teacher[]) {
@@ -84,7 +84,6 @@ export class AdminTeacherComponent implements OnInit {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d')!;
         
-        // تحديد الأبعاد المطلوبة
         const maxWidth = 800;
         const maxHeight = 800;
         let width = img.width;
@@ -106,7 +105,7 @@ export class AdminTeacherComponent implements OnInit {
         canvas.height = height;
         
         ctx.drawImage(img, 0, 0, width, height);
-        resolve(canvas.toDataURL('image/jpeg', 0.7)); // ضغط بجودة 70%
+        resolve(canvas.toDataURL('image/jpeg', 0.7)); 
       };
     });
   }
@@ -140,15 +139,14 @@ export class AdminTeacherComponent implements OnInit {
    
   getImagePath(imageData: string | undefined): string {
     if (!imageData) {
-      return 'assets/default-profile.png';
+      const unique = new Date().getTime(); 
+      return 'assets/courseImage.svg';
     }
     
-    // التحقق مما إذا كانت الصورة بتنسيق Base64
     if (imageData.startsWith('data:image')) {
       return imageData;
     }
     
-    // التحقق مما إذا كانت الصورة بتنسيق Base64 بدون prefix
     if (this.isBase64(imageData)) {
       return `data:image/jpeg;base64,${imageData}`;
     }

@@ -16,8 +16,7 @@ export class AdminMainCategoryComponent implements OnInit {
   itemsPerPage: number = 9;
   displayAsTable: boolean = true;
   editMode: { [key: string]: boolean } = {};
-  newCategory: MainCategory = { id: '', description: '' }; // كائن لإضافة تصنيف جديد
-
+  newCategory: MainCategory = { id: '', description: '' }; 
   constructor(private mainCategoryService: MainCategoryService, private messageService: MessageService) {}
 
   async ngOnInit() {
@@ -62,17 +61,16 @@ export class AdminMainCategoryComponent implements OnInit {
       const newCategory: MainCategory = { id: this.generateId(), description: this.newCategory.description };
       const addedCategory = await this.mainCategoryService.addMainCategory(newCategory);
       
-      this.mainCategoryList.push(addedCategory); // ✅ أضف التصنيف للقائمة
-      this.updatePagination(); // ✅ حدّث القائمة
+      this.mainCategoryList.push(addedCategory); 
+      this.updatePagination(); 
       this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Category added' });
     } catch (error) {
-      console.error("❌ Error adding category:", error);
       alert("Failed to add category");
     }
   }
   
   generateId(): string {
-    return Math.random().toString(36).substr(2, 9); // ✅ إنشاء ID عشوائي
+    return Math.random().toString(36).substr(2, 9); // Generates a random ID
   }
   
 

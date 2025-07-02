@@ -32,8 +32,9 @@ export class AllCoursesComponent implements OnInit {
 
   getImagePath(imageFilePath: string | undefined): string {
     if (!imageFilePath || imageFilePath.trim() === '') {
-      return 'assets/default-profile.png';
+      return 'assets/courseImage.svg';
     }
+    const unique = new Date().getTime(); 
     return `http://localhost:5270${imageFilePath}`; 
   }
 

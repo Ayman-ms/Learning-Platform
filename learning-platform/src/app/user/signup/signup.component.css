@@ -1,84 +1,84 @@
-.formContainer{
-  margin-top: 40px;
-  margin-bottom: 40px;
+.formContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 20px;
 }
+
 form {
-  text-align:center ;
+  text-align: center;
   background-color: var(--card-color);
   padding: 20px;
-  max-width: 550px;
-  margin: auto;
+  width: 100%;
+  max-width: 500px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-form i{
+
+form i {
   display: block;
-  margin-bottom: 10px;
-  font-size: xx-large;
+  margin-bottom: 20px;
+  font-size: 2rem;
 }
+
 .input-container {
   position: relative;
   margin-bottom: 15px;
 }
+
 .input-container input {
   width: 100%;
-  padding: 10px;
+  padding: 14px 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 14px;    
-  height: 50px;
+  font-size: 1rem;
+}
 
+.input-container input:focus {
+  border-color: var(--blue-color);
+  outline: none;
 }
-.input-container label {
-  position: absolute;
-  left: 10px;
-  top: 13px;
-  background-color: var(--white-color);
-  padding: 0 5px;
-  font-size: 14px;
-  color: #999;
-  transition: 0.2s;
+
+.error-message {
+  color: var(--red-color);
+  font-size: 0.9rem;
+  margin-bottom: 15px;
 }
-.input-container input:focus + label,
-.input-container input:not(:placeholder-shown) + label {
-  top: -10px;
-  left: 5px;
-  font-size: 12px;
-  color: var(--blue-color);
-  height: 20px;
+
+small {
+  color: var(--red-color);
+  font-size: 0.85rem;
+  display: block;
+  text-align: left;
+  margin-top: 5px;
 }
-input[type="submit"] {
-  background-color: var(--blue-color);
-  color: var(--white-color);
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  width: 75%;
+
+input.ng-touched.ng-invalid {
+  border-color: var(--red-color);
 }
-input[type="submit"]:hover {
-  background-color: var(--blue-color);
+
+input.ng-touched.ng-valid {
+  border-color: green;
 }
-button{
+
+button {
   margin-top: 20px;
   background-color: var(--blue-color);
   color: var(--white-color);
-  padding: 10px 20px;
+  padding: 12px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
-  width: 75%;
+  font-size: 1rem;
+  width: 100%;
+  transition: background-color 0.3s ease;
 }
-.input-container input:focus {
-border-color:var(--blue-color); 
-outline: none;
+
+button:hover {
+  background-color:#2d9bdbdb;
 }
-img{
-  width: 50px;
-  margin-bottom: 10px;
-}
+
 .profile-container {
   display: flex;
   justify-content: center;
@@ -92,7 +92,6 @@ img{
   border-radius: 50%;
   object-fit: cover;
   cursor: pointer;
-  /* border: 2px solid #007bff; */
   transition: transform 0.2s ease-in-out;
 }
 
@@ -100,18 +99,18 @@ img{
   transform: scale(1.1);
 }
 
-/* تنسيق رسائل الخطأ */
-small {
-  color:var(--red-color);
-  font-size: 12px;
-}
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  form {
+    padding: 15px;
+    max-width: 90%;
+  }
 
-/* تنسيق حدود الحقول عند وجود خطأ */
-input.ng-touched.ng-invalid {
-  border: 1px solid var(--red-color);
-}
+  form i {
+    font-size: 1.5rem;
+  }
 
-/* تنسيق الحقول عند عدم وجود خطأ */
-input.ng-touched.ng-valid {
-  border: 1px solid green;
+  button {
+    font-size: 0.95rem;
+  }
 }

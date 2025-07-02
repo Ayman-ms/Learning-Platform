@@ -60,7 +60,6 @@ export class LoginComponent implements OnInit {
         summary: 'Error',
         detail: 'Invalid email or password'
       });
-      console.error('Login error:', error);
     } finally {
       this.isLoading = false;
     }

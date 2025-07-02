@@ -49,7 +49,7 @@ export class TeacherService {
   }
 
   updateTeacher(teacherId: string, formData: FormData) {
-    return this.http.put(`${this.apiUrl}/${teacherId}`, formData); // إزالة Content-Type لأن المتصفح يحددها تلقائيًا عند استخدام FormData
+    return this.http.put(`${this.apiUrl}/${teacherId}`, formData);
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -62,8 +62,6 @@ export class TeacherService {
       // Server-side error
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-
-    console.error('❌ API Error:', errorMessage);
     return throwError(() => new Error(errorMessage));
   }
 

@@ -1,76 +1,87 @@
-<!-- زر إضافة تصنيف جديد -->
 <div class="add-category-container">
-    <input type="text" [(ngModel)]="newCategory.description" value="{{ newCategory.description }}" placeholder="Enter new category">
-    <div class="addCategoryBtn">
-      <button 
-  class="btn" 
-  (click)="addNewCategory()" 
-  [disabled]="!newCategory.description || newCategory.description.trim() === ''">
-  Add Item
-</button>
-      <button class="btn" (click)="switchView()">Switch</button>
-    </div>
+  <input 
+    type="text" 
+    [(ngModel)]="newCategory.description" 
+    placeholder="Enter new category">
+
+  <div class="action-buttons">
+    <button 
+      class="primary-btn" 
+      (click)="addNewCategory()" 
+      [disabled]="!newCategory.description || newCategory.description.trim() === ''">
+      ➕ Add Item
+    </button>
+    <button class="secondary-btn" (click)="switchView()">🔄 Switch View</button>
   </div>
-  
-  <div class="container">
-    <div *ngIf="!displayAsTable" class="card-grid">
-      <div class="card-item" *ngFor="let category of CategoryList">
-        <div class="card border-bottom-5">
-          <div class="card-body">
-            <p><strong>Category:</strong></p>
-            <input *ngIf="editMode[category.id]" type="text" [(ngModel)]="category.description">
-            <span *ngIf="!editMode[category.id]">{{ category.description }}</span>
-            <div class="cardButton">
-              <button class="btn editBtn" *ngIf="!editMode[category.id]" (click)="enableEditMode(category)">
-                <i class="bi bi-pencil-square"></i> Edit
-              </button>
-              <button class="btn saveBtn" *ngIf="editMode[category.id]" (click)="saveCategory(category)">
-                Save
-              </button>
-              <button class="btn cancelBtn" *ngIf="editMode[category.id]" (click)="disableEditMode(category)">
-                Cancel
-              </button>
-              <button class="btn deleteBtn" (click)="deleteCategory(category.id)">
-                <i class="bi bi-trash3"></i> Delete
-              </button>
-            </div>
-          </div>
+</div>
+
+<!-- Card View -->
+<div class="container" *ngIf="!displayAsTable">
+  <div class="card-grid">
+    <div class="card-item" *ngFor="let category of CategoryList">
+      <div class="category-card">
+        <p class="category-title">
+          <strong>Category:</strong>
+        </p>
+        <input 
+          *ngIf="editMode[category.id]" 
+          type="text" 
+          [(ngModel)]="category.description" 
+          class="edit-input">
+        
+        <span *ngIf="!editMode[category.id]" class="category-description">
+          {{ category.description }}
+        </span>
+
+        <div class="card-actions">
+          <button *ngIf="!editMode[category.id]" (click)="enableEditMode(category)" class="icon-btn">
+            ✏️ Edit
+          </button>
+          <button *ngIf="editMode[category.id]" (click)="saveCategory(category)" class="primary-btn">
+            Save
+          </button>
+          <button *ngIf="editMode[category.id]" (click)="disableEditMode(category)" class="secondary-btn">
+            Cancel
+          </button>
+          <button (click)="deleteCategory(category.id)" class="danger-btn">
+            🗑️ Delete
+          </button>
         </div>
       </div>
     </div>
   </div>
-  
-  
-  <div class="container">
-  
-    <table class="table table-striped" *ngIf="displayAsTable">
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let category of CategoryList">
-          <td>
-            <input *ngIf="editMode[category.id]" type="text" [(ngModel)]="category.description">
-            <span *ngIf="!editMode[category.id]">{{ category.description }}</span>
-          </td>
-          <td>
-            <button class="btn editBtn" *ngIf="!editMode[category.id]" (click)="enableEditMode(category)">
-              <i class="bi bi-pencil-square"></i> Edit
-            </button>
-            <button class="btn saveBtn" *ngIf="editMode[category.id]" (click)="saveCategory(category)">
-              Save
-            </button>
-            <button class="btn cancelBtn" *ngIf="editMode[category.id]" (click)="disableEditMode(category)">
-              Cancel
-            </button>
-            <button class="btn deleteBtn" (click)="deleteCategory(category.id)">
-              <i class="bi bi-trash3"></i> Delete
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+</div>
+
+<!-- Table View -->
+<div class="container" *ngIf="displayAsTable">
+  <table class="modern-table">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let category of CategoryList">
+        <td>
+          <input *ngIf="editMode[category.id]" type="text" [(ngModel)]="category.description" class="edit-input">
+          <span *ngIf="!editMode[category.id]">{{ category.description }}</span>
+        </td>
+        <td>
+          <button *ngIf="!editMode[category.id]" (click)="enableEditMode(category)" class="icon-btn">
+            ✏️ Edit
+          </button>
+          <button *ngIf="editMode[category.id]" (click)="saveCategory(category)" class="primary-btn">
+            Save
+          </button>
+          <button *ngIf="editMode[category.id]" (click)="disableEditMode(category)" class="secondary-btn">
+            Cancel
+          </button>
+          <button (click)="deleteCategory(category.id)" class="danger-btn">
+            🗑️ Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -30,10 +30,6 @@ export class UserService {
     return this.http.get<Student>(`${this.api}/${id}`);
   }
   
-
-  // updateStudent(id: string, studentData: Partial<Student>): Observable<Student> {
-  //   return this.http.put<Student>(`${this.api}/${id}`, studentData);
-  // }
   updateStudent(id: string, formData: FormData) {
     return this.http.put<Student>(`${this.api}/${id}`, formData);
   }

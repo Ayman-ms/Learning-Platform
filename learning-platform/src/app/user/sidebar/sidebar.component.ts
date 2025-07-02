@@ -1,10 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Student } from 'src/app/models/student';
 import { SessionService } from 'src/app/services/session/session.service';
 import { SidebarService } from 'src/app/services/sidebar/sidebar.service';
-import { UserService } from 'src/app/services/users/user.service';
 
 @Component({
   selector: 'app-user-sidebar',
@@ -15,7 +13,8 @@ export class UserSidebarComponent {
   userToEdit: Student = {
     id: '', firstName: '', lastName: '', password: '', email: '', phone: '',
     photoPath: '',
-    createdAt: ''
+    createdAt: '',
+    roll: ''
   };
 
   constructor(public accountService: SessionService,private sidebarService: SidebarService,
@@ -36,8 +35,7 @@ export class UserSidebarComponent {
     closeNav() {
       this.sidebarService.closeSidebar();
     }
-  
-    // إغلاق Sidebar عند النقر على أي رابط
+
     onLinkClick() {
       if (window.innerWidth <= 768) {
         this.sidebarService.closeSidebar();

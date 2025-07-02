@@ -50,7 +50,6 @@ export class AddCourseComponent implements OnInit {
     this.mainCategoryService.getMainCategories().then(mainCategories => this.mainCategories = mainCategories);
     this.subCategoryService.getSubCategories().then(subCategories => {
       this.subCategories = subCategories;
-      console.log('Loaded subcategories:', this.subCategories); // للتأكد من تحميل البيانات
     });
 
     this.courseForm = this.fb.group({
@@ -91,7 +90,6 @@ export class AddCourseComponent implements OnInit {
   }
 
   onSubCategorySelect(item: any) {
-    console.log('Selected item:', item); // للتأكد من القيم المختارة
     const currentSelections = this.courseForm.get('subCategories')?.value || [];
     const newSelection = {
       description: item.description
@@ -134,20 +132,15 @@ export class AddCourseComponent implements OnInit {
     const formData = new FormData();
     formData.append('courseName', this.courseForm.value.courseName);
     formData.append('description', this.courseForm.value.description);
-
-    // ✅ تحويل `status` إلى `true` أو `false` كنص منطقي
     formData.append('status', this.courseForm.value.status ? 'true' : 'false');
-
     formData.append('teacher', this.courseForm.value.teacher);
     formData.append('mainCategory', this.courseForm.value.mainCategory);
     const subCategoriesArray = this.courseForm.value.subCategories.map((item: any) => item.description);
-
-
     formData.append('subCategories', JSON.stringify(subCategoriesArray));
     formData.append('startDate', this.courseForm.value.startDate);
     formData.append('duration', this.courseForm.value.duration);
     const rating = this.courseForm.get('rating')?.value || 0;
-formData.append('rating', rating.toString());
+    formData.append('rating', rating.toString());
 
     if (this.selectedFile) {
       formData.append("photo", this.selectedFile, this.selectedFile.name);
@@ -161,7 +154,6 @@ formData.append('rating', rating.toString());
       error: (err) => {
         this.errorMessage = 'Error creating course. Please try again.';
         this.loading = false;
-        console.error('API Error:', err);
       }
     });
   }

@@ -16,7 +16,8 @@ export class UpdateUserComponent {
   userToEdit: Student = {
     id: '', firstName: '', lastName: '', password: '', email: '', phone: '',
     photoPath: '',
-    createdAt: ''
+    createdAt: '',
+    roll: ''
   };
   userIsAdmin = false;
   userLoggedIn = false;
@@ -34,13 +35,6 @@ export class UpdateUserComponent {
     private userServic: UserService, public accountService: SessionService) {
     accountService.user.subscribe((u) => {
       this.userToEdit = u;
-      // if (u && u.level != 'user') {
-      //   this.userIsAdmin = true;
-      // }
-      // else {
-      //   this.userIsAdmin = false;
-      // }
-
       if (u && u.firstName != 'anonymos') {
         this.userLoggedIn = true;
       }
@@ -55,7 +49,6 @@ export class UpdateUserComponent {
     this.httpClient.get<Array<Student>>('http://localhost:5270/api/Student').subscribe((userListItems) => {
       this.route.queryParams
         .subscribe(params => {
-          console.log(params['id']);
           for (let i = 0; i < userListItems.length; i++) {
             if (userListItems[i].id == params['id']) {
               this.userToEdit = userListItems[i];
@@ -71,7 +64,6 @@ export class UpdateUserComponent {
     let result = await this.userServic.updateUser(this.userToEdit);
     if (result) {
       this.messageService.add({ severity: 'success', summary: 'Success..', detail: 'User edited' });
-      console.log('Done')
       this.router.navigateByUrl('editUser')
       this.router.navigateByUrl('')
     } else {

@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+// import { UserService } from 'src/app/services/users/user.service';
 import { UserService } from 'src/app/services/users/user.service';
 import { Student } from 'src/app/models/student';
-import { HttpClient } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Message, MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 import { SessionService } from 'src/app/services/session/session.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-user-info',
   templateUrl: './user-info.component.html',
@@ -43,7 +41,6 @@ export class UserInfoComponent implements OnInit {
   loadStudentData() {
     this.isLoading = true;
     const currentUser = this.sessionService.getUser();
-    console.log('Current User:', currentUser);
   
     if (!currentUser || !currentUser.id) {
       this.isLoading = false;
@@ -115,8 +112,7 @@ export class UserInfoComponent implements OnInit {
           this.router.navigate(['update/info']);
         },
         error: (error) => {
-          console.error('Error updating profile:', error);
-          this.errorMessage = 'فشل في تحديث الملف الشخصي';
+          this.errorMessage = 'Failed to update profile';
         },
         complete: () => {
           this.isSubmitting = false;
@@ -124,17 +120,14 @@ export class UserInfoComponent implements OnInit {
       });
     } else {
       this.studentForm.markAllAsTouched();
-      this.errorMessage = 'يرجى ملء الحقول المطلوبة بشكل صحيح';
+      this.errorMessage = 'Please fill in the required fields correctly';
     }
   }
-
 
   hasError(field: string, error: string): boolean {
     const control = this.studentForm.get(field);
     return control?.touched && control?.hasError(error) || false;
   }
-
-
 
   onCancel() {
     this.router.navigate(['/profile']);

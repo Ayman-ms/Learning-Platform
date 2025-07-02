@@ -55,8 +55,6 @@ export class CourseDetailsComponent implements OnInit {
   
     if (this.courseId) {
       this.loadCourseDetails();
-    } else {
-      console.error('Course ID is undefined!');
     }
     this.teachersService.getTeachers().subscribe(teachers => {
       this.teachersList = teachers || [];
@@ -89,8 +87,7 @@ export class CourseDetailsComponent implements OnInit {
     this.coursesService.getCourseById(this.courseId).subscribe(
       (course) => {
         if (course) {
-          this.course = course; // ✅ أضف هذا السطر لتخزين الكورس في المتغير الصحيح
-          console.log('Course Details:', course.photoPath);
+          this.course = course;
           this.courseForm.patchValue({
             name: course.name,
             description: course.description,
@@ -107,18 +104,16 @@ export class CourseDetailsComponent implements OnInit {
       },
       (error) => {
         this.errorMessage = 'Error loading teacher data';
-        console.error('Error:', error);
-      },
-      () => {
-        // this.isLoading = false;
+        
       }
     );
   }
 
   getImagePath(imageFilePath: string | undefined): string {
     if (!imageFilePath || imageFilePath.trim() === '') {
-      return 'assets/default-profile.png';
+      return 'assets/courseImage.svg';
     }
+    const unique = new Date().getTime(); 
     return `http://localhost:5270${imageFilePath}`;
   }
 
@@ -138,7 +133,6 @@ export class CourseDetailsComponent implements OnInit {
         if (error.status === 409) {
           alert('You are already enrolled in this course.');
         } else {
-          console.error('Enrollment failed:', error);
           alert('An error occurred during enrollment.');
         }
       }

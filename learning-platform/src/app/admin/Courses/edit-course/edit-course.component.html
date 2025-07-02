@@ -22,7 +22,6 @@
           <!-- photo -->
           <div class="col-md-4 mb-3 text-center">
             <div class="mb-3">
-              <!-- استخدام imagePreview لعرض الصورة -->
               <img [src]="imagePreview" alt="Course image" class="img-thumbnail"
                 style="width: 150px; height: 150px; object-fit: cover;">
             </div>
@@ -89,18 +88,9 @@
             <!-- Sub Categories -->
             <div class="p-field mb-3">
               <label for="subCategories">Sub Categories</label>
-              <p-multiSelect
-                [options]="availableSubCategories"
-                formControlName="subCategories"
-                optionLabel="description"
-                [filter]="true"
-                [showToggleAll]="true"
-                [showHeader]="true"
-                display="chip"
-                [showClear]="true"
-                placeholder="Select Sub Categories"
-                class="w-full"
-                [style]="{'width': '100%'}">
+              <p-multiSelect [options]="availableSubCategories" formControlName="subCategories"
+                optionLabel="description" [filter]="true" [showToggleAll]="true" [showHeader]="true" display="chip"
+                [showClear]="true" placeholder="Select Sub Categories" class="w-full" [style]="{'width': '100%'}">
                 <ng-template let-value pTemplate="selectedItems">
                   <div class="p-multiselect-token" *ngFor="let item of value">
                     {{item.description}}
@@ -119,6 +109,18 @@
                 <option [ngValue]="true">Available</option>
                 <option [ngValue]="false">Not Available</option>
               </select>
+            </div>
+            <!-- Start Date -->
+            <div class="mb-3">
+              <label for="startDate" class="form-label">Start Date</label>
+              <input type="date" id="startDate" class="form-control" formControlName="startDate">
+            </div>
+
+            <!-- Duration -->
+            <div class="mb-3">
+              <label for="duration" class="form-label">Duration</label>
+              <input type="text" id="duration" class="form-control" formControlName="duration"
+                placeholder="Example: 6 weeks or 12 hours">
             </div>
 
           </div>

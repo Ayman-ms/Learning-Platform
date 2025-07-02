@@ -22,7 +22,7 @@ export class NavbarComponent implements AfterViewInit {
   ) {
     this.sessionService.currentUser.subscribe(user => {
       this.currentUser = user;
-      this.userLoggedIn = !!user;
+      this.userLoggedIn = !user;
     });
 
     this.isSidebarOpen$ = this.sidebarService.isSidebarOpen$;

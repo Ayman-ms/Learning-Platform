@@ -1,6 +1,16 @@
 <div class="input-group mb-3">
   <app-search-bar placeholder="Search by First Name, Last Name, or Email" (searchTextChanged)="updateSearch($event)"></app-search-bar>
 </div>
+<div class="roll-container">
+  <div class="card-grid">
+      <button class="clear-filter-btn" (click)="clearFilter()">All</button>
+      <div class="roll-card" *ngFor="let roll of rollNumbers"
+          [class.active]="filteredUsers === roll"
+          (click)="selectRoll(roll)">
+          <p>{{ roll }}</p>
+      </div>
+  </div>
+</div>
 
 <p>Total Students: {{filteredStudents.length}}</p>
 
@@ -11,6 +21,7 @@
          [alt]="student.firstName + '\'s profile picture'"
          class="student-img"
          (error)="handleImageError($event)"/>
+         
     <p><strong>First Name:</strong> {{ student.firstName }}</p>
     <p><strong>Last Name:</strong> {{ student.lastName }}</p>
     <p class="email"><strong>Email:</strong> {{ student.email }}</p>

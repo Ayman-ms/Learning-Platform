@@ -26,7 +26,6 @@
 
 }
 
-/* الوضع الليلي: إعادة تعريف المتغيرات */
 body.dark-mode {
   --logo-bg-color: #001c27;
   --drawer-bg-color: #141A2F;
@@ -43,7 +42,6 @@ body.dark-mode {
   --white-color: #ffffff;
 }
 
-/* القواعد العامة */
 html,
 body {
   height: auto;
@@ -89,7 +87,6 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* الشبكة */
 .cards-grid {
   display: grid;
   gap: var(--card-gap);
@@ -111,7 +108,6 @@ button {
   }
 }
 
-/* البطاقات */
 .card {
   color: var(--main-text-color);
   background: var(--card-color);
@@ -128,7 +124,7 @@ button {
 small{
   color: var(--main-text-color);
 }
-/* تحسينات */
+
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.1);

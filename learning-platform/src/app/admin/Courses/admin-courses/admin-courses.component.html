@@ -3,7 +3,7 @@
 <div class="courses-container">
   <div class="course-card" *ngFor="let course of filteredCourses">
     <div class="course-header">
-      <img [src]="getImagePath(course.photoPath)" alt="Course Image" class="course-img">
+      <img [src]="imageService.getImagePath(course.photoPath, 'assets/courseImage.svg')" alt="Course Image" class="course-img">
       <h3 class="course-title">{{ course.name }}</h3>
     </div>
     

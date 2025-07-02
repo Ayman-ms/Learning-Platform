@@ -49,7 +49,7 @@ export class PasswordInputComponent implements ControlValueAccessor {
     password += specialChars[Math.floor(Math.random() * specialChars.length)];
 
     // Fill the rest of the password
-    for (let i = 4; i < length; i++) {
+    for (let i = 7; i < length; i++) {
       password += allChars[Math.floor(Math.random() * allChars.length)];
     }
 

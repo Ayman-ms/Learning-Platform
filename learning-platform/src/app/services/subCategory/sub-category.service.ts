@@ -12,19 +12,18 @@ private apiUrl = 'http://localhost:5270/api/SubCategory';
   
   public getSubCategories(): Promise<SubCategory[]> {
     return this.http.get<SubCategory[]>(this.apiUrl).toPromise()
-      .then(response => response ?? []) // ✅ إذا كانت الاستجابة `undefined`، أعد مصفوفة فارغة
-      .catch(() => []); // ✅ في حالة حدوث خطأ، أعد مصفوفة فارغة
+      .then(response => response ?? []) 
+      .catch(() => []); 
   }
   
 
   updateCategory(id: string, description: string): Promise<SubCategory> {
-    const body = { id, description }; // ✅ تأكد أن البيانات مكتملة
+    const body = { id, description };
     return this.http.put<SubCategory>(`${this.apiUrl}/${id}`, body)
       .toPromise()
-      .then(response => response ?? { id, description }) // ✅ إعادة البيانات المرسلة في حال كان الرد undefined
+      .then(response => response ?? { id, description }) 
       .catch(error => {
-        console.error("❌ Error updating category:", error);
-        throw error; // ✅ تأكد أن الخطأ لا يمر بصمت
+        throw error;
       });
   }
   
@@ -36,12 +35,10 @@ private apiUrl = 'http://localhost:5270/api/SubCategory';
   addSubCategory(category: SubCategory): Promise<SubCategory> {
     return this.http.post<SubCategory>(`${this.apiUrl}`, category)
       .toPromise()
-      .then(response => response ?? category) // ✅ إعادة البيانات المرسلة إذا لم يكن هناك رد
+      .then(response => response ?? category)
       .catch(error => {
-        console.error("❌ Error adding category:", error);
         throw error;
       });
   }
-  
   
 }

@@ -95,7 +95,7 @@ h2 {
   border-radius: 16px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  padding: 20px;
+  padding: 5px;
   transition: transform 0.2s ease;
   color: var(--main-text-color);
 }

@@ -13,7 +13,6 @@
 
 @media (min-width: 768px) and (max-width: 1199px) {
   .main-content {
-    /* margin-left: 250px; */
     padding: 15px;
   }
 }
@@ -26,19 +25,19 @@
 }
 .admin-layout {
   display: flex;
-  min-height: calc(100vh - 60px); /* الحد الأدنى للارتفاع */
-  margin-top: 60px; /* ارتفاع Navbar */
+  min-height: calc(100vh - 60px); 
+  margin-top: 60px; 
   background: var(--card-bg-color);
 }
 
 .sidebar-container {
-  position: sticky; /* يجعل Sidebar ملتصقاً بالأعلى */
-  top: 60px; /* مسافة من Navbar */
-  height: calc(100vh - 60px); /* الارتفاع الأقصى */
-  min-height: 500px; /* الحد الأدنى للارتفاع */
-  overflow-y: auto; /* إضافة شريط تمرير عند الحاجة */
+  position: sticky; 
+  top: 60px; 
+  height: calc(100vh - 60px); 
+  min-height: 500px; 
+  overflow-y: auto;
   width: 250px;
-  flex-shrink: 0; /* يمنع الانكماش */
+  flex-shrink: 0;
 }
 
 .main-content {

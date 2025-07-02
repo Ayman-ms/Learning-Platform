@@ -78,7 +78,6 @@ export class TeacherEditComponent implements OnInit, OnDestroy {
       },
       (error) => {
         this.errorMessage = 'Error loading teacher data';
-        console.error('Error:', error);
       },
       () => {
         this.isLoading = false;
@@ -115,7 +114,7 @@ export class TeacherEditComponent implements OnInit, OnDestroy {
         canvas.height = height;
         
         ctx.drawImage(img, 0, 0, width, height);
-        resolve(canvas.toDataURL('image/jpeg', 0.7)); // ضغط بجودة 70%
+        resolve(canvas.toDataURL('image/jpeg', 0.7));
       };
     });
   }
@@ -124,7 +123,7 @@ export class TeacherEditComponent implements OnInit, OnDestroy {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
-      this.selectedFile = file; // تأكد من تعيين الملف المرفوع
+      this.selectedFile = file; 
       const reader = new FileReader();
 
       reader.onload = async (e) => {
@@ -188,54 +187,36 @@ export class TeacherEditComponent implements OnInit, OnDestroy {
 
     this.isSubmitting = true;
     const formValue = this.teacherForm.value;
-
-    // إعداد البيانات كـ FormData
     const formData = new FormData();
 
-    // إضافة الحقول فقط إذا تم تعديلها أو إرسال القيم الحالية
     formData.append('FirstName', formValue.firstName || '');
     formData.append('LastName', formValue.lastName || '');
     formData.append('Email', formValue.email || '');
     formData.append('Phone', formValue.phone || '');
 
-    // إذا لم يتم إدخال كلمة مرور جديدة، أرسل كلمة المرور الحالية
     if (formValue.password) {
       formData.append('Password', formValue.password);
     } else {
-      formData.append('Password', ''); // إرسال كلمة مرور فارغة إذا لم يتم تعديلها
+      formData.append('Password', ''); 
     }
 
-    // إذا لم يتم اختيار صورة جديدة، أرسل الصورة الحالية
     if (this.selectedFile) {
       formData.append('Photo', this.selectedFile);
     } else if (this.imagePreview) {
       const currentPhotoUrl = this.imagePreview.toString();
       const photoFileName = currentPhotoUrl.substring(currentPhotoUrl.lastIndexOf('/') + 1);
-      formData.append('Photo', photoFileName); // إرسال اسم الصورة الحالية
+      formData.append('Photo', photoFileName);
     } else {
-      formData.append('Photo', ''); // إرسال قيمة فارغة إذا لم يتم تعديل الصورة
+      formData.append('Photo', ''); 
     }
-
-    // سجل الحقول المرسلة
-    formData.forEach((value, key) => {
-      console.log(`${key}:`, value);
-    });
 
     this.teacherService.updateTeacher(this.teacherId, formData).subscribe({
       next: () => {
-        console.log('Teacher updated successfully');
         this.router.navigate(['/admin/teachers']);
       },
       error: (error) => {
         this.errorMessage = 'Error updating teacher: ' + (error.error?.title || error.message);
-        console.error('Error details:', error.error);
-
-        // عرض تفاصيل الأخطاء القادمة من الباك اند
-        if (error.error?.errors) {
-          Object.entries(error.error.errors).forEach(([field, messages]) => {
-            console.error(`Validation error in ${field}:`, messages);
-          });
-        }
+        
       },
       complete: () => {
         this.isSubmitting = false;

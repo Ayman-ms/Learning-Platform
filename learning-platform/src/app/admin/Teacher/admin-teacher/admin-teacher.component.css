@@ -112,7 +112,6 @@ p span {
   }
 }
 
-/* الخلفية الشفافة عند ظهور الفورم */
 .overlay {
   position: fixed;
   top: 0;

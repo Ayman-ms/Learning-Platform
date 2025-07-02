@@ -48,65 +48,8 @@ export class AddTeacherComponent implements OnInit {
         this.selectedImage = e.target?.result ?? null;
       };
       reader.readAsDataURL(file);
-
-      console.log('📌 Image selected :', file.name);
     }
   }
-
-
-  // onSubmit(): void {
-  //   // Reset messages
-  //   this.errorMessage = '';
-  //   this.successMessage = '';
-
-  //   if (this.registrationForm.valid) {
-  //     this.loading = true;
-
-  //     // FormData
-  //     const formData = new FormData();
-
-  //     // Add form data
-  //     formData.append('FirstName', this.registrationForm.get('firstName')?.value);
-  //     formData.append('LastName', this.registrationForm.get('lastName')?.value);
-  //     formData.append('Email', this.registrationForm.get('email')?.value);
-  //     formData.append('Phone', this.registrationForm.get('phone')?.value);
-  //     formData.append('Password', this.registrationForm.get('password')?.value);
-
-  //     // add image
-  //     if (this.selectedFile) {
-  //       formData.append('imageFile', this.selectedFile);
-  //     }
-
-  //     // Print the data sent for verification
-  //     console.log('📌 Data to be sent:');
-  //     formData.forEach((value, key) => {
-  //       if (key !== 'imageFile') {
-  //         console.log(`${key}:`, value);
-  //       } else {
-  //         console.log(`${key}: [file]`);
-  //       }
-  //     });
-
-  //     this.teacherService.registerTeacher(formData).subscribe({
-  //       next: (response) => {
-  //         this.successMessage = 'Teacher registered successfully!';
-  //         this.loading = false;
-
-  //         this.registrationForm.reset();
-  //         this.selectedImage = null;
-  //         this.selectedFile = null;
-  //         // this.router.navigate(['/teachers']);
-  //       },
-  //       error: (error) => {
-  //         this.errorMessage = error.message || 'An error occurred while registering the teacher';
-  //         this.loading = false;
-  //       }
-  //     });
-  //   } else {
-  //     this.markFormGroupTouched(this.registrationForm);
-  //     this.errorMessage = 'Please correct errors in the form before submitting';
-  //   }
-  // }
 
   // Mark all form fields as "touched" to display error messages
   onSubmit(): void {
@@ -115,14 +58,12 @@ export class AddTeacherComponent implements OnInit {
 
       const formData = new FormData();
 
-      // إضافة بيانات المعلم
       Object.keys(this.registrationForm.value).forEach(key => {
         formData.append(key, this.registrationForm.get(key)?.value);
       });
 
-      // إضافة الصورة
       if (this.selectedFile) {
-        formData.append('photo', this.selectedFile); // تأكد من أن الاسم 'photo' يطابق البارامتر في Backend
+        formData.append('photo', this.selectedFile); 
       }
 
       this.teacherService.registerTeacher(formData).subscribe({

@@ -30,23 +30,19 @@
 }
 
 .coursesCategories {
-  padding: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
-.coursesCategories span {
-  padding: 10px 20px;
-  margin-right: 10px;
-  border: 1px solid var(--blue-color);
-  border-radius: 5px;
+.coursesCategories .btn {
+  background-color: #00a5a5;
   color: var(--card-text-color);
+  border-radius: 20px;
+  padding: 0.4rem 1rem;
   cursor: pointer;
-  user-select: none;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.coursesCategories span:hover {
-  background-color: var(--blue-color);
-  color: var(--white-color);
+  white-space: nowrap;
 }
 
 .courseCard {
@@ -104,7 +100,6 @@ h4,
   justify-content: center;
   align-items: center;
   background-color: var(--text-color);
-  /* الخلفية هنا عكس النص */
   color: var(--white-color);
   border-radius: var(--card-radius);
   width: 267px;
@@ -129,7 +124,6 @@ h4,
   color: var(--bg);
 }
 
-/* تحسينات */
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.1);
@@ -145,26 +139,23 @@ body.sidebar-open {
   }
 }
 
-/* الوضع العادي */
 .coursesCategories .btn {
-  /* color: var(--white-color); */
   border: 1px solid var(--blue-color);
   background-color: transparent;
   transition: all 0.3s ease;
 }
 
-/* الوضع الليلي */
 body.dark-mode .coursesCategories .btn {
   color: var(--blue-color);
   border: 1px solid var(--white-color);
   background-color: transparent;
 }
 
-/* Hover في الوضع الليلي */
 body.dark-mode .coursesCategories .btn:hover {
   background-color: var(--white-color);
   color: var(--blue-color);
 }
+
 body.dark-mode .courseCard {
   background-color: #4b5563 !important;
 }

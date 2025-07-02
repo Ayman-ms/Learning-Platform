@@ -23,18 +23,6 @@ namespace SkillwaveAPI.Controllers
         {
             var students = await _jsonFileService.ReadAsync();
 
-            foreach (var student in students)
-            {
-                if (string.IsNullOrEmpty(student.PhotoPath))
-                {
-                    Console.WriteLine($"🚨 تحذير: {student.FirstName} لا يحتوي على صورة!");
-                }
-                else
-                {
-                    Console.WriteLine($"✅ {student.FirstName} لديه صورة");
-                }
-            }
-
             return Ok(students);
         }
 
@@ -64,30 +52,28 @@ namespace SkillwaveAPI.Controllers
                     LastName = studentDto.LastName,
                     Email = studentDto.Email,
                     Phone = studentDto.Phone,
-                    Password = BCrypt.Net.BCrypt.HashPassword(studentDto.Password)
+                    Password = BCrypt.Net.BCrypt.HashPassword(studentDto.Password),
+                    CreatedAt = DateTime.Now,
+                    Roll = "student"
                 };
 
                 if (studentDto.Photo != null)
                 {
-                    // إنشاء مجلد للصور إذا لم يكن موجوداً
                     var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "students");
                     if (!Directory.Exists(uploadsFolder))
                     {
                         Directory.CreateDirectory(uploadsFolder);
                     }
 
-                    // تسمية الصورة باستخدام الاسم الأول واسم العائلة
                     var fileExtension = Path.GetExtension(studentDto.Photo.FileName);
                     var fileName = $"{student.FirstName}_{student.LastName}{fileExtension}";
                     var filePath = Path.Combine(uploadsFolder, fileName);
 
-                    // حفظ الصورة كملف فعلي
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await studentDto.Photo.CopyToAsync(fileStream);
                     }
 
-                    // حفظ مسار الصورة في خاصية PhotoPath
                     var baseUrl = $"{Request.Scheme}://{Request.Host}";
                     student.PhotoPath = $"{baseUrl}/students/{fileName}";
                 }
@@ -104,7 +90,6 @@ namespace SkillwaveAPI.Controllers
             }
         }
 
-
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateStudent(string id, [FromForm] StudentDTO studentDto)
         {
@@ -117,34 +102,29 @@ namespace SkillwaveAPI.Controllers
                     return NotFound("Student not found");
                 }
 
-                // تحديث البيانات
                 existingStudent.FirstName = studentDto.FirstName;
                 existingStudent.LastName = studentDto.LastName;
                 existingStudent.Email = studentDto.Email;
                 existingStudent.Phone = studentDto.Phone;
 
-                // تشفير كلمة المرور الجديدة إن وُجدت
                 if (!string.IsNullOrWhiteSpace(studentDto.Password))
                 {
                     existingStudent.Password = BCrypt.Net.BCrypt.HashPassword(studentDto.Password);
                 }
 
-                // تحديث الصورة إن وُجدت
+                // تحديث الصورة
                 if (studentDto.Photo != null)
                 {
                     var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "students");
-
                     if (!Directory.Exists(uploadsFolder))
                     {
                         Directory.CreateDirectory(uploadsFolder);
                     }
 
-                    // نفس اسم الصورة السابقة (first_last.extension)
                     var fileExtension = Path.GetExtension(studentDto.Photo.FileName);
                     var fileName = $"{existingStudent.FirstName}_{existingStudent.LastName}{fileExtension}";
                     var filePath = Path.Combine(uploadsFolder, fileName);
 
-                    // حذف الصورة القديمة إن وُجدت
                     if (System.IO.File.Exists(filePath))
                     {
                         System.IO.File.Delete(filePath);
@@ -167,8 +147,6 @@ namespace SkillwaveAPI.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
-
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent(string id)
@@ -197,14 +175,15 @@ namespace SkillwaveAPI.Controllers
                     return Unauthorized(new { message = "Invalid email or password" });
                 }
 
-                // يمكنك إضافة JWT token هنا إذا أردت
                 return Ok(new
                 {
                     id = student.Id,
                     email = student.Email,
                     firstName = student.FirstName,
                     lastName = student.LastName,
-                    photoPath = student.PhotoPath
+                    photoPath = student.PhotoPath,
+                    roll = student.Roll,
+                    createdAt = student.CreatedAt
                 });
             }
             catch (Exception ex)
@@ -212,7 +191,6 @@ namespace SkillwaveAPI.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-
         public class LoginDTO
         {
             public string Email { get; set; }

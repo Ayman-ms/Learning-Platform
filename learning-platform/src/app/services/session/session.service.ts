@@ -45,12 +45,10 @@ export class SessionService {
       const userData = localStorage.getItem('user');
       if (userData) {
         const user = JSON.parse(userData);
-        console.log('Retrieved user data:', user);
         return user;
       }
       return null;
     } catch (error) {
-      console.error('Error parsing user data:', error);
       return null;
     }
   }
@@ -62,7 +60,6 @@ export class SessionService {
       }
       localStorage.setItem('user', JSON.stringify(user));
       this.currentUserSubject.next(user);
-      console.log('User data saved:', user);
     } catch (error) {
       console.error('Error saving user data:', error);
     }
@@ -80,7 +77,8 @@ export class SessionService {
       email: '',
       phone: '',
       photoPath: '',
-      createdAt: ''
+      createdAt: '',
+      roll: ''
     };
     this.userSubject.next(u);
     this.router.navigate(['/']);

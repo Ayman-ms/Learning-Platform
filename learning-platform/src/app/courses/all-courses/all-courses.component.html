@@ -2,7 +2,7 @@
     <!-- Main Category -->
     <div class="category-container">
         <div class="card-grid">
-            <button class="clear-filter-btn" (click)="clearFilter()" class="clear-filter-btn">All</button>
+            <button class="clear-filter-btn" (click)="clearFilter()">All</button>
             <div class="category-card" *ngFor="let main of mainCategoryList"
             [class.active]="selectedMainCategory?.id === main.id"
             (click)="selectMainCategory(main)">

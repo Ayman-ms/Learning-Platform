@@ -8,14 +8,13 @@ import { Observable } from 'rxjs';
 export class AuthService {
   private apiUrl = 'http://localhost:5270/api/Student';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient
+  ) { }
 
-  // دالة للتحقق من وجود المستخدم حسب البريد الإلكتروني
   checkUserEmail(email: string): Observable<boolean> {
     return this.http.post<boolean>('/api/check-email', { email });
   }
-
-  // دالة لإرسال البريد الإلكتروني لإعادة تعيين كلمة المرور
+  
   sendResetPasswordEmail(email: string): Observable<any> {
     return this.http.post('/api/send-reset-password-email', { email });
   }
